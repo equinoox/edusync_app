@@ -1,6 +1,8 @@
+"use client";
+
 import { SignInButton } from "@clerk/nextjs";
 import Image from "next/image";
-import "@/app/styles/landing.css";
+import "@/styles/landing.css";
 import {
   ChatBubbleLeftRightIcon,
   BookOpenIcon,
