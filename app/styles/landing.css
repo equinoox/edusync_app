@@ -1,0 +1,102 @@
+/* Animation for floating badges */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
+}
+
+/* Animation for page entrance  */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.anim-fade-up {
+  opacity: 0;
+  animation: fadeUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.anim-fade-in {
+  opacity: 0;
+  animation: fadeIn 0.5s ease forwards;
+}
+
+/* Delays!!! */
+.delay-0  { animation-delay: 0.05s; }
+.delay-1  { animation-delay: 0.15s; }
+.delay-2  { animation-delay: 0.25s; }
+.delay-3  { animation-delay: 0.35s; }
+.delay-4  { animation-delay: 0.42s; }
+.delay-5  { animation-delay: 0.50s; }
+.delay-6  { animation-delay: 0.58s; }
+.delay-7  { animation-delay: 0.66s; }
+.delay-8  { animation-delay: 0.74s; }
+.delay-9  { animation-delay: 0.82s; }
+.delay-10 { animation-delay: 0.90s; }
+.delay-panel { animation-delay: 0.30s; }
+
+/* Hover Icon  */
+.badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  background: rgba(255,255,255,0.70);
+  backdrop-filter: blur(8px);
+  border: 1px solid #c7d2fe;
+  border-radius: 9999px;
+  padding: 6px 10px;
+  width: fit-content;
+  overflow: hidden;
+  max-width: 2.25rem; /* just the icon */
+  transition: max-width 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+              padding  0.45s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.2s ease;
+  box-shadow: 0 1px 3px rgba(99,102,241,0.08);
+  cursor: default;
+}
+.badge-pill:hover {
+  max-width: 18rem;
+  padding: 6px 16px;
+  box-shadow: 0 2px 12px rgba(99,102,241,0.15);
+}
+
+.badge-pill .badge-icon {
+  flex-shrink: 0;
+  width: 1rem;
+  height: 1rem;
+  color: #6366f1;
+}
+
+.badge-pill .badge-text {
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 0;
+  opacity: 0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #4338ca;
+  transition: max-width 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.02s,
+              opacity   0.35s ease 0.08s,
+              margin-left 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  margin-left: 0;
+}
+.badge-pill:hover .badge-text {
+  max-width: 16rem;
+  opacity: 1;
+  margin-left: 0.5rem;
+}
+
+/*  Gradient glow on Hero Image  */
+.hero-glow { position: absolute;
+     inset: -100% -80%; 
+     background: radial-gradient( 
+        ellipse 60% 55% at 50% 52%, 
+        rgba(99, 102, 241, 0.28) 0%, 
+        rgba(129, 140, 248, 0.14) 35%, 
+        rgba(240, 238, 255, 0.06) 65%, 
+        transparent 100% ); 
+        pointer-events: none; 
+        z-index: 0; 
+}
