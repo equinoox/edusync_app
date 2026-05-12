@@ -1,14 +1,8 @@
-'use server';
+import { generateEmbedding } from '@/lib/ai/embedding-provider';
+import { findSimilarEmbeddings } from '@/features/resources/repositories/embeddings.repository';
 
-import type { NewResourceParams } from '@/features/resources/types';
-import { createResource } from '@/features/resources/server/resources.service';
+export const findRelevantContent = async (userQuery: string) => {
+  const userQueryEmbedding = await generateEmbedding(userQuery);
 
-export const createResourceAction = async (input: NewResourceParams) => {
-  try {
-    return await createResource(input);
-  } catch (error) {
-    return error instanceof Error && error.message.length > 0
-      ? error.message
-      : 'Error, please try again.';
-  }
+  return findSimilarEmbeddings(userQueryEmbedding);
 };
