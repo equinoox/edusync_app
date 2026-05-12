@@ -1,10 +1,52 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { SignInButton, UserButton, useUser } from "@clerk/nextjs";
+import { Loader } from "@/components/shared/loader";
 
 export default function HomePage() {
-  const { isSignedIn } = useUser();
+  const { isSignedIn, isLoaded } = useUser();
+
+  const [showLoader, setShowLoader] = useState(false);
+  const [canShowPage, setCanShowPage] = useState(false);
+
+  useEffect(() => {
+    // Clear loader flag when user logs out
+    if (!isSignedIn) {
+      sessionStorage.removeItem("home-loader-shown");
+    }
+  }, [isSignedIn]);
+
+  useEffect(() => {
+    if (!isLoaded) return;
+
+    if (!isSignedIn) {
+      setCanShowPage(true);
+      return;
+    }
+
+    const loaderAlreadyShown = sessionStorage.getItem("home-loader-shown");
+
+    if (loaderAlreadyShown) {
+      setCanShowPage(true);
+      return;
+    }
+
+    sessionStorage.setItem("home-loader-shown", "true");
+    setShowLoader(true);
+
+    const timer = setTimeout(() => {
+      setShowLoader(false);
+      setCanShowPage(true);
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, [isLoaded, isSignedIn]);
+
+  if (!canShowPage || showLoader) {
+    return <Loader />;
+  }
 
   return (
     <main className="min-h-screen">
@@ -16,15 +58,15 @@ export default function HomePage() {
             AI Assistant
           </Link>
 
-            {!isSignedIn ? (
+          {!isSignedIn ? (
             <SignInButton mode="modal">
-                <button className="rounded-md bg-black px-4 py-2 text-white">
+              <button className="rounded-md bg-black px-4 py-2 text-white">
                 Sign in
-                </button>
+              </button>
             </SignInButton>
-            ) : (
+          ) : (
             <UserButton />
-            )}
+          )}
         </div>
       </nav>
 
