@@ -2,6 +2,7 @@
 
 import { SignInButton } from "@clerk/nextjs";
 import Image from "next/image";
+import Link from "next/link";
 import "@/styles/landing.css";
 import {
   ChatBubbleLeftRightIcon,
@@ -23,19 +24,21 @@ export default function EduSyncLanding() {
     <div className="min-h-screen bg-[#F0EEFF] font-sans overflow-hidden">
       {/* ── Navbar ── */}
       <nav className="flex items-center justify-between px-4 sm:px-10 py-5 anim-fade-up delay-0">
-        <div className="flex items-center gap-2">
-          <div className="w-8 sm:w-9 h-8 sm:h-9 bg-indigo-600 rounded-xl flex items-center justify-center shadow-md">
-            <AcademicCapIcon className="w-4 sm:w-5 h-4 sm:h-5 text-white" />
+        <Link href="/" className="flex items-center gap-3 sm:gap-4">
+          <div className="w-12 sm:w-16 h-12 sm:h-16 bg-indigo-600 rounded-xl flex items-center justify-center shadow-md">
+            <AcademicCapIcon className="w-6 sm:w-8 h-6 sm:h-8 text-white" />
           </div>
-          <span className="text-lg sm:text-2xl font-bold text-slate-800">
+          <span className="text-3xl sm:text-4xl font-bold text-slate-800">
             Edu<span className="text-indigo-600">Sync</span>
           </span>
-        </div>
+        </Link>
         <div className="flex items-center gap-2 sm:gap-3 text-xs sm:text-sm">
           <span className="text-slate-500 hidden sm:inline">Already have an account?</span>
-          <button className="px-3 sm:px-5 py-2 border-2 border-indigo-600 text-indigo-600 rounded-xl font-semibold hover:bg-indigo-600 hover:text-white transition-all duration-200 text-xs sm:text-sm">
-            Sign In
-          </button>
+          <SignInButton mode="modal">
+            <button className="px-3 sm:px-5 py-2 border-2 border-indigo-600 text-indigo-600 rounded-xl font-semibold hover:bg-indigo-600 hover:text-white transition-all duration-200 text-xs sm:text-sm">
+              Sign In
+            </button>
+          </SignInButton>
         </div>
       </nav>
 
@@ -114,7 +117,7 @@ export default function EduSyncLanding() {
 
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 mt-2 anim-fade-up delay-8">
             <SignInButton mode="modal" forceRedirectUrl="/home">
-              <button className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-5 sm:px-7 py-2.5 sm:py-3.5 rounded-2xl transition-all duration-200 shadow-lg shadow-indigo-200 hover:shadow-indigo-300 hover:-translate-y-0.5 text-sm sm:text-base">
+              <button className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-10 sm:px-12 py-2.5 sm:py-3.5 rounded-2xl transition-all duration-200 shadow-lg shadow-indigo-200 hover:shadow-indigo-300 hover:-translate-y-0.5 text-sm sm:text-base">
                 Get Started
               </button>
             </SignInButton>
@@ -125,45 +128,45 @@ export default function EduSyncLanding() {
         <div className="relative flex items-center justify-center h-[300px] sm:h-[400px] lg:h-[520px] anim-fade-in delay-panel">
           <div className="hero-glow" />
 
-          <div className="absolute top-10 left-4 bg-white rounded-2xl shadow-lg px-4 py-3 flex items-center gap-3 z-10"
+          <div className="absolute top-2 sm:top-10 left-0 sm:left-4 bg-white rounded-lg sm:rounded-2xl shadow-lg px-2 sm:px-4 py-2 sm:py-3 flex items-center gap-2 sm:gap-3 z-10 text-xs sm:text-sm"
                style={{ animation: "float 3s ease-in-out infinite" }}>
-            <div className="w-9 h-9 bg-blue-100 rounded-xl flex items-center justify-center">
-              <CloudArrowUpIcon className="w-5 h-5 text-blue-500" />
+            <div className="w-6 sm:w-9 h-6 sm:h-9 bg-blue-100 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0">
+              <CloudArrowUpIcon className="w-4 sm:w-5 h-4 sm:h-5 text-blue-500" />
             </div>
-            <div>
+            <div className="hidden sm:block">
               <p className="font-semibold text-slate-800 text-sm">Upload</p>
               <p className="text-slate-400 text-xs">your study materials</p>
             </div>
           </div>
 
-          <div className="absolute top-6 right-6 bg-white rounded-2xl shadow-lg px-4 py-3 flex items-center gap-3 z-10"
+          <div className="absolute top-0 sm:top-6 right-0 sm:right-6 bg-white rounded-lg sm:rounded-2xl shadow-lg px-2 sm:px-4 py-2 sm:py-3 flex items-center gap-2 sm:gap-3 z-10 text-xs sm:text-sm"
                style={{ animation: "float 3.5s ease-in-out 0.5s infinite" }}>
-            <div className="w-9 h-9 bg-indigo-100 rounded-xl flex items-center justify-center">
-              <LightBulbIcon className="w-5 h-5 text-indigo-500" />
+            <div className="w-6 sm:w-9 h-6 sm:h-9 bg-indigo-100 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0">
+              <LightBulbIcon className="w-4 sm:w-5 h-4 sm:h-5 text-indigo-500" />
             </div>
-            <div>
+            <div className="hidden sm:block">
               <p className="font-semibold text-slate-800 text-sm">Understand</p>
               <p className="text-slate-400 text-xs">any topic deeply</p>
             </div>
           </div>
 
-          <div className="absolute top-[45%] right-0 bg-white rounded-2xl shadow-lg px-4 py-3 flex items-center gap-3 z-10"
+          <div className="absolute top-[35%] sm:top-[45%] right-0 sm:right-0 bg-white rounded-lg sm:rounded-2xl shadow-lg px-2 sm:px-4 py-2 sm:py-3 flex items-center gap-2 sm:gap-3 z-10 text-xs sm:text-sm"
                style={{ animation: "float 4s ease-in-out 1s infinite" }}>
-            <div className="w-9 h-9 bg-green-100 rounded-xl flex items-center justify-center">
-              <ChatBubbleOvalLeftEllipsisIcon className="w-5 h-5 text-green-500" />
+            <div className="w-6 sm:w-9 h-6 sm:h-9 bg-green-100 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0">
+              <ChatBubbleOvalLeftEllipsisIcon className="w-4 sm:w-5 h-4 sm:h-5 text-green-500" />
             </div>
-            <div>
+            <div className="hidden sm:block">
               <p className="font-semibold text-slate-800 text-sm">Get instant</p>
               <p className="text-slate-400 text-xs">explanations</p>
             </div>
           </div>
 
-          <div className="absolute bottom-12 right-4 bg-white rounded-2xl shadow-lg px-4 py-3 flex items-center gap-3 z-10"
+          <div className="absolute bottom-4 sm:bottom-12 right-0 sm:right-4 bg-white rounded-lg sm:rounded-2xl shadow-lg px-2 sm:px-4 py-2 sm:py-3 flex items-center gap-2 sm:gap-3 z-10 text-xs sm:text-sm"
                style={{ animation: "float 3.2s ease-in-out 1.5s infinite" }}>
-            <div className="w-9 h-9 bg-amber-100 rounded-xl flex items-center justify-center">
-              <TrophyIcon className="w-5 h-5 text-amber-500" />
+            <div className="w-6 sm:w-9 h-6 sm:h-9 bg-amber-100 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0">
+              <TrophyIcon className="w-4 sm:w-5 h-4 sm:h-5 text-amber-500" />
             </div>
-            <div>
+            <div className="hidden sm:block">
               <p className="font-semibold text-slate-800 text-sm">Learn, practice</p>
               <p className="text-slate-400 text-xs">and excel!</p>
             </div>
@@ -211,13 +214,13 @@ export default function EduSyncLanding() {
               bg: "bg-blue-50",
             },
           ].map((stat) => (
-            <div key={stat.label} className="flex items-center gap-4 px-8 py-6">
-              <div className={`w-12 h-12 ${stat.bg} rounded-2xl flex items-center justify-center shrink-0`}>
+            <div key={stat.label} className="flex flex-col sm:flex-row items-center sm:items-center gap-2 sm:gap-4 px-4 sm:px-8 py-4 sm:py-6 justify-center sm:justify-start">
+              <div className={`w-10 sm:w-12 h-10 sm:h-12 ${stat.bg} rounded-2xl flex items-center justify-center shrink-0`}>
                 {stat.icon}
               </div>
-              <div>
-                <p className="text-2xl font-extrabold text-slate-800">{stat.value}</p>
-                <p className="text-slate-500 text-sm">{stat.label}</p>
+              <div className="text-center sm:text-left">
+                <p className="text-xl sm:text-2xl font-extrabold text-slate-800">{stat.value}</p>
+                <p className="text-slate-500 text-xs sm:text-sm">{stat.label}</p>
               </div>
             </div>
           ))}
