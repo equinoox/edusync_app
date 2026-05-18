@@ -9,33 +9,65 @@ type ToolCallViewProps = {
     toolName?: string;
     state?: string;
     input?: unknown;
+    output?: unknown;
   };
 };
 
+const getParams = (input: unknown): Record<string, unknown> => {
+  if (!input || typeof input !== 'object') {
+    return {};
+  }
+
+  return input as Record<string, unknown>;
+};
+
 const TOOL_DESCRIPTIONS: Record<string, (input: unknown) => string> = {
-  'GetInformation': (input: unknown) => {
-    const params = input as Record<string, unknown>;
-    return `🔍 Searching your materials for: "${params.query || 'information'}"`;
+  getInformation: (input: unknown) => {
+    const params = getParams(input);
+
+    return `Searching your materials for: "${
+      String(params.question ?? 'information')
+    }"`;
   },
-  'AddResource': (input: unknown) => {
-    const params = input as Record<string, unknown>;
-    return `📚 Adding new resource: "${params.title || 'Untitled'}"`;
+
+  addResource: (input: unknown) => {
+    const params = getParams(input);
+
+    return `Adding new resource: "${
+      String(params.content ?? 'new resource')
+    }"`;
   },
-  'SearchResources': (input: unknown) => {
-    const params = input as Record<string, unknown>;
-    return `🔎 Searching resources for: "${params.query || 'content'}"`;
+
+  SearchResources: (input: unknown) => {
+    const params = getParams(input);
+
+    return `Searching resources for: "${
+      String(params.query ?? 'content')
+    }"`;
   },
-  'AnalyzeDocument': (input: unknown) => {
-    const params = input as Record<string, unknown>;
-    return `📖 Analyzing document: "${params.documentId || 'document'}"`;
+
+  AnalyzeDocument: (input: unknown) => {
+    const params = getParams(input);
+
+    return `Analyzing document: "${
+      String(params.documentId ?? 'document')
+    }"`;
   },
-  'CreateSummary': (input: unknown) => {
-    const params = input as Record<string, unknown>;
-    return `✍️ Creating summary for: "${params.topic || 'content'}"`;
+
+  CreateSummary: (input: unknown) => {
+    const params = getParams(input);
+
+    return `✍️ Creating summary for: "${
+      String(params.topic ?? 'content')
+    }"`;
   },
-  'GetStudyTips': (input: unknown) => {
-    const params = input as Record<string, unknown>;
-    return `💡 Finding study tips for: "${params.subject || 'topic'}"`;
+
+  GetStudyTips: (input: unknown) => {
+    const params = getParams(input);
+
+    return `Finding study tips for: "${
+      String(params.subject ?? 'topic')
+    }"`;
   },
 };
 
@@ -46,7 +78,7 @@ export function ToolCallView({ part }: ToolCallViewProps) {
   
   const capitalizedToolName = toolName.charAt(0).toUpperCase() + toolName.slice(1);
   
-  const description = TOOL_DESCRIPTIONS[capitalizedToolName]?.(part.input) || `Using tool: ${toolName}`;
+  const description = TOOL_DESCRIPTIONS[toolName]?.(part.input) || `Using tool: ${toolName}`;
 
   const isCompleted = part.state === 'result' || part.state === 'output-available' || part.state?.includes('output') || part.state?.includes('result');
   const status = isCompleted ? 'Completed' : 'Running';
