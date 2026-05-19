@@ -8,11 +8,10 @@ export default function HeroSection({ firstName }: HeroSectionProps) {
   return (
     <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-gray-400 via-gray-300 to-gray-500 p-8 md:p-10 flex flex-col md:flex-row items-center gap-8 animate-hero-section animate-stagger-1">
 
-      {/* Blobs */}
       <div className="absolute top-0 right-0 w-80 h-80 bg-gray-300/30 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
       <div className="absolute bottom-0 left-1/3 w-48 h-48 bg-gray-400/20 rounded-full blur-2xl pointer-events-none" />
 
-      {/* Grid pattern — hidden on mobile */}
+        {/* GRID !!! */}
       <div className="hidden md:block absolute inset-0 pointer-events-none opacity-[0.07]"
         style={{
           backgroundImage: "linear-gradient(to right, #6d28d9 1px, transparent 1px), linear-gradient(to bottom, #6d28d9 1px, transparent 1px)",
@@ -20,9 +19,7 @@ export default function HeroSection({ firstName }: HeroSectionProps) {
         }}
       />
 
-      {/* Floating stars — hidden on mobile */}
       <div className="hidden md:block pointer-events-none">
-        {/* Large 4-point stars */}
         <svg className="absolute top-6 left-[12%] w-10 h-10 text-violet-800/60 animate-pulse" viewBox="0 0 20 20" fill="currentColor">
           <path d="M10 0 L11.5 8.5 L20 10 L11.5 11.5 L10 20 L8.5 11.5 L0 10 L8.5 8.5 Z" />
         </svg>
@@ -42,12 +39,10 @@ export default function HeroSection({ firstName }: HeroSectionProps) {
           <path d="M10 0 L11.5 8.5 L20 10 L11.5 11.5 L10 20 L8.5 11.5 L0 10 L8.5 8.5 Z" />
         </svg>
 
-        {/* Orbit rings */}
         <div className="absolute -bottom-10 -left-10 w-48 h-48 rounded-full border border-violet-400/20" />
         <div className="absolute -bottom-16 -left-16 w-64 h-64 rounded-full border border-violet-400/10" />
       </div>
 
-      {/* Content */}
       <div className="relative flex-1 z-10">
         <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight mb-3 tracking-tight">
           Master any subject<br />
@@ -74,7 +69,6 @@ export default function HeroSection({ firstName }: HeroSectionProps) {
         </div>
       </div>
 
-      {/* Chat card */}
       <div className="relative z-10 w-full md:w-72 bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg shadow-violet-100/60 border border-white p-4 flex flex-col gap-3">
         <div className="flex items-center gap-2.5">
           <div className="w-8 h-8 rounded-full bg-violet-600 flex items-center justify-center text-white text-xs font-bold">

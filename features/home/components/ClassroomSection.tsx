@@ -12,6 +12,7 @@ interface Classroom {
   color: string;
 }
 
+// STATIC FOR NOW - LATER WILL BE DYNAMIC BASED ON USER'S ENROLLED CLASSROOMS
 const SAMPLE_CLASSROOMS: Classroom[] = [
   {
     id: "1",
