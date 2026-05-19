@@ -57,7 +57,7 @@ export default function Sidebar({ sidebarOpen = true }: { sidebarOpen?: boolean 
   const { darkMode, setDarkMode } = useTheme();
 
   return (
-    <aside className={`flex flex-col w-80 min-h-screen transition-colors duration-300 ${darkMode ? "bg-slate-900" : "bg-slate-200"} py-8 px-6 ${sidebarOpen ? "flex" : "hidden"} lg:flex`}>
+    <aside className={`flex flex-col w-80 min-h-screen sticky top-0 transition-colors duration-300 ${darkMode ? "bg-slate-900" : "bg-slate-200"} py-8 px-6 ${sidebarOpen ? "flex" : "hidden"} lg:flex`}>
 
       <Link href="/" className="flex items-center gap-3 mb-8 group">
         <span className={`flex items-center justify-center w-10 h-10 rounded-lg transition-colors duration-200 ${darkMode ? "bg-violet-600 hover:bg-violet-700" : "bg-indigo-600 hover:bg-indigo-700"} text-white`}>

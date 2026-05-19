@@ -5,6 +5,7 @@ export type ChatInputProps = {
   onChange: (value: string) => void;
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   isLoading?: boolean;
+  messages?: UIMessage[];
 };
 
 export type ChatMessagesProps = {

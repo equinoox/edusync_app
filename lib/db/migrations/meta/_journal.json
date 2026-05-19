@@ -15,6 +15,13 @@
       "when": 1779189870712,
       "tag": "0001_brief_katie_power",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1779213110895,
+      "tag": "0002_jazzy_infant_terrible",
+      "breakpoints": true
     }
   ]
 }

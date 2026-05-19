@@ -52,30 +52,35 @@ export function ChatPage() {
         <header className={`shrink-0 border-b transition-colors duration-300 ${darkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-gray-200'} px-6 py-4 shadow-sm`}>
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-3">
-            <Link href="/home" className="flex items-center gap-2 hover:opacity-75 transition-opacity">
-              <div className={`w-9 h-9 rounded-xl flex items-center justify-center shadow-md ${darkMode ? 'bg-violet-600' : 'bg-indigo-600'}`}>
-                <AcademicCapIcon className="w-5 h-5 text-white" />
-              </div>
-              <div>
-                <div className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-slate-800'}`}>
-                  Edu<span className={darkMode ? 'text-violet-600' : 'text-indigo-600'}>Sync</span>
+              <Link href="/home" className="flex items-center gap-2 hover:opacity-75 transition-opacity">
+                <div className={`w-9 h-9 rounded-xl flex items-center justify-center shadow-md ${darkMode ? 'bg-violet-600' : 'bg-indigo-600'}`}>
+                  <AcademicCapIcon className="w-5 h-5 text-white" />
                 </div>
-                <div className={`text-xs font-medium ${darkMode ? 'text-gray-400' : 'text-slate-500'}`}>
-                  AI Assistant
+                <div>
+                  <div className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-slate-800'}`}>
+                    Edu<span className={darkMode ? 'text-violet-600' : 'text-indigo-600'}>Sync</span>
+                  </div>
+                  <div className={`text-xs font-medium ${darkMode ? 'text-gray-400' : 'text-slate-500'}`}>
+                    AI Assistant
+                  </div>
+                </div>
+              </Link>
             </div>
+            <div className="flex items-center gap-3">
+              <button
+                onClick={() => setSidebarOpen(!sidebarOpen)}
+                className={`p-2 rounded-lg transition-colors lg:hidden ${darkMode ? 'hover:bg-slate-700' : 'hover:bg-gray-100'}`}
+              >
+                {sidebarOpen ? (
+                  <XMarkIcon className={`w-6 h-6 ${darkMode ? 'text-violet-400' : 'text-slate-600'}`} />
+                ) : (
+                  <Bars3Icon className={`w-6 h-6 ${darkMode ? 'text-violet-400' : 'text-slate-600'}`} />
+                )}
+              </button>
+              <div className="scale-125 origin-center">
+                <UserButton />
               </div>
-            </Link>
             </div>
-            <button
-              onClick={() => setSidebarOpen(!sidebarOpen)}
-              className={`p-2 rounded-lg transition-colors lg:hidden ${darkMode ? 'hover:bg-slate-700' : 'hover:bg-gray-100'}`}
-            >
-              {sidebarOpen ? (
-                <XMarkIcon className={`w-6 h-6 ${darkMode ? 'text-violet-400' : 'text-slate-600'}`} />
-              ) : (
-                <Bars3Icon className={`w-6 h-6 ${darkMode ? 'text-violet-400' : 'text-slate-600'}`} />
-              )}
-            </button>
           </div>
         </header>
 
@@ -126,6 +131,7 @@ export function ChatPage() {
               onChange={setInput}
               onSubmit={handleSubmit}
               isLoading={isLoading}
+              messages={messages}
             />
           </div>
           </div>

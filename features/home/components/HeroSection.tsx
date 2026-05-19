@@ -53,7 +53,7 @@ export default function HeroSection({ firstName }: HeroSectionProps) {
         </p>
         <div className="flex flex-wrap gap-3">
           <Link
-            href="/ai-assistant"
+            href="/chat"
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold transition-colors shadow-sm shadow-violet-200"
           >
             <ChatBubbleLeftRightIcon className="w-4 h-4" />

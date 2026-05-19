@@ -1,8 +1,9 @@
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
+import dynamic from 'next/dynamic';
 import { useTheme } from '@/providers/ThemeProvider';
 import { ToolCallView } from '@/features/chat/components/ToolCallView';
 import type { ChatMessagesProps } from '@/features/chat/types';
+
+const ReactMarkdown = dynamic(() => import('react-markdown'), { ssr: false });
 
 export function ChatMessages({ messages }: ChatMessagesProps) {
   const { darkMode } = useTheme();
@@ -52,9 +53,7 @@ export function ChatMessages({ messages }: ChatMessagesProps) {
                         {message.role === 'user' ? (
                           <p className="leading-relaxed">{part.text}</p>
                         ) : (
-                          // REACT MARKDOWN RENDERING: https://github.com/remarkjs/react-markdown
                           <ReactMarkdown
-                            remarkPlugins={[remarkGfm]}
                             components={{
                               h3: ({node, ...props}) => <h3 className={`text-lg font-bold mt-3 mb-2 ${darkMode ? 'text-violet-300' : 'text-indigo-700'}`} {...props} />,
                               h4: ({node, ...props}) => <h4 className={`text-base font-semibold mt-2 mb-1 ${darkMode ? 'text-violet-200' : 'text-indigo-600'}`} {...props} />,
@@ -84,9 +83,8 @@ export function ChatMessages({ messages }: ChatMessagesProps) {
                       {message.role === 'user' ? (
                         <p className="leading-relaxed">{fallbackText}</p>
                       ) : (
-                        <ReactMarkdown
-                          remarkPlugins={[remarkGfm]}
-                          components={{
+                          <ReactMarkdown
+                            components={{
                             h3: ({node, ...props}) => <h3 className={`text-lg font-bold mt-3 mb-2 ${darkMode ? 'text-violet-300' : 'text-indigo-700'}`} {...props} />,
                             h4: ({node, ...props}) => <h4 className={`text-base font-semibold mt-2 mb-1 ${darkMode ? 'text-violet-200' : 'text-indigo-600'}`} {...props} />,
                             p: ({node, ...props}) => <p className="mb-2 leading-relaxed" {...props} />,

@@ -78,7 +78,7 @@ export default function HomePage() {
 
 
       <div className="flex flex-1 flex-col w-full">
-        <div className={`lg:hidden flex items-center justify-between p-4 border-b transition-colors duration-300 ${darkMode ? "bg-slate-900 border-slate-700" : "bg-white border-gray-200"}`}>
+        <div className={`sticky top-0 z-40 lg:hidden flex items-center justify-between p-4 border-b transition-colors duration-300 ${darkMode ? "bg-slate-900 border-slate-700" : "bg-white border-gray-200"}`}>
           <span className={`text-lg font-bold ${darkMode ? "text-white" : "text-slate-900"}`}>
             Edu<span className={darkMode ? "text-violet-600" : "text-indigo-600"}>Sync</span>
           </span>
