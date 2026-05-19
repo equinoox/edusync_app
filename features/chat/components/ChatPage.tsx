@@ -10,11 +10,14 @@ import { UserButton } from "@clerk/nextjs";
 
 import { ChatMessages } from '@/features/chat/components/ChatMessages';
 import { ChatInput } from '@/features/chat/components/ChatInput';
+import { ChatHistory } from '@/features/chat/components/ChatHistory';
+import { getSession } from '@/features/chat/actions/chat-history.actions';
 
 export function ChatPage() {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [currentSessionId, setCurrentSessionId] = useState<string | null>(null);
   const { messages, sendMessage } = useChat();
   const { darkMode } = useTheme();
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -22,6 +25,24 @@ export function ChatPage() {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  const handleSelectSession = async (sessionId: string) => {
+    try {
+      const session = await getSession(sessionId);
+      if (session) {
+        setCurrentSessionId(sessionId);
+        // Messages will be loaded from API in future enhancement
+      }
+    } catch (error) {
+      console.error('Failed to load session:', error);
+    }
+  };
+
+  const handleNewChat = () => {
+    setCurrentSessionId(null);
+    setInput('');
+    // Clear messages through useChat reset
+  };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -49,7 +70,7 @@ export function ChatPage() {
       </div>
 
       <div className="flex flex-1 flex-col overflow-hidden">
-        <header className={`shrink-0 border-b transition-colors duration-300 ${darkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-gray-200'} px-6 py-4 shadow-sm`}>
+        <header className={`shrink-0 border-b transition-colors duration-300 ${darkMode ? 'bg-slate-800 border-slate-700' : 'bg-indigo-800 border-gray-200'} px-6 py-4 shadow-sm`}>
           <div className="flex items-center justify-between gap-3">
             <div className="flex items-center gap-3">
               <Link href="/home" className="flex items-center gap-2 hover:opacity-75 transition-opacity">
@@ -58,9 +79,9 @@ export function ChatPage() {
                 </div>
                 <div>
                   <div className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-slate-800'}`}>
-                    Edu<span className={darkMode ? 'text-violet-600' : 'text-indigo-600'}>Sync</span>
+                    <span className='text-white'>Edu</span><span className={darkMode ? 'text-violet-600' : 'text-orange-600'}>Sync</span>
                   </div>
-                  <div className={`text-xs font-medium ${darkMode ? 'text-gray-400' : 'text-slate-500'}`}>
+                  <div className={`text-xs font-medium ${darkMode ? 'text-gray-100' : 'text-gray-100'}`}>
                     AI Assistant
                   </div>
                 </div>
@@ -84,56 +105,68 @@ export function ChatPage() {
           </div>
         </header>
 
-        <div className="flex flex-1 overflow-hidden px-4 sm:px-6 py-4 sm:py-6 w-full">
-          <div className={`flex flex-col flex-1 max-w-6xl w-full mx-auto rounded-2xl sm:rounded-3xl border shadow-sm overflow-hidden transition-colors duration-300 ${darkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-gray-200'}`}>
+        <div className="flex flex-1 overflow-hidden">
+          {/* Main Chat Area */}
+          <div className="flex flex-1 overflow-hidden px-4 sm:px-6 py-4 sm:py-6 w-full">
+            <div className={`flex flex-col flex-1 max-w-6xl w-full mx-auto rounded-2xl sm:rounded-3xl border shadow-sm overflow-hidden transition-colors duration-300 ${darkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-gray-200'}`}>
 
-          <div className="relative flex flex-1 flex-col overflow-y-auto px-4 sm:px-6 py-4 sm:py-6 w-full">
-            <div
-              className={`absolute inset-0 pointer-events-none ${darkMode ? 'opacity-[0.1]' : 'opacity-[0.09]'}`}
-              style={{
-                backgroundImage: "linear-gradient(to right, #6d28d9 1px, transparent 1px), linear-gradient(to bottom, #6d28d9 1px, transparent 1px)",
-                backgroundSize: '32px 32px',
-              }}
-            />
-            {messages.length === 0 ? (
-              <div className="flex flex-1 items-center justify-center">
-                <div className="text-center space-y-5 max-w-sm">
-                  <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mx-auto shadow-xl ${darkMode ? 'bg-violet-600 shadow-violet-500/20' : 'bg-indigo-600 shadow-indigo-200/60'}`}>
-                    <SparklesIcon className="w-8 h-8 text-white" />
-                  </div>
-                  <div>
-                    <h2 className={`text-3xl font-extrabold mb-2 ${darkMode ? 'text-white' : 'text-slate-900'}`}>
-                      EduSync AI
-                    </h2>
-                    <p className={`text-base leading-relaxed ${darkMode ? 'text-gray-400' : 'text-slate-500'}`}>
-                      Ask me anything about your study materials. Im here to help you learn smarter.
-                    </p>
-                  </div>
-                  <div className={`inline-flex items-center gap-2 border rounded-full px-4 py-2 transition-colors duration-300 ${darkMode ? 'bg-violet-950 border-violet-800' : 'bg-indigo-50 border-indigo-200'}`}>
-                    <SparklesIcon className={`w-4 h-4 ${darkMode ? 'text-violet-400' : 'text-indigo-500'}`} />
-                    <span className={`text-sm font-medium ${darkMode ? 'text-violet-300' : 'text-indigo-700'}`}>
-                      AI-Powered Answers
-                    </span>
+            <div className="relative flex flex-1 flex-col overflow-y-auto px-4 sm:px-6 py-4 sm:py-6 w-full">
+              <div
+                className={`absolute inset-0 pointer-events-none ${darkMode ? 'opacity-[0.1]' : 'opacity-[0.09]'}`}
+                style={{
+                  backgroundImage: "linear-gradient(to right, #6d28d9 1px, transparent 1px), linear-gradient(to bottom, #6d28d9 1px, transparent 1px)",
+                  backgroundSize: '32px 32px',
+                }}
+              />
+              {messages.length === 0 ? (
+                <div className="flex flex-1 items-center justify-center">
+                  <div className="text-center space-y-5 max-w-sm">
+                    <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mx-auto shadow-xl ${darkMode ? 'bg-violet-600 shadow-violet-500/20' : 'bg-indigo-600 shadow-indigo-200/60'}`}>
+                      <SparklesIcon className="w-8 h-8 text-white" />
+                    </div>
+                    <div>
+                      <h2 className={`text-3xl font-extrabold mb-2 ${darkMode ? 'text-white' : 'text-slate-900'}`}>
+                        EduSync AI
+                      </h2>
+                      <p className={`text-base leading-relaxed ${darkMode ? 'text-gray-400' : 'text-slate-500'}`}>
+                        Ask me anything about your study materials. Im here to help you learn smarter.
+                      </p>
+                    </div>
+                    <div className={`inline-flex items-center gap-2 border rounded-full px-4 py-2 transition-colors duration-300 ${darkMode ? 'bg-violet-950 border-violet-800' : 'bg-indigo-50 border-indigo-200'}`}>
+                      <SparklesIcon className={`w-4 h-4 ${darkMode ? 'text-violet-400' : 'text-indigo-500'}`} />
+                      <span className={`text-sm font-medium ${darkMode ? 'text-violet-300' : 'text-indigo-700'}`}>
+                        AI-Powered Answers
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ) : (
-              <div className="flex flex-col w-full">
-                <ChatMessages messages={messages} />
-                <div ref={messagesEndRef} />
-              </div>
-            )}
+              ) : (
+                <div className="flex flex-col w-full">
+                  <ChatMessages messages={messages} />
+                  <div ref={messagesEndRef} />
+                </div>
+              )}
+            </div>
+
+            <div className={`shrink-0 border-t transition-colors duration-300 ${darkMode ? 'bg-violet-950 border-slate-700' : 'bg-indigo-800 border-gray-400'} px-4 sm:px-6 py-4 w-full`}>
+              <ChatInput
+                value={input}
+                onChange={setInput}
+                onSubmit={handleSubmit}
+                isLoading={isLoading}
+                messages={messages}
+              />
+            </div>
+            </div>
           </div>
 
-          <div className={`shrink-0 border-t transition-colors duration-300 ${darkMode ? 'bg-violet-950 border-slate-700' : 'bg-indigo-600 border-gray-400'} px-4 sm:px-6 py-4 w-full`}>
-            <ChatInput
-              value={input}
-              onChange={setInput}
-              onSubmit={handleSubmit}
-              isLoading={isLoading}
-              messages={messages}
+          {/* Chat History Sidebar - Hidden on smaller screens */}
+          <div className="hidden xl:flex">
+            <ChatHistory
+              currentSessionId={currentSessionId}
+              onSelectSession={handleSelectSession}
+              onNewChat={handleNewChat}
             />
-          </div>
           </div>
         </div>
       </div>

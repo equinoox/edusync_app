@@ -42,7 +42,7 @@ export function ChatInput({ value, onChange, onSubmit, isLoading = false, messag
     <div className="space-y-3">
       {/* Token Status Display */}
       <div className={`flex gap-4 text-xs font-medium px-1 ${
-        darkMode ? 'text-slate-400' : 'text-slate-600'
+        darkMode ? 'text-white' : 'text-white'
       }`}>
         <div className="flex items-center gap-2">
           <div className={`w-2 h-2 rounded-full ${
@@ -56,7 +56,7 @@ export function ChatInput({ value, onChange, onSubmit, isLoading = false, messag
             Messages: {tokenStatus?.messagesUsed ?? 0}/{tokenStatus?.messageLimit ?? 15}
           </span>
           {tokenStatus && tokenStatus.hoursUntilReset > 0 && (
-            <span className={darkMode ? 'text-slate-500' : 'text-slate-500'}>
+            <span className={darkMode ? 'text-orange-500' : 'text-orange-500'}>
               ({Math.ceil(tokenStatus.hoursUntilReset)}h until reset)
             </span>
           )}

@@ -19,7 +19,7 @@ export default function NavItem({ href, label, icon }: NavItemProps) {
     <Link
       href={href}
       className={`
-        flex items-center gap-3 px-4 py-2.5 rounded-xl text-lg font-medium
+        flex items-center gap-3 px-3 py-2.5 rounded-xl text-md font-medium
         transition-all duration-200 group
         ${
           isActive

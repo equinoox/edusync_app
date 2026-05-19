@@ -1,6 +1,8 @@
 import { auth } from '@clerk/nextjs/server';
 import { getTokenStatus } from '@/features/tokens/server/token-limit.service';
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   try {
     const { userId } = await auth();
