@@ -1,9 +1,7 @@
-import type { UIMessage } from 'ai';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { ToolCallView } from '@/features/chat/components/ToolCallView';
-
-type ChatMessagesProps = {
-  messages: UIMessage[];
-};
+import type { ChatMessagesProps } from '@/features/chat/types';
 
 export function ChatMessages({ messages }: ChatMessagesProps) {
   return (
@@ -36,7 +34,35 @@ export function ChatMessages({ messages }: ChatMessagesProps) {
                   }`}
                 >
                   {textParts.map((part, index) => (
-                    <p key={index} className="leading-relaxed">{part.text}</p>
+                    <div key={index} className="markdown-content">
+                      {message.role === 'user' ? (
+                        <p className="leading-relaxed">{part.text}</p>
+                      ) : (
+                        <ReactMarkdown
+                          remarkPlugins={[remarkGfm]}
+                          components={{
+                            h3: ({node, ...props}) => <h3 className="text-lg font-bold mt-3 mb-2 text-indigo-700" {...props} />,
+                            h4: ({node, ...props}) => <h4 className="text-base font-semibold mt-2 mb-1 text-indigo-600" {...props} />,
+                            p: ({node, ...props}) => <p className="mb-2 leading-relaxed" {...props} />,
+                            ul: ({node, ...props}) => <ul className="list-disc list-inside mb-2 space-y-1" {...props} />,
+                            ol: ({node, ...props}) => <ol className="list-decimal list-inside mb-2 space-y-1" {...props} />,
+                            li: ({node, ...props}) => <li className="ml-2" {...props} />,
+                            strong: ({node, ...props}) => <strong className="font-bold text-indigo-700" {...props} />,
+                            em: ({node, ...props}) => <em className="italic text-slate-700" {...props} />,
+                            code: ({node, inline, ...props}: any) => (
+                              inline ? (
+                                <code className="bg-indigo-50 text-indigo-700 px-1.5 py-0.5 rounded text-sm font-mono" {...props} />
+                              ) : (
+                                <code className="block bg-slate-100 text-slate-800 p-3 rounded-lg overflow-x-auto text-sm font-mono mb-2" {...props} />
+                              )
+                            ),
+                            blockquote: ({node, ...props}) => <blockquote className="border-l-4 border-indigo-300 pl-3 italic text-slate-600 my-2" {...props} />,
+                          }}
+                        >
+                          {part.text}
+                        </ReactMarkdown>
+                      )}
+                    </div>
                   ))}
                 </div>
               </div>

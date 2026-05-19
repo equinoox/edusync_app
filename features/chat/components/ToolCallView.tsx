@@ -2,16 +2,7 @@
 
 import { useState } from 'react';
 import { SparklesIcon } from '@heroicons/react/24/solid';
-
-type ToolCallViewProps = {
-  part: {
-    type?: string;
-    toolName?: string;
-    state?: string;
-    input?: unknown;
-    output?: unknown;
-  };
-};
+import type { ToolCallViewProps } from '@/features/chat/types';
 
 const getParams = (input: unknown): Record<string, unknown> => {
   if (!input || typeof input !== 'object') {

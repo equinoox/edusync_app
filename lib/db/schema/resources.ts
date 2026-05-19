@@ -9,6 +9,7 @@ export const resources = pgTable("resources", {
   id: varchar("id", { length: 191 })
     .primaryKey()
     .$defaultFn(() => nanoid()),
+  userId: varchar("user_id", { length: 191 }).notNull(),
   content: text("content").notNull(),
 
   createdAt: timestamp("created_at")
@@ -24,6 +25,7 @@ export const insertResourceSchema = createSelectSchema(resources)
   .extend({})
   .omit({
     id: true,
+    userId: true,
     createdAt: true,
     updatedAt: true,
   });

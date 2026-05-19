@@ -2,7 +2,7 @@
 
 import { useTheme } from "@/providers/ThemeProvider";
 import Link from "next/link";
-import SideBarItem from "./sidebar_item";
+import SideBarItem from "../shared/sidebar_item";
 import {
   HomeIcon,
   BuildingLibraryIcon,
@@ -18,37 +18,37 @@ const NAV_ITEMS = [
   {
     href: "/",
     label: "Home",
-    icon: <HomeIcon width="20" height="20" />,
+    icon: <HomeIcon width="25" height="25" />,
   },
   {
     href: "/classrooms",
     label: "Classrooms",
-    icon: <BuildingLibraryIcon width="20" height="20" />,
+    icon: <BuildingLibraryIcon width="25" height="25" />,
   },
   {
-    href: "/ai-assistant",
+    href: "/chat",
     label: "AI Assistant",
-    icon: <ChatBubbleLeftRightIcon width="20" height="20" />,
+    icon: <ChatBubbleLeftRightIcon width="25" height="25" />,
   },
   {
     href: "/quizzes",
     label: "Quizzes",
-    icon: <ClipboardDocumentListIcon width="20" height="20" />,
+    icon: <ClipboardDocumentListIcon width="25" height="25" />,
   },
   {
     href: "/documents",
     label: "Documents",
-    icon: <DocumentTextIcon width="20" height="20" />,
+    icon: <DocumentTextIcon width="25" height="25" />,
   },
   {
     href: "/progress",
     label: "Progress",
-    icon: <ChartBarIcon width="20" height="20" />,
+    icon: <ChartBarIcon width="25" height="25" />,
   },
   {
     href: "/calendar",
     label: "Calendar",
-    icon: <CalendarIcon width="20" height="20" />,
+    icon: <CalendarIcon width="25" height="25" />,
   },
 ];
 
@@ -56,7 +56,7 @@ export default function Sidebar() {
   const { darkMode, setDarkMode } = useTheme();
 
   return (
-    <aside className={`flex flex-col w-80 min-h-screen transition-colors duration-300 ${darkMode ? "bg-slate-900" : "bg-[#F0EEFF]"} py-8 px-6`}>
+    <aside className={`flex flex-col w-80 min-h-screen transition-colors duration-300 ${darkMode ? "bg-slate-900" : "bg-slate-200"} py-8 px-6 hidden lg:flex`}>
       {/* Logo */}
       <Link href="/" className="flex items-center gap-3 mb-8 group">
         <span className={`flex items-center justify-center w-10 h-10 rounded-lg transition-colors duration-200 ${darkMode ? "bg-violet-600 hover:bg-violet-700" : "bg-indigo-600 hover:bg-indigo-700"} text-white`}>
@@ -64,7 +64,7 @@ export default function Sidebar() {
             <path d="M12 3L1 9l11 6 9-4.91V17h2V9L12 3zM5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z" />
           </svg>
         </span>
-        <span className={`text-xl font-bold tracking-tight ${darkMode ? "text-white" : "text-slate-900"}`}>
+        <span className={`text-3xl font-bold tracking-tight ${darkMode ? "text-white" : "text-slate-900"}`}>
           Edu<span className={darkMode ? "text-violet-600" : "text-indigo-600"}>Sync</span>
         </span>
       </Link>
@@ -98,7 +98,7 @@ export default function Sidebar() {
         {/* Dark Mode toggle */}
         <button
           onClick={() => setDarkMode(!darkMode)}
-          className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${darkMode ? "text-violet-200 hover:bg-slate-800 hover:text-violet-100" : "text-slate-600 hover:bg-white hover:text-slate-800"}`}
+          className={`flex items-center gap-3 px-4 py-2.5 rounded-xl text-lg font-medium transition-all duration-200 ${darkMode ? "text-violet-200 hover:bg-slate-800 hover:text-violet-100" : "text-slate-600 hover:bg-white hover:text-slate-800"}`}
         >
           <MoonIcon width="20" height="20" className={darkMode ? "text-violet-400" : "text-slate-500"} />
           <span className="flex-1 text-left">Dark Mode</span>

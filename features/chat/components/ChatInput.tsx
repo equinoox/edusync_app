@@ -1,11 +1,5 @@
 import { PaperAirplaneIcon } from '@heroicons/react/24/outline';
-
-type ChatInputProps = {
-  value: string;
-  onChange: (value: string) => void;
-  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-  isLoading?: boolean;
-};
+import type { ChatInputProps } from '@/features/chat/types';
 
 export function ChatInput({ value, onChange, onSubmit, isLoading = false }: ChatInputProps) {
   return (
