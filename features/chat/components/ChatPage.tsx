@@ -10,14 +10,11 @@ import { UserButton } from "@clerk/nextjs";
 
 import { ChatMessages } from '@/features/chat/components/ChatMessages';
 import { ChatInput } from '@/features/chat/components/ChatInput';
-import { ChatHistory } from '@/features/chat/components/ChatHistory';
-import { getSession } from '@/features/chat/actions/chat-history.actions';
 
 export function ChatPage() {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [currentSessionId, setCurrentSessionId] = useState<string | null>(null);
   const { messages, sendMessage } = useChat();
   const { darkMode } = useTheme();
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -26,23 +23,7 @@ export function ChatPage() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  const handleSelectSession = async (sessionId: string) => {
-    try {
-      const session = await getSession(sessionId);
-      if (session) {
-        setCurrentSessionId(sessionId);
-        // Messages will be loaded from API in future enhancement
-      }
-    } catch (error) {
-      console.error('Failed to load session:', error);
-    }
-  };
 
-  const handleNewChat = () => {
-    setCurrentSessionId(null);
-    setInput('');
-    // Clear messages through useChat reset
-  };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -160,14 +141,7 @@ export function ChatPage() {
             </div>
           </div>
 
-          {/* Chat History Sidebar - Hidden on smaller screens */}
-          <div className="hidden xl:flex">
-            <ChatHistory
-              currentSessionId={currentSessionId}
-              onSelectSession={handleSelectSession}
-              onNewChat={handleNewChat}
-            />
-          </div>
+
         </div>
       </div>
     </main>

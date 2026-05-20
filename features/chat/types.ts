@@ -22,24 +22,3 @@ export type ToolCallViewProps = {
   };
 };
 
-export interface ChatSession {
-  id: string;
-  userId: string;
-  title: string;
-  preview?: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export interface ChatMessage {
-  id: string;
-  sessionId: string;
-  userId: string;
-  role: 'user' | 'assistant';
-  content: string;
-  createdAt: Date;
-}
-
-export interface ChatSessionWithMessages extends ChatSession {
-  messages: ChatMessage[];
-}
