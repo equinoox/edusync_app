@@ -1,4 +1,3 @@
-import type { UIMessage } from 'ai';
 import { db } from "@/lib/db";
 import { chatSessionsTable, chatMessagesTable } from "@/lib/db/schema/chat-history";
 import { eq, desc, and } from "drizzle-orm";
@@ -8,8 +7,8 @@ export async function createChatSession(
   userId: string,
   initialMessage: string
 ): Promise<ChatSession> {
-  const title = buildSessionTitle(initialMessage);
-  const preview = buildSessionPreview(initialMessage);
+  const title = initialMessage.substring(0, 50) + (initialMessage.length > 50 ? "..." : "");
+  const preview = initialMessage.substring(0, 100);
 
   const sessions = await db
     .insert(chatSessionsTable)
@@ -17,28 +16,6 @@ export async function createChatSession(
       userId,
       title,
       preview,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    })
-    .returning();
-
-  return sessions[0];
-}
-
-export async function createChatSessionWithMetadata(
-  userId: string,
-  initialMessage: string,
-  preview?: string
-): Promise<ChatSession> {
-  const title = buildSessionTitle(initialMessage);
-  const sessionPreview = preview?.trim() || buildSessionPreview(initialMessage);
-
-  const sessions = await db
-    .insert(chatSessionsTable)
-    .values({
-      userId,
-      title,
-      preview: sessionPreview,
       createdAt: new Date(),
       updatedAt: new Date(),
     })
@@ -68,58 +45,6 @@ export async function saveMessage(
     ...messages[0],
     role: messages[0].role as 'user' | 'assistant',
   };
-}
-
-export async function saveLatestChatTurn(
-  sessionId: string,
-  userId: string,
-  messages: UIMessage[]
-): Promise<{ session: ChatSessionWithMessages | null; saved: number }> {
-  const session = await getChatSession(sessionId, userId);
-
-  if (!session) {
-    return { session: null, saved: 0 };
-  }
-
-  if (messages.length <= session.messages.length) {
-    return { session, saved: 0 };
-  }
-
-  const latestUserMessage = [...messages].reverse().find((message) => message.role === 'user');
-  const latestAssistantMessage = [...messages].reverse().find((message) => message.role === 'assistant');
-
-  let saved = 0;
-
-  if (latestUserMessage) {
-    await saveMessage(
-      sessionId,
-      userId,
-      'user',
-      extractMessageText(latestUserMessage)
-    );
-    saved += 1;
-  }
-
-  if (latestAssistantMessage) {
-    await saveMessage(
-      sessionId,
-      userId,
-      'assistant',
-      extractMessageText(latestAssistantMessage)
-    );
-    saved += 1;
-  }
-
-  const userText = latestUserMessage ? extractMessageText(latestUserMessage) : '';
-  await updateSessionMetadata(
-    sessionId,
-    userId,
-    userText ? buildSessionTitle(userText) : session.title,
-    userText ? buildSessionPreview(userText) : session.preview ?? null
-  );
-
-  const refreshedSession = await getChatSession(sessionId, userId);
-  return { session: refreshedSession, saved };
 }
 
 export async function getChatSessions(userId: string): Promise<ChatSession[]> {
@@ -183,27 +108,6 @@ export async function updateSessionTitle(
     );
 }
 
-  export async function updateSessionMetadata(
-    sessionId: string,
-    userId: string,
-    title: string,
-    preview: string | null
-  ): Promise<void> {
-    await db
-      .update(chatSessionsTable)
-      .set({
-        title,
-        preview,
-        updatedAt: new Date(),
-      })
-      .where(
-        and(
-          eq(chatSessionsTable.id, sessionId),
-          eq(chatSessionsTable.userId, userId)
-        )
-      );
-  }
-
 export async function deleteChatSession(
   sessionId: string,
   userId: string
@@ -231,33 +135,4 @@ export async function updateSessionTimestamp(sessionId: string): Promise<void> {
       updatedAt: new Date(),
     })
     .where(eq(chatSessionsTable.id, sessionId));
-}
-
-function buildSessionTitle(message: string): string {
-  return message.substring(0, 50) + (message.length > 50 ? "..." : "");
-}
-
-function buildSessionPreview(message: string): string {
-  return message.substring(0, 100);
-}
-
-function extractMessageText(message: UIMessage): string {
-  const messageWithParts = message as UIMessage & {
-    parts?: Array<{ type?: string; text?: string }>;
-    content?: string;
-  };
-
-  if (Array.isArray(messageWithParts.parts)) {
-    return messageWithParts.parts
-      .filter((part: any) => part?.type === 'text' && typeof part?.text === 'string')
-      .map((part: any) => part.text ?? '')
-      .join('')
-      .trim();
-  }
-
-  if (typeof messageWithParts.content === 'string') {
-    return messageWithParts.content.trim();
-  }
-
-  return '';
 }

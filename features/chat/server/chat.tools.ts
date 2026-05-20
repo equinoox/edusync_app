@@ -1,7 +1,7 @@
 import { tool } from 'ai';
 import { z } from 'zod';
 
-import { createResource } from '@/features/resources/server/resources.service';
+import { createResourceAction } from '@/features/resources/actions/resources.actions';
 import { findRelevantContent } from '@/features/resources/server/retrieval.service';
 
 export const chatTools = {
@@ -16,7 +16,7 @@ use this tool without asking for confirmation.
         .string()
         .describe('the content or resource to add to the knowledge base'),
     }),
-    execute: async ({ content }) => createResource({ content }),
+    execute: async ({ content }) => createResourceAction({ content }),
   }),
 
   getInformation: tool({
