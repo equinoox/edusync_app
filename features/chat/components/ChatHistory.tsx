@@ -10,12 +10,14 @@ interface ChatHistoryProps {
   currentSessionId?: string | null;
   onSelectSession: (sessionId: string) => void;
   onNewChat: () => void;
+  refreshKey?: number;
 }
 
 export function ChatHistory({
   currentSessionId,
   onSelectSession,
   onNewChat,
+  refreshKey = 0,
 }: ChatHistoryProps) {
   const { darkMode } = useTheme();
   const [sessions, setSessions] = useState<ChatSession[]>([]);
@@ -25,7 +27,7 @@ export function ChatHistory({
 
   useEffect(() => {
     loadSessions();
-  }, []);
+  }, [refreshKey]);
 
   const loadSessions = async () => {
     try {
