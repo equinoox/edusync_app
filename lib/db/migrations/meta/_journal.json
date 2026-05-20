@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1719997972944,
-      "tag": "0000_yielding_bloodaxe",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1779189870712,
-      "tag": "0001_brief_katie_power",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1779213110895,
-      "tag": "0002_jazzy_infant_terrible",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1779214879735,
-      "tag": "0003_oval_hairball",
+      "when": 1779298504545,
+      "tag": "0000_smart_wild_child",
       "breakpoints": true
     }
   ]

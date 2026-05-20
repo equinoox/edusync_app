@@ -22,3 +22,9 @@ export type ToolCallViewProps = {
   };
 };
 
+export type SubmitButtonProps = {
+  disabled: boolean;
+  darkMode: boolean;
+  isLoading?: boolean;
+};
+
