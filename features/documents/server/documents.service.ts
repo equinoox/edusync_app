@@ -1,12 +1,16 @@
 import { auth } from '@clerk/nextjs/server';
-import { generateEmbeddings } from '@/lib/ai/embedding-provider';
+import { generateEmbeddingsForChunks } from '@/lib/ai/embedding-provider';
+import { generateChunks } from '@/lib/ai/chunking';
 import { createResourceRecord } from '@/features/resources/repositories/resources.repository';
 import { createEmbeddingRecords } from '@/features/resources/repositories/embeddings.repository';
 import { createDocumentRecord } from '@/features/documents/repositories/documents.repository';
 import { getDocumentUploadStatus } from './document-upload-limit.service';
 import { extractPdfText } from './pdf-text.service';
 
-export async function uploadDocument(file: File, options: { fileUrl: string }) {
+export async function uploadDocument(
+  file: File,
+  options: { fileUrl: string; storageKey?: string },
+) {
   const { userId } = await auth();
   if (!userId) throw new Error('Unauthorized');
 
@@ -19,24 +23,37 @@ export async function uploadDocument(file: File, options: { fileUrl: string }) {
   const { text, pageCount } = await extractPdfText(file);
   if (!text) throw new Error('No readable text found in this PDF');
 
-  const resource = await createResourceRecord(text, userId);
-  const embeddings = await generateEmbeddings(text);
+  const chunks = generateChunks(text);
+  if (chunks.length === 0) {
+    throw new Error('No readable text found in this PDF');
+  }
 
-  await createEmbeddingRecords(
-    embeddings.map(embedding => ({
-      resourceId: resource.id,
-      ...embedding,
-    })),
-  );
-
-  await createDocumentRecord({
+  const document = await createDocumentRecord({
     userId,
-    resourceId: resource.id,
     fileName: file.name,
+    fileType: file.type,
     fileSize: file.size,
     fileUrl: options.fileUrl,
+    storageKey: options.storageKey,
     pageCount,
   });
+
+  const resources = [];
+  for (const chunk of chunks) {
+    resources.push(await createResourceRecord(chunk, userId, document.id));
+  }
+
+  const embeddings = await generateEmbeddingsForChunks(chunks);
+  const embeddingRecords = [];
+
+  for (const [index, embedding] of embeddings.entries()) {
+    embeddingRecords.push({
+      resourceId: resources[index].id,
+      ...embedding,
+    });
+  }
+
+  await createEmbeddingRecords(embeddingRecords);
 
   return { fileName: file.name, pageCount };
 }

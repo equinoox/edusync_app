@@ -1,9 +1,11 @@
 export type DocumentListItem = {
   id: string;
   userId: string;
-  resourceId: string;
   fileName: string;
+  fileType: string;
   fileSize: number;
+  fileUrl: string;
+  storageKey: string | null;
   pageCount: number;
   createdAt: string | Date;
 };

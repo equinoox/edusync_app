@@ -24,7 +24,10 @@ export async function POST(req: Request) {
       access: 'public',
     });
 
-    const result = await uploadDocument(file, { fileUrl: blob.url });
+    const result = await uploadDocument(file, {
+      fileUrl: blob.url,
+      storageKey: blob.pathname,
+    });
 
     return Response.json(result);
   } catch (error) {

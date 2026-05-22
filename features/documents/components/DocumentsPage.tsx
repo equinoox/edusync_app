@@ -44,7 +44,7 @@ export function DocumentsPage() {
   }, []);
 
   return (
-    <main className={`flex min-h-screen flex-col lg:flex-row ${darkMode ? 'bg-slate-950' : 'bg-slate-100'}`}>
+    <main className={`flex min-h-screen flex-col lg:flex-row ${darkMode ? 'bg-slate-950' : 'bg-slate-300'}`}>
       {sidebarOpen && (
         <div
           className="fixed inset-0 z-40 bg-black/50 lg:hidden"
@@ -56,7 +56,7 @@ export function DocumentsPage() {
         <Sidebar sidebarOpen={sidebarOpen} />
       </div>
 
-      <section className="flex min-w-0 flex-1 flex-col">
+      <section className="relative flex min-w-0 flex-1 flex-col">
         <SmallBar
           sidebarOpen={sidebarOpen}
           onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
@@ -66,7 +66,7 @@ export function DocumentsPage() {
           <TopBar pageName="Documents" />
         </div>
 
-        <div className="flex justify-end px-4 pt-4 sm:px-6">
+        <div className="fixed bottom-4 right-4 z-20 sm:bottom-6 sm:right-6">
           <DocumentUploadButton onUploaded={fetchDocuments} size="default" />
         </div>
 
@@ -77,7 +77,7 @@ export function DocumentsPage() {
                 Loading documents...
               </p>
             ) : documents.length === 0 ? (
-              <Card className={darkMode ? 'border-slate-700 bg-slate-800 text-white' : ''}>
+              <Card className={darkMode ? 'border-slate-700 bg-slate-800 text-white' : 'border-indigo-400 bg-indigo-500 text-white'}>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-lg">
                     <DocumentTextIcon className="h-5 w-5" />
@@ -85,40 +85,44 @@ export function DocumentsPage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className={darkMode ? 'text-slate-300' : 'text-slate-600'}>
+                  <p className={darkMode ? 'text-slate-300' : 'text-indigo-100'}>
                     Upload a PDF from chat or this page and it will appear here.
                   </p>
                 </CardContent>
               </Card>
             ) : (
               <div className="grid gap-3">
-                
                 {documents.map(document => (
                   <Card
                     key={document.id}
-                    className={darkMode ? 'border-slate-700 bg-slate-800 text-white' : ''}
+                    className={darkMode ? 'border-slate-700 bg-slate-800 text-white' : 'border-indigo-400 bg-indigo-500 text-black'}
                   >
                     <CardContent className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between">
                       <div className="flex min-w-0 items-center gap-3">
-                        <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-md ${darkMode ? 'bg-violet-900 text-violet-200' : 'bg-indigo-50 text-indigo-700'}`}>
+                        <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-md ${darkMode ? 'bg-violet-900 text-violet-200' : 'bg-indigo-400 text-black'}`}>
                           <DocumentTextIcon className="h-5 w-5" />
                         </div>
                         <div className="min-w-0">
-                          <h2 className="truncate text-sm font-semibold">
+                          <h2 className="truncate text-sm font-semibold text-inherit">
                             {document.fileName}
                           </h2>
-                          <p className={`text-xs ${darkMode ? 'text-slate-300' : 'text-slate-500'}`}>
+                          <p className={`text-xs ${darkMode ? 'text-slate-300' : 'text-indigo-100'}`}>
                             {document.pageCount} pages · {formatFileSize(document.fileSize)}
                           </p>
                         </div>
                       </div>
-                      <time className={`text-xs ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>
+                      <time className={`text-xs ${darkMode ? 'text-slate-400' : 'text-indigo-100'}`}>
                         {new Date(document.createdAt).toLocaleDateString()}
                       </time>
                       <a
                         href={`/api/documents/${document.id}/view`}
                         target="_blank"
                         rel="noopener noreferrer"
+                        className={
+                          darkMode
+                            ? 'inline-flex shrink-0 w-fit rounded-md bg-violet-950 px-3 py-1 text-sm text-white transition-colors hover:bg-violet-800'
+                            : 'inline-flex shrink-0 w-fit rounded-md bg-gray-200 px-3 py-1 text-sm text-slate-900 transition-colors hover:bg-gray-300'
+                        }
                       >
                         Open PDF
                       </a>

@@ -4,12 +4,17 @@ import { createSelectSchema } from "drizzle-zod";
 import { z } from "zod";
 
 import { nanoid } from "@/lib/utils";
+import { documents } from "@/lib/db/schema/documents";
 
 export const resources = pgTable("resources", {
   id: varchar("id", { length: 191 })
     .primaryKey()
     .$defaultFn(() => nanoid()),
   userId: varchar("user_id", { length: 191 }).notNull(),
+  documentId: varchar("document_id", { length: 191 }).references(
+    () => documents.id,
+    { onDelete: "cascade" },
+  ),
   content: text("content").notNull(),
 
   createdAt: timestamp("created_at")
@@ -26,6 +31,7 @@ export const insertResourceSchema = createSelectSchema(resources)
   .omit({
     id: true,
     userId: true,
+    documentId: true,
     createdAt: true,
     updatedAt: true,
   });

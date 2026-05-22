@@ -14,3 +14,14 @@ export async function getUserDocuments(userId: string) {
     .where(eq(documents.userId, userId))
     .orderBy(desc(documents.createdAt));
 }
+
+export async function getMostRecentUserDocument(userId: string) {
+  const [document] = await db
+    .select()
+    .from(documents)
+    .where(eq(documents.userId, userId))
+    .orderBy(desc(documents.createdAt))
+    .limit(1);
+
+  return document;
+}

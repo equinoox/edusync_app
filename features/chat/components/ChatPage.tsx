@@ -67,7 +67,7 @@ export function ChatPage() {
           <div className="flex flex-1 overflow-hidden px-4 sm:px-6 py-4 sm:py-6 w-full">
             <div className={`flex flex-col flex-1 max-w-6xl w-full mx-auto rounded-2xl sm:rounded-3xl border shadow-sm overflow-hidden transition-colors duration-300 ${darkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-gray-200'}`}>
 
-            <div className="relative flex flex-1 flex-col overflow-y-auto px-4 sm:px-6 py-4 sm:py-6 w-full">
+            <div className="relative flex flex-1 flex-col px-4 sm:px-6 py-4 sm:py-6 w-full min-h-0">
               <div
                 className={`absolute inset-0 pointer-events-none ${darkMode ? 'opacity-[0.1]' : 'opacity-[0.09]'}`}
                 style={{
@@ -98,7 +98,7 @@ export function ChatPage() {
                   </div>
                 </div>
               ) : (
-                <div className="flex flex-col w-full">
+                <div className="flex flex-col w-full flex-1 min-h-0">
                   <ChatMessages messages={messages} />
                   <div ref={messagesEndRef} />
                 </div>

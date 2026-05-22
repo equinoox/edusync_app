@@ -8,11 +8,9 @@ export type GeneratedEmbedding = {
   embedding: number[];
 };
 
-export const generateEmbeddings = async (
-  value: string,
+export const generateEmbeddingsForChunks = async (
+  chunks: string[],
 ): Promise<GeneratedEmbedding[]> => {
-  const chunks = generateChunks(value);
-
   const { embeddings } = await embedMany({
     model: EMBEDDING_MODEL,
     values: chunks,
@@ -22,6 +20,13 @@ export const generateEmbeddings = async (
     content: chunks[index],
     embedding,
   }));
+};
+
+export const generateEmbeddings = async (
+  value: string,
+): Promise<GeneratedEmbedding[]> => {
+  const chunks = generateChunks(value);
+  return generateEmbeddingsForChunks(chunks);
 };
 
 export const generateEmbedding = async (value: string): Promise<number[]> => {

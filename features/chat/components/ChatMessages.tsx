@@ -8,7 +8,7 @@ const ReactMarkdown = dynamic(() => import('react-markdown'), { ssr: false });
 export function ChatMessages({ messages }: ChatMessagesProps) {
   const { darkMode } = useTheme();
   return (
-    <div className="flex flex-col w-full gap-4">
+    <div className="flex flex-col w-full gap-4 flex-1 min-h-0 overflow-y-auto pr-3">
       {messages.map(message => {
         const hasParts = Array.isArray(message.parts);
         const textParts = hasParts ? message.parts.filter(part => part.type === 'text') : [];
@@ -59,7 +59,7 @@ export function ChatMessages({ messages }: ChatMessagesProps) {
                               h4: ({node, ...props}) => <h4 className={`text-base font-semibold mt-2 mb-1 ${darkMode ? 'text-violet-200' : 'text-indigo-600'}`} {...props} />,
                               p: ({node, ...props}) => <p className="mb-2 leading-relaxed" {...props} />,
                               ul: ({node, ...props}) => <ul className="list-disc list-inside mb-2 space-y-1" {...props} />,
-                              ol: ({node, ...props}) => <ol className="list-decimal list-inside mb-2 space-y-1" {...props} />,
+                              ol: ({node, ...props}) => <ol className="list-inside mb-2 space-y-1" {...props} />,
                               li: ({node, ...props}) => <li className="ml-2" {...props} />,
                               strong: ({node, ...props}) => <strong className={`font-bold ${darkMode ? 'text-orange-500' : 'text-indigo-700'}`} {...props} />,
                               em: ({node, ...props}) => <em className={`italic ${darkMode ? 'text-slate-300' : 'text-slate-700'}`} {...props} />,
@@ -89,7 +89,7 @@ export function ChatMessages({ messages }: ChatMessagesProps) {
                             h4: ({node, ...props}) => <h4 className={`text-base font-semibold mt-2 mb-1 ${darkMode ? 'text-violet-200' : 'text-indigo-600'}`} {...props} />,
                             p: ({node, ...props}) => <p className="mb-2 leading-relaxed" {...props} />,
                             ul: ({node, ...props}) => <ul className="list-disc list-inside mb-2 space-y-1" {...props} />,
-                            ol: ({node, ...props}) => <ol className="list-decimal list-inside mb-2 space-y-1" {...props} />,
+                            ol: ({node, ...props}) => <ol className="list-inside mb-2 space-y-1" {...props} />,
                             li: ({node, ...props}) => <li className="ml-2" {...props} />,
                             strong: ({node, ...props}) => <strong className={`font-bold ${darkMode ? 'text-orange-500' : 'text-indigo-700'}`} {...props} />,
                             em: ({node, ...props}) => <em className={`italic ${darkMode ? 'text-slate-300' : 'text-slate-700'}`} {...props} />,

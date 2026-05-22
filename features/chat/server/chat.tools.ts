@@ -20,10 +20,18 @@ use this tool without asking for confirmation.
   }),
 
   getInformation: tool({
-    description: 'Get information from your knowledge base to answer questions.',
+    description: `
+Get information from the user's knowledge base to answer questions.
+If the user names a PDF file or says "last/latest document", pass that file reference in fileName so retrieval searches only that uploaded file.
+This tool searches stored chunks and embeddings; the assistant does not need direct PDF file access when this returns results.
+`,
     inputSchema: z.object({
       question: z.string().describe('the user question'),
+      fileName: z
+        .string()
+        .optional()
+        .describe('optional PDF filename mentioned by the user, for file-specific retrieval'),
     }),
-    execute: async ({ question }) => findRelevantContent(question),
+    execute: async ({ question, fileName }) => findRelevantContent(question, fileName),
   }),
 };

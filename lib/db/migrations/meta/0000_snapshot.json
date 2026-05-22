@@ -1,5 +1,5 @@
 {
-  "id": "25610799-88de-4b82-92fb-17d3e7753356",
+  "id": "0b31df10-5c05-4aef-b492-09528ece1973",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -20,17 +20,18 @@
           "primaryKey": false,
           "notNull": true
         },
-        "resource_id": {
-          "name": "resource_id",
-          "type": "varchar(191)",
-          "primaryKey": false,
-          "notNull": true
-        },
         "file_name": {
           "name": "file_name",
           "type": "varchar(255)",
           "primaryKey": false,
           "notNull": true
+        },
+        "file_type": {
+          "name": "file_type",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'application/pdf'"
         },
         "file_size": {
           "name": "file_size",
@@ -43,6 +44,12 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true
+        },
+        "storage_key": {
+          "name": "storage_key",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         },
         "page_count": {
           "name": "page_count",
@@ -59,21 +66,7 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {
-        "documents_resource_id_resources_id_fk": {
-          "name": "documents_resource_id_resources_id_fk",
-          "tableFrom": "documents",
-          "tableTo": "resources",
-          "columnsFrom": [
-            "resource_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "cascade",
-          "onUpdate": "no action"
-        }
-      },
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
@@ -164,6 +157,12 @@
           "primaryKey": false,
           "notNull": true
         },
+        "document_id": {
+          "name": "document_id",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": false
+        },
         "content": {
           "name": "content",
           "type": "text",
@@ -186,7 +185,21 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {},
+      "foreignKeys": {
+        "resources_document_id_documents_id_fk": {
+          "name": "resources_document_id_documents_id_fk",
+          "tableFrom": "resources",
+          "tableTo": "documents",
+          "columnsFrom": [
+            "document_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "policies": {},
