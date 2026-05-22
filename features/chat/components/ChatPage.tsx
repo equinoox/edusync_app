@@ -7,15 +7,23 @@ import { useTheme } from '@/providers/ThemeProvider';
 import Sidebar from '@/components/layout/sidebar';
 import TopBar from '@/components/layout/TopBar';
 import SmallBar from '@/components/layout/SmallBar';
+import {
+  ToastNotification,
+  type ToastNotificationState,
+} from '@/components/shared/ToastNotification';
 
 import { ChatMessages } from '@/features/chat/components/ChatMessages';
 import { ChatInput } from '@/features/chat/components/ChatInput';
 import { DocumentUploadButton } from '@/features/documents/components/DocumentUploadButton';
+import type { DocumentListItem, DocumentUploadResult } from '@/features/documents/types';
 
 export function ChatPage() {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [documents, setDocuments] = useState<DocumentListItem[]>([]);
+  const [selectedDocumentId, setSelectedDocumentId] = useState('');
+  const [toast, setToast] = useState<ToastNotificationState | null>(null);
   const { messages, sendMessage } = useChat();
   const { darkMode } = useTheme();
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -24,19 +32,113 @@ export function ChatPage() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  const fetchDocuments = async () => {
+    try {
+      const response = await fetch('/api/documents');
 
+      if (response.ok) {
+        setDocuments(await response.json());
+      }
+    } catch {
+      setToast({
+        id: Date.now(),
+        message: 'Something went wrong',
+        tone: 'error',
+      });
+    }
+  };
+
+  useEffect(() => {
+    fetchDocuments();
+  }, []);
+
+  useEffect(() => {
+    const handleDocumentsChanged = (event: Event) => {
+      const detail = (event as CustomEvent<{
+        uploadedDocuments?: DocumentUploadResult[];
+        deletedDocumentId?: string;
+      }>).detail;
+
+      if (detail?.uploadedDocuments?.length) {
+        setDocuments(previousDocuments => {
+          const uploadedIds = new Set(
+            detail.uploadedDocuments?.map(document => document.id),
+          );
+
+          return [
+            ...detail.uploadedDocuments!,
+            ...previousDocuments.filter(document => !uploadedIds.has(document.id)),
+          ];
+        });
+      }
+
+      if (detail?.deletedDocumentId) {
+        setDocuments(previousDocuments =>
+          previousDocuments.filter(document => document.id !== detail.deletedDocumentId),
+        );
+      }
+    };
+
+    window.addEventListener('edusync:documents-changed', handleDocumentsChanged);
+    window.addEventListener('focus', fetchDocuments);
+
+    return () => {
+      window.removeEventListener('edusync:documents-changed', handleDocumentsChanged);
+      window.removeEventListener('focus', fetchDocuments);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (
+      selectedDocumentId &&
+      !documents.some(document => document.id === selectedDocumentId)
+    ) {
+      setSelectedDocumentId('');
+    }
+  }, [documents, selectedDocumentId]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!input.trim()) return;
     setIsLoading(true);
-    sendMessage({ text: input });
+    sendMessage(
+      { text: input },
+      { body: selectedDocumentId ? { documentId: selectedDocumentId } : {} },
+    ).finally(() => setIsLoading(false));
     setInput('');
-    setIsLoading(false);
+  };
+
+  const handleDocumentUploaded = (documents: DocumentUploadResult[]) => {
+    setDocuments(previousDocuments => {
+      const uploadedIds = new Set(documents.map(document => document.id));
+      return [
+        ...documents,
+        ...previousDocuments.filter(document => !uploadedIds.has(document.id)),
+      ];
+    });
+
+    const firstDocument = documents[0];
+    if (firstDocument) {
+      setToast({
+        id: Date.now(),
+        message: `File uploaded: ${firstDocument.fileName}`,
+        tone: 'success',
+      });
+    }
+  };
+
+  const handleDocumentUploadError = () => {
+    setToast({
+      id: Date.now(),
+      message: 'Something went wrong',
+      tone: 'error',
+    });
   };
 
   return (
     <main className={`flex h-screen flex-col lg:flex-row transition-colors duration-300 ${darkMode ? 'bg-slate-950' : 'bg-slate-100'}`}>
+      <ToastNotification toast={toast} onDismiss={() => setToast(null)} />
+
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div
@@ -55,7 +157,13 @@ export function ChatPage() {
         <SmallBar
           sidebarOpen={sidebarOpen}
           onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
-          actions={<DocumentUploadButton size="compact" />}
+          actions={
+            <DocumentUploadButton
+              size="compact"
+              onUploaded={handleDocumentUploaded}
+              onUploadError={handleDocumentUploadError}
+            />
+          }
         />
 
         <div className="hidden lg:block">
@@ -105,13 +213,18 @@ export function ChatPage() {
               )}
             </div>
 
-            <div className={`shrink-0 border-t transition-colors duration-300 ${darkMode ? 'bg-violet-950 border-slate-700' : 'bg-indigo-800 border-gray-400'} px-4 sm:px-6 py-4 w-full`}>
+            <div className={`shrink-0 mx-3 mb-3 sm:mx-4 sm:mb-4 rounded-3xl border transition-colors duration-300 ${darkMode ? 'bg-violet-950 border-slate-700' : 'bg-indigo-800 border-gray-400'} px-4 sm:px-6 py-4 w-[calc(100%-1.5rem)] sm:w-[calc(100%-2rem)] shadow-lg`}>
               <ChatInput
                 value={input}
                 onChange={setInput}
                 onSubmit={handleSubmit}
                 isLoading={isLoading}
                 messages={messages}
+                documents={documents}
+                selectedDocumentId={selectedDocumentId}
+                onSelectedDocumentChange={setSelectedDocumentId}
+                onDocumentUploaded={handleDocumentUploaded}
+                onDocumentUploadError={handleDocumentUploadError}
               />
             </div>
             </div>

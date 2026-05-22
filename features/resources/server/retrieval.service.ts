@@ -5,6 +5,7 @@ import {
   findSimilarEmbeddings,
 } from '@/features/resources/repositories/embeddings.repository';
 import {
+  getUserDocumentById,
   getMostRecentUserDocument,
   getUserDocuments,
 } from '@/features/documents/repositories/documents.repository';
@@ -27,7 +28,12 @@ const resolveMentionedDocument = async (
   userId: string,
   userQuery: string,
   fileName?: string,
+  documentId?: string,
 ) => {
+  if (documentId) {
+    return getUserDocumentById(documentId, userId);
+  }
+
   if (mentionsMostRecentDocument(userQuery) || mentionsMostRecentDocument(fileName ?? '')) {
     return getMostRecentUserDocument(userId);
   }
@@ -73,6 +79,7 @@ const toDocumentReference = (document: UserDocument | undefined) => {
 export const findRelevantContent = async (
   userQuery: string,
   fileName?: string,
+  documentId?: string,
 ) => {
   const { userId } = await auth();
   
@@ -80,8 +87,16 @@ export const findRelevantContent = async (
     throw new Error('User not authenticated');
   }
 
-  const document = await resolveMentionedDocument(userId, userQuery, fileName);
+  const document = await resolveMentionedDocument(userId, userQuery, fileName, documentId);
   const requestedFileName = fileName?.trim();
+
+  if (documentId && !document) {
+    return {
+      document: null,
+      results: [],
+      message: 'The selected document is no longer available.',
+    };
+  }
 
   if (requestedFileName && !document) {
     return {

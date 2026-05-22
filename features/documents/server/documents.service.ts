@@ -3,7 +3,10 @@ import { generateEmbeddingsForChunks } from '@/lib/ai/embedding-provider';
 import { generateChunks } from '@/lib/ai/chunking';
 import { createResourceRecord } from '@/features/resources/repositories/resources.repository';
 import { createEmbeddingRecords } from '@/features/resources/repositories/embeddings.repository';
-import { createDocumentRecord } from '@/features/documents/repositories/documents.repository';
+import {
+  createDocumentRecord,
+  deleteUserDocument,
+} from '@/features/documents/repositories/documents.repository';
 import { getDocumentUploadStatus } from './document-upload-limit.service';
 import { extractPdfText } from './pdf-text.service';
 
@@ -55,5 +58,18 @@ export async function uploadDocument(
 
   await createEmbeddingRecords(embeddingRecords);
 
-  return { fileName: file.name, pageCount };
+  return document;
+}
+
+export async function deleteDocument(documentId: string) {
+  const { userId } = await auth();
+  if (!userId) throw new Error('Unauthorized');
+
+  const deletedDocument = await deleteUserDocument(documentId, userId);
+
+  if (!deletedDocument) {
+    throw new Error('Document not found');
+  }
+
+  return deletedDocument;
 }

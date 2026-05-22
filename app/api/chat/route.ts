@@ -20,7 +20,10 @@ export async function POST(req: Request) {
       );
     }
 
-    const { messages }: { messages: UIMessage[] } = await req.json();
+    const {
+      messages,
+      documentId,
+    }: { messages: UIMessage[]; documentId?: string | null } = await req.json();
 
     // Get the user's latest message - extract text from parts or content
     const lastMessage = messages[messages.length - 1];
@@ -68,7 +71,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const result = await createChatResponse(messages);
+    const result = await createChatResponse(messages, documentId ?? undefined);
 
     return result.toUIMessageStreamResponse();
   } catch (error) {

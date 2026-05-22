@@ -5,12 +5,14 @@ import { DocumentArrowUpIcon } from '@heroicons/react/24/outline';
 
 import { Button } from '@/components/ui/button';
 import { ACCEPTED_DOCUMENT_TYPE } from '@/features/documents/schemas';
+import type { DocumentUploadResult } from '@/features/documents/types';
 import { cn } from '@/lib/utils';
 
 type DocumentUploadButtonProps = {
   className?: string;
   disabled?: boolean;
-  onUploaded?: () => void;
+  onUploaded?: (documents: DocumentUploadResult[]) => void;
+  onUploadError?: (message: string) => void;
   size?: 'default' | 'compact';
 };
 
@@ -18,12 +20,11 @@ export function DocumentUploadButton({
   className,
   disabled = false,
   onUploaded,
+  onUploadError,
   size = 'default',
 }: DocumentUploadButtonProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
-  const [message, setMessage] = useState<string | null>(null);
-  const [isMessageVisible, setIsMessageVisible] = useState(false);
 
   const uploadFile = async (file: File) => {
     const formData = new FormData();
@@ -39,6 +40,8 @@ export function DocumentUploadButton({
     if (!response.ok) {
       throw new Error(data.error ?? 'Upload failed');
     }
+
+    return data as DocumentUploadResult;
   };
 
   const handleFilesSelected = async (
@@ -50,76 +53,32 @@ export function DocumentUploadButton({
     if (files.length === 0) return;
 
     setIsUploading(true);
-    setMessage(null);
 
     try {
       const selectedFiles = files.slice(0, 5);
+      const uploadedDocuments: DocumentUploadResult[] = [];
 
       for (const file of selectedFiles) {
         if (file.type !== ACCEPTED_DOCUMENT_TYPE) {
           throw new Error('Only PDF files are supported');
         }
 
-        await uploadFile(file);
+        uploadedDocuments.push(await uploadFile(file));
       }
 
-      setMessage(
-        selectedFiles.length === 1
-          ? 'Document uploaded'
-          : `${selectedFiles.length} documents uploaded`,
-      );
-      setIsMessageVisible(true);
-
-      setTimeout(() => {
-        setIsMessageVisible(false);
-      }, 2500);
-
-      setTimeout(() => {
-        setMessage(null);
-      }, 3200);
-      onUploaded?.();
+      onUploaded?.(uploadedDocuments);
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : 'Upload failed';
 
-      setMessage(errorMessage);
-      setIsMessageVisible(true);
-
-      setTimeout(() => {
-        setIsMessageVisible(false);
-      }, 2500);
-
-      setTimeout(() => {
-        setMessage(null);
-      }, 3200);
+      onUploadError?.(errorMessage);
     } finally {
       setIsUploading(false);
     }
   };
 
-  const statusMessage = isUploading ? 'Gathering data...' : message;
-  const shouldShowStatusMessage = isUploading || message;
-  const statusMessageClassName = isUploading ? 'text-violet-200' : 'text-white';
-
 return (
   <div className={cn("relative flex items-end", className)}>
-    {shouldShowStatusMessage && (
-      <p
-        className={`
-          absolute bottom-full left-1/2 mb-2 w-max max-w-48
-          -translate-x-1/2 rounded-full
-          bg-orange-100 px-3 py-1
-          text-xs font-medium text-orange-700
-          shadow-sm transition-opacity duration-700
-          dark:bg-orange-500/15 dark:text-orange-200
-          ${isUploading || isMessageVisible ? 'opacity-100' : 'opacity-0'}
-        `}
-        aria-live="polite"
-      >
-        {statusMessage}
-      </p>
-    )}
-
     <input
       ref={inputRef}
       type="file"

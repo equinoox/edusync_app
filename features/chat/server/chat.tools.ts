@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { createResourceAction } from '@/features/resources/actions/resources.actions';
 import { findRelevantContent } from '@/features/resources/server/retrieval.service';
 
-export const chatTools = {
+export const createChatTools = (documentId?: string) => ({
   addResource: tool({
     description: `
 Add a resource to your knowledge base.
@@ -32,6 +32,6 @@ This tool searches stored chunks and embeddings; the assistant does not need dir
         .optional()
         .describe('optional PDF filename mentioned by the user, for file-specific retrieval'),
     }),
-    execute: async ({ question, fileName }) => findRelevantContent(question, fileName),
+    execute: async ({ question, fileName }) => findRelevantContent(question, fileName, documentId),
   }),
-};
+});
