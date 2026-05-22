@@ -5,15 +5,20 @@ import { DocumentArrowUpIcon } from '@heroicons/react/24/outline';
 
 import { Button } from '@/components/ui/button';
 import { ACCEPTED_DOCUMENT_TYPE } from '@/features/documents/schemas';
+import { cn } from '@/lib/utils';
 
 type DocumentUploadButtonProps = {
+  className?: string;
   disabled?: boolean;
   onUploaded?: () => void;
+  size?: 'default' | 'compact';
 };
 
 export function DocumentUploadButton({
+  className,
   disabled = false,
   onUploaded,
+  size = 'default',
 }: DocumentUploadButtonProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -97,7 +102,7 @@ export function DocumentUploadButton({
   const statusMessageClassName = isUploading ? 'text-violet-200' : 'text-white';
 
 return (
-  <div className="relative flex items-end">
+  <div className={cn("relative flex items-end", className)}>
     {shouldShowStatusMessage && (
       <p
         className={`
@@ -128,21 +133,20 @@ return (
       type="button"
       variant="secondary"
       disabled={disabled || isUploading}
-      className="
-        h-[52px] w-[52px] rounded-2xl
-        bg-orange-500 text-black
-        shadow-sm transition
-        hover:bg-orange-600
-        disabled:cursor-not-allowed disabled:opacity-50
-      "
+      className={cn(
+        "bg-orange-500 text-black shadow-sm transition hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-50",
+        size === 'compact'
+          ? "h-10 w-10 rounded-xl"
+          : "h-[52px] w-[52px] rounded-2xl",
+      )}
       aria-label="Upload PDF document"
       title="Upload PDF document"
       onClick={() => inputRef.current?.click()}
     >
       {isUploading ? (
-        <span className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
+        <span className={cn("animate-spin rounded-full border-2 border-white border-t-transparent", size === 'compact' ? "h-4 w-4" : "h-5 w-5")} />
       ) : (
-        <DocumentArrowUpIcon className="h-8 w-8" />
+        <DocumentArrowUpIcon className={size === 'compact' ? "h-6 w-6" : "h-8 w-8"} />
       )}
     </Button>
   </div>

@@ -2,14 +2,15 @@
 
 import { useRef, useEffect, useState } from 'react';
 import { useChat } from '@ai-sdk/react';
-import Link from 'next/link';
-import { SparklesIcon, AcademicCapIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { SparklesIcon } from '@heroicons/react/24/outline';
 import { useTheme } from '@/providers/ThemeProvider';
 import Sidebar from '@/components/layout/sidebar';
-import { UserButton } from "@clerk/nextjs";
+import TopBar from '@/components/layout/TopBar';
+import SmallBar from '@/components/layout/SmallBar';
 
 import { ChatMessages } from '@/features/chat/components/ChatMessages';
 import { ChatInput } from '@/features/chat/components/ChatInput';
+import { DocumentUploadButton } from '@/features/documents/components/DocumentUploadButton';
 
 export function ChatPage() {
   const [input, setInput] = useState('');
@@ -51,40 +52,15 @@ export function ChatPage() {
       </div>
 
       <div className="flex flex-1 flex-col overflow-hidden">
-        <header className={`shrink-0 border-b transition-colors duration-300 ${darkMode ? 'bg-slate-800 border-slate-700' : 'bg-indigo-800 border-gray-200'} px-6 py-4 shadow-sm`}>
-          <div className="flex items-center justify-between gap-3">
-            <div className="flex items-center gap-3">
-              <Link href="/home" className="flex items-center gap-2 hover:opacity-75 transition-opacity">
-                <div className={`w-9 h-9 rounded-xl flex items-center justify-center shadow-md ${darkMode ? 'bg-violet-600' : 'bg-indigo-600'}`}>
-                  <AcademicCapIcon className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <div className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-slate-800'}`}>
-                    <span className='text-white'>Edu</span><span className={darkMode ? 'text-violet-600' : 'text-orange-600'}>Sync</span>
-                  </div>
-                  <div className={`text-xs font-medium ${darkMode ? 'text-gray-100' : 'text-gray-100'}`}>
-                    AI Assistant
-                  </div>
-                </div>
-              </Link>
-            </div>
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => setSidebarOpen(!sidebarOpen)}
-                className={`p-2 rounded-lg transition-colors lg:hidden ${darkMode ? 'hover:bg-slate-700' : 'hover:bg-gray-100'}`}
-              >
-                {sidebarOpen ? (
-                  <XMarkIcon className={`w-6 h-6 ${darkMode ? 'text-violet-400' : 'text-slate-600'}`} />
-                ) : (
-                  <Bars3Icon className={`w-6 h-6 ${darkMode ? 'text-violet-400' : 'text-slate-600'}`} />
-                )}
-              </button>
-              <div className="scale-125 origin-center">
-                <UserButton />
-              </div>
-            </div>
-          </div>
-        </header>
+        <SmallBar
+          sidebarOpen={sidebarOpen}
+          onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
+          actions={<DocumentUploadButton size="compact" />}
+        />
+
+        <div className="hidden lg:block">
+          <TopBar pageName="AI Assistant" />
+        </div>
 
         <div className="flex flex-1 overflow-hidden">
           {/* Main Chat Area */}

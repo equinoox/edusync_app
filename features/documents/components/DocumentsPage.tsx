@@ -1,10 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Bars3Icon, DocumentTextIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import { UserButton } from '@clerk/nextjs';
+import { DocumentTextIcon } from '@heroicons/react/24/outline';
 
 import Sidebar from '@/components/layout/sidebar';
+import TopBar from '@/components/layout/TopBar';
+import SmallBar from '@/components/layout/SmallBar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useTheme } from '@/providers/ThemeProvider';
 import type { DocumentListItem } from '@/features/documents/types';
@@ -56,36 +57,18 @@ export function DocumentsPage() {
       </div>
 
       <section className="flex min-w-0 flex-1 flex-col">
-        <header className={`border-b px-6 py-4 shadow-sm ${darkMode ? 'border-slate-700 bg-slate-800' : 'border-gray-200 bg-white'}`}>
-          <div className="flex items-center justify-between gap-3">
-            <div>
-              <h1 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-slate-900'}`}>
-                Documents
-              </h1>
-              <p className={`text-sm ${darkMode ? 'text-slate-300' : 'text-slate-500'}`}>
-                PDFs uploaded for your AI study assistant.
-              </p>
-            </div>
+        <SmallBar
+          sidebarOpen={sidebarOpen}
+          onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
+        />
 
-            <div className="flex items-center gap-3">
-              <DocumentUploadButton onUploaded={fetchDocuments} />
-              <button
-                type="button"
-                onClick={() => setSidebarOpen(!sidebarOpen)}
-                className={`rounded-lg p-2 transition-colors lg:hidden ${darkMode ? 'hover:bg-slate-700' : 'hover:bg-gray-100'}`}
-              >
-                {sidebarOpen ? (
-                  <XMarkIcon className="h-6 w-6" />
-                ) : (
-                  <Bars3Icon className="h-6 w-6" />
-                )}
-              </button>
-              <div className="scale-125 origin-center">
-                <UserButton />
-              </div>
-            </div>
-          </div>
-        </header>
+        <div className="hidden lg:block">
+          <TopBar pageName="Documents" />
+        </div>
+
+        <div className="flex justify-end px-4 pt-4 sm:px-6">
+          <DocumentUploadButton onUploaded={fetchDocuments} size="default" />
+        </div>
 
         <div className="w-full px-4 py-6 sm:px-6">
           <div className="mx-auto flex max-w-6xl flex-col gap-4">
@@ -109,6 +92,7 @@ export function DocumentsPage() {
               </Card>
             ) : (
               <div className="grid gap-3">
+                
                 {documents.map(document => (
                   <Card
                     key={document.id}
@@ -141,6 +125,7 @@ export function DocumentsPage() {
                     </CardContent>
                   </Card>
                 ))}
+                
               </div>
             )}
           </div>

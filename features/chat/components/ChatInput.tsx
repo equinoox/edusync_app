@@ -86,7 +86,7 @@ export function ChatInput({ value, onChange, onSubmit, isLoading = false, messag
         />
 
         <div className="flex shrink-0 items-end gap-3">
-          <DocumentUploadButton disabled={isLoading || isMessageLimitReached} />
+          <DocumentUploadButton className="hidden sm:flex" disabled={isLoading || isMessageLimitReached} />
 
           <SubmitButton
             darkMode={darkMode}
