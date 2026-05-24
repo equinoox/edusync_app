@@ -17,6 +17,15 @@ export async function uploadDocument(
   const { userId } = await auth();
   if (!userId) throw new Error('Unauthorized');
 
+  return ingestDocumentForUser(file, userId, options);
+}
+
+export async function ingestDocumentForUser(
+  file: File,
+  userId: string,
+  options: { fileUrl: string; storageKey?: string },
+) {
+
   if (file.type !== 'application/pdf') throw new Error('Only PDF files are supported');
   if (file.size > 8 * 1024 * 1024) throw new Error('PDF must be smaller than 8MB');
 
@@ -59,6 +68,30 @@ export async function uploadDocument(
   await createEmbeddingRecords(embeddingRecords);
 
   return document;
+}
+
+export async function copyDocumentFromUrlForUser(input: {
+  userId: string;
+  fileName: string;
+  fileUrl: string;
+  mimeType: string;
+  storageKey?: string | null;
+}) {
+  const response = await fetch(input.fileUrl);
+
+  if (!response.ok) {
+    throw new Error('Unable to copy lesson material');
+  }
+
+  const blob = await response.blob();
+  const file = new File([blob], input.fileName, {
+    type: input.mimeType,
+  });
+
+  return ingestDocumentForUser(file, input.userId, {
+    fileUrl: input.fileUrl,
+    storageKey: input.storageKey ?? undefined,
+  });
 }
 
 export async function deleteDocument(documentId: string) {

@@ -88,7 +88,7 @@ export default function HomePage() {
 
         <div className="flex flex-col gap-8 p-6">
           <HeroSection firstName={firstName} />
-          <ClassroomSection />
+          {/* <ClassroomSection /> */}
         </div>
       </div>
     </main>

@@ -8,6 +8,8 @@ type ConfirmationModalProps = {
   message: string;
   onCancel: () => void;
   onConfirm: () => void;
+  confirmLabel?: string;
+  loadingLabel?: string;
 };
 
 export function ConfirmationModal({
@@ -16,6 +18,8 @@ export function ConfirmationModal({
   message,
   onCancel,
   onConfirm,
+  confirmLabel = "Yes",
+  loadingLabel = "Deleting...",
 }: ConfirmationModalProps) {
   const { darkMode } = useTheme();
 
@@ -53,7 +57,7 @@ export function ConfirmationModal({
             disabled={isLoading}
             className="inline-flex h-9 items-center rounded-md bg-red-600 px-4 text-sm font-medium text-white transition-colors hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {isLoading ? "Deleting..." : "Yes"}
+            {isLoading ? loadingLabel : confirmLabel}
           </button>
         </div>
       </div>

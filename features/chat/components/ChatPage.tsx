@@ -186,7 +186,7 @@ export function ChatPage() {
               {messages.length === 0 ? (
                 <div className="flex flex-1 items-center justify-center">
                   <div className="text-center space-y-5 max-w-sm">
-                    <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mx-auto shadow-xl ${darkMode ? 'bg-violet-600 shadow-violet-500/20' : 'bg-indigo-600 shadow-indigo-200/60'}`}>
+                    <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mx-auto ${darkMode ? 'bg-violet-600 shadow-violet-500/20' : 'bg-indigo-600 shadow-indigo-200/60'}`}>
                       <SparklesIcon className="w-8 h-8 text-white" />
                     </div>
                     <div>
