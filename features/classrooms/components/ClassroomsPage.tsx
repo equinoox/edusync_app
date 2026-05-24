@@ -5,6 +5,7 @@ import { useUser } from '@clerk/nextjs';
 import {
   BookOpenIcon,
   BuildingLibraryIcon,
+  ChatBubbleLeftRightIcon,
   ClipboardDocumentListIcon,
   DocumentTextIcon,
   PlusIcon,
@@ -15,6 +16,8 @@ import Sidebar from '@/components/layout/sidebar';
 import SmallBar from '@/components/layout/SmallBar';
 import TopBar from '@/components/layout/TopBar';
 import { ConfirmationModal } from '@/components/shared/ConfirmationModal';
+import { QuickActionsPanel } from '@/components/shared/QuickActionsPanel';
+import { RecentActivityPanel } from '@/components/shared/RecentActivityPanel';
 import {
   ToastNotification,
   type ToastNotificationState,
@@ -30,7 +33,6 @@ import { ClassroomStatCard } from '@/features/classrooms/components/ClassroomSta
 import { ClassroomsDashboardHeader } from '@/features/classrooms/components/ClassroomsDashboardHeader';
 import { CreateClassroomButton } from '@/features/classrooms/components/CreateClassroomButton';
 import { CreateClassroomModal } from '@/features/classrooms/components/CreateClassroomModal';
-import { RecentActivityPanel } from '@/features/classrooms/components/RecentActivityPanel';
 import { UpcomingPanel } from '@/features/classrooms/components/UpcomingPanel';
 import type {
   ClassroomListItem,
@@ -120,6 +122,45 @@ export function ClassroomsPage() {
         0,
       ),
     [classrooms],
+  );
+
+  const recentActivityItems = useMemo(
+    () =>
+      classrooms.slice(0, 4).map(classroom => ({
+        id: classroom.id,
+        title: `Classroom created in ${classroom.title}`,
+        timestamp: classroom.createdAt,
+        Icon: BuildingLibraryIcon,
+      })),
+    [classrooms],
+  );
+
+  const quickActions = useMemo(
+    () => [
+      ...(isProfessor
+        ? [
+            {
+              id: 'create-classroom',
+              label: 'Create Classroom',
+              Icon: PlusIcon,
+              onClick: () => setIsCreateModalOpen(true),
+            },
+          ]
+        : []),
+      {
+        id: 'documents',
+        label: 'Open Documents',
+        href: '/documents',
+        Icon: DocumentTextIcon,
+      },
+      {
+        id: 'chat',
+        label: 'Ask AI Assistant',
+        href: '/chat',
+        Icon: ChatBubbleLeftRightIcon,
+      },
+    ],
+    [isProfessor],
   );
 
   const handleCreateClassroom = () => {
@@ -329,7 +370,11 @@ export function ClassroomsPage() {
 
               <div className="min-h-0 space-y-5 overflow-hidden">
                 <UpcomingPanel />
-                <RecentActivityPanel classrooms={classrooms} />
+                <RecentActivityPanel
+                  emptyMessage="No classroom activity yet."
+                  items={recentActivityItems}
+                />
+                <QuickActionsPanel items={quickActions} />
               </div>
             </div>
           </div>

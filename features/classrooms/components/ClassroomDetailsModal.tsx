@@ -1,7 +1,8 @@
 'use client';
 
 import { useCallback, useEffect, useState, useTransition } from 'react';
-import { XMarkIcon } from '@heroicons/react/24/outline';
+import Link from 'next/link';
+import { ClipboardDocumentListIcon, XMarkIcon } from '@heroicons/react/24/outline';
 
 import { ClassroomMaterialsManager } from '@/features/classrooms/components/ClassroomMaterialsManager';
 import { ClassroomStudentsManager } from '@/features/classrooms/components/ClassroomStudentsManager';
@@ -9,6 +10,7 @@ import type {
   ClassroomDetails,
   ClassroomListItem,
 } from '@/features/classrooms/types';
+import type { QuizListItem } from '@/features/quizzes/types';
 import { useTheme } from '@/providers/ThemeProvider';
 
 type ClassroomDetailsModalProps = {
@@ -26,14 +28,19 @@ export function ClassroomDetailsModal({
 }: ClassroomDetailsModalProps) {
   const { darkMode } = useTheme();
   const [details, setDetails] = useState<ClassroomDetails | null>(null);
+  const [classroomQuizzes, setClassroomQuizzes] = useState<QuizListItem[]>([]);
   const [isPending, startTransition] = useTransition();
 
   const loadDetails = useCallback(() => {
     if (!classroom) return;
 
     startTransition(async () => {
-      const response = await fetch(`/api/classrooms/${classroom.id}`);
+      const [response, quizzesResponse] = await Promise.all([
+        fetch(`/api/classrooms/${classroom.id}`),
+        fetch(`/api/classrooms/${classroom.id}/quizzes`),
+      ]);
       const result = await response.json();
+      const quizzesResult = await quizzesResponse.json();
 
       if (!response.ok) {
         onToast(result.error ?? 'Something went wrong', 'error');
@@ -42,12 +49,14 @@ export function ClassroomDetailsModal({
       }
 
       setDetails(result);
+      setClassroomQuizzes(quizzesResponse.ok ? quizzesResult : []);
     });
   }, [classroom, onClose, onToast]);
 
   useEffect(() => {
     if (!classroom) {
       setDetails(null);
+      setClassroomQuizzes([]);
       return;
     }
 
@@ -108,14 +117,54 @@ export function ClassroomDetailsModal({
             </div>
           ) : activeDetails ? (
             <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_20rem]">
-              <ClassroomMaterialsManager
-                classroomId={activeDetails.classroom.id}
-                canManage={canManage}
-                isStudent={isStudent}
-                materials={activeDetails.materials}
-                onChanged={handleChildChanged}
-                onToast={onToast}
-              />
+              <div className="space-y-5">
+                <ClassroomMaterialsManager
+                  classroomId={activeDetails.classroom.id}
+                  canManage={canManage}
+                  isStudent={isStudent}
+                  materials={activeDetails.materials}
+                  onChanged={handleChildChanged}
+                  onToast={onToast}
+                />
+                <section className={`rounded-xl border p-4 ${darkMode ? 'border-slate-700 bg-slate-900' : 'border-slate-200 bg-white'}`}>
+                  <div className="flex items-center gap-2">
+                    <ClipboardDocumentListIcon className={`h-5 w-5 ${darkMode ? 'text-violet-300' : 'text-violet-600'}`} />
+                    <h3 className={`font-bold ${darkMode ? 'text-white' : 'text-slate-950'}`}>
+                      Quizzes
+                    </h3>
+                    <span className={`ml-auto text-sm ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>
+                      {classroomQuizzes.length}
+                    </span>
+                  </div>
+
+                  <div className={`mt-4 divide-y ${darkMode ? 'divide-slate-800' : 'divide-slate-100'}`}>
+                    {classroomQuizzes.length === 0 ? (
+                      <p className={`py-3 text-sm ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>
+                        No quizzes attached to this classroom yet.
+                      </p>
+                    ) : (
+                      classroomQuizzes.map(quiz => (
+                        <div key={quiz.id} className="flex flex-col gap-3 py-3 sm:flex-row sm:items-center">
+                          <div className="min-w-0 flex-1">
+                            <p className={`truncate text-sm font-semibold ${darkMode ? 'text-white' : 'text-slate-950'}`}>
+                              {quiz.title}
+                            </p>
+                            <p className={`text-xs ${darkMode ? 'text-slate-500' : 'text-slate-500'}`}>
+                              {quiz.totalPoints} pts - {quiz.timeLimitMinutes} min
+                            </p>
+                          </div>
+                          <Link
+                            href={`/quizzes?${isStudent ? 'take' : 'quizId'}=${quiz.id}`}
+                            className="inline-flex h-9 items-center justify-center rounded-lg bg-violet-600 px-3 text-sm font-semibold text-white transition hover:bg-violet-700"
+                          >
+                            {isStudent ? 'Take Quiz' : 'Manage Quiz'}
+                          </Link>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </section>
+              </div>
               <ClassroomStudentsManager
                 classroomId={activeDetails.classroom.id}
                 canManage={canManage}
