@@ -22,6 +22,13 @@
       "when": 1779625000000,
       "tag": "0002_remove_classroom_lessons",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1779627000000,
+      "tag": "0003_quizzes_backend",
+      "breakpoints": true
     }
   ]
 }
