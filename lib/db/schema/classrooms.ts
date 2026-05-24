@@ -39,31 +39,11 @@ export const classroomMemberships = pgTable(
   }),
 );
 
-export const lessons = pgTable(
-  'lessons',
-  {
-    id: varchar('id', { length: 191 }).primaryKey().$defaultFn(() => nanoid()),
-    classroomId: varchar('classroom_id', { length: 191 })
-      .notNull()
-      .references(() => classrooms.id, { onDelete: 'cascade' }),
-    sequenceNumber: integer('sequence_number').notNull(),
-    title: varchar('title', { length: 255 }).notNull(),
-    createdAt: timestamp('created_at').notNull().default(sql`now()`),
-    updatedAt: timestamp('updated_at').notNull().default(sql`now()`),
-  },
-  table => ({
-    lessonSequenceUnique: uniqueIndex('lesson_sequence_unique').on(
-      table.classroomId,
-      table.sequenceNumber,
-    ),
-  }),
-);
-
-export const lessonMaterials = pgTable('lesson_materials', {
+export const classroomMaterials = pgTable('classroom_materials', {
   id: varchar('id', { length: 191 }).primaryKey().$defaultFn(() => nanoid()),
-  lessonId: varchar('lesson_id', { length: 191 })
+  classroomId: varchar('classroom_id', { length: 191 })
     .notNull()
-    .references(() => lessons.id, { onDelete: 'cascade' }),
+    .references(() => classrooms.id, { onDelete: 'cascade' }),
   title: varchar('title', { length: 255 }).notNull(),
   fileName: varchar('file_name', { length: 255 }).notNull(),
   fileUrl: text('file_url').notNull(),

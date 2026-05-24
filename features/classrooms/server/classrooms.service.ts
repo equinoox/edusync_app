@@ -11,7 +11,7 @@ import {
   removeClassroomMembership,
   updateClassroomRecord,
 } from '@/features/classrooms/repositories/classrooms.repository';
-import { getLessonMaterialsByClassroomId } from '@/features/classrooms/repositories/classroom-materials.repository';
+import { getClassroomMaterialsByClassroomId } from '@/features/classrooms/repositories/classroom-materials.repository';
 import {
   addStudentToClassroomSchema,
   createClassroomSchema,
@@ -29,6 +29,7 @@ import {
   getCurrentUserWithRole,
   requireCurrentUserRole,
 } from '@/features/auth/server/roles.service';
+import { getUsersByIds } from '@/features/auth/server/users.service';
 
 export async function createClassroom(input: CreateClassroomInput) {
   const { userId } = await requireCurrentUserRole('professor');
@@ -156,12 +157,18 @@ export async function getClassroomDetails(
 
   const [students, materials] = await Promise.all([
     getClassroomMemberships(classroomId),
-    getLessonMaterialsByClassroomId(classroomId),
+    getClassroomMaterialsByClassroomId(classroomId),
   ]);
+  const studentProfiles = await getUsersByIds(
+    students.map(student => student.studentId),
+  );
 
   return {
     classroom: classroomWithCount,
-    students,
+    students: students.map(student => ({
+      ...student,
+      profile: studentProfiles.get(student.studentId) ?? null,
+    })),
     materials,
     viewerRole: currentUser.role,
     canManage,

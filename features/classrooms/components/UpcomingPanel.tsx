@@ -20,7 +20,7 @@ const defaultItems = [
   {
     id: 'planning',
     label: 'NEW',
-    title: 'Create lesson plan',
+    title: 'Create material plan',
     date: 'No due date',
     tone: {
       light: 'bg-violet-500/15 text-violet-500',

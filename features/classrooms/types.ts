@@ -1,26 +1,20 @@
 import type { z } from 'zod';
 
 import type {
-  addLessonMaterialSchema,
+  addClassroomMaterialSchema,
   addStudentToClassroomSchema,
-  copyLessonMaterialToUserDocumentsSchema,
+  copyClassroomMaterialToUserDocumentsSchema,
   createClassroomSchema,
-  createLessonSchema,
   removeStudentFromClassroomSchema,
-  reorderLessonsSchema,
   updateClassroomSchema,
-  updateLessonSchema,
 } from '@/features/classrooms/schemas';
 
 export type CreateClassroomInput = z.infer<typeof createClassroomSchema>;
 export type UpdateClassroomInput = z.infer<typeof updateClassroomSchema>;
 export type AddStudentToClassroomInput = z.infer<typeof addStudentToClassroomSchema>;
 export type RemoveStudentFromClassroomInput = z.infer<typeof removeStudentFromClassroomSchema>;
-export type CreateLessonInput = z.infer<typeof createLessonSchema>;
-export type UpdateLessonInput = z.infer<typeof updateLessonSchema>;
-export type ReorderLessonsInput = z.infer<typeof reorderLessonsSchema>;
-export type AddLessonMaterialInput = z.infer<typeof addLessonMaterialSchema>;
-export type CopyLessonMaterialInput = z.infer<typeof copyLessonMaterialToUserDocumentsSchema>;
+export type AddClassroomMaterialInput = z.infer<typeof addClassroomMaterialSchema>;
+export type CopyClassroomMaterialInput = z.infer<typeof copyClassroomMaterialToUserDocumentsSchema>;
 
 export type ClassroomListItem = {
   id: string;
@@ -39,11 +33,17 @@ export type ClassroomStudent = {
   classroomId: string;
   studentId: string;
   createdAt: Date | string;
+  profile?: {
+    id: string;
+    fullName: string | null;
+    email: string | null;
+    imageUrl: string | null;
+  } | null;
 };
 
 export type ClassroomMaterial = {
   id: string;
-  lessonId: string;
+  classroomId: string;
   title: string;
   fileName: string;
   fileUrl: string;

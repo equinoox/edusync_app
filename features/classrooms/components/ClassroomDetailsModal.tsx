@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useState, useTransition } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
-import { getClassroomDetailsAction } from '@/features/classrooms/actions/classrooms.action';
 import { ClassroomMaterialsManager } from '@/features/classrooms/components/ClassroomMaterialsManager';
 import { ClassroomStudentsManager } from '@/features/classrooms/components/ClassroomStudentsManager';
 import type {
@@ -33,18 +32,18 @@ export function ClassroomDetailsModal({
     if (!classroom) return;
 
     startTransition(async () => {
-      const result = await getClassroomDetailsAction(classroom.id);
+      const response = await fetch(`/api/classrooms/${classroom.id}`);
+      const result = await response.json();
 
-      if (typeof result === 'string') {
-        onToast(result, 'error');
+      if (!response.ok) {
+        onToast(result.error ?? 'Something went wrong', 'error');
         onClose();
         return;
       }
 
       setDetails(result);
-      onChanged();
     });
-  }, [classroom, onChanged, onClose, onToast]);
+  }, [classroom, onClose, onToast]);
 
   useEffect(() => {
     if (!classroom) {

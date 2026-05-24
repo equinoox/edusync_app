@@ -15,6 +15,13 @@
       "when": 1779622661596,
       "tag": "0001_classrooms_backend",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1779625000000,
+      "tag": "0002_remove_classroom_lessons",
+      "breakpoints": true
     }
   ]
 }

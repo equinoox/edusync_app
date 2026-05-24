@@ -4,10 +4,7 @@ import {
   addStudentToClassroom,
   createClassroom,
   deleteClassroom,
-  getClassroomDetails,
   getClassroomById,
-  getProfessorClassrooms,
-  getStudentClassrooms,
   removeStudentFromClassroom,
   updateClassroom,
 } from '@/features/classrooms/server/classrooms.service';
@@ -31,33 +28,9 @@ export async function createClassroomAction(input: CreateClassroomInput) {
   }
 }
 
-export async function getProfessorClassroomsAction() {
-  try {
-    return await getProfessorClassrooms();
-  } catch (error) {
-    return toActionError(error);
-  }
-}
-
-export async function getStudentClassroomsAction() {
-  try {
-    return await getStudentClassrooms();
-  } catch (error) {
-    return toActionError(error);
-  }
-}
-
 export async function getClassroomByIdAction(classroomId: string) {
   try {
     return await getClassroomById(classroomId);
-  } catch (error) {
-    return toActionError(error);
-  }
-}
-
-export async function getClassroomDetailsAction(classroomId: string) {
-  try {
-    return await getClassroomDetails(classroomId);
   } catch (error) {
     return toActionError(error);
   }

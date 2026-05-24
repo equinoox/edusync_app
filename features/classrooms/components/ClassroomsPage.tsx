@@ -22,8 +22,6 @@ import {
 import {
   createClassroomAction,
   deleteClassroomAction,
-  getProfessorClassroomsAction,
-  getStudentClassroomsAction,
 } from '@/features/classrooms/actions/classrooms.action';
 import { ClassroomActionsMenu } from '@/features/classrooms/components/ClassroomActionsMenu';
 import { ClassroomCard } from '@/features/classrooms/components/ClassroomCard';
@@ -57,37 +55,43 @@ export function ClassroomsPage() {
   const [toast, setToast] = useState<ToastNotificationState | null>(null);
   const [search, setSearch] = useState('');
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
+  const [currentRole, setCurrentRole] = useState<'student' | 'professor' | null>(null);
   const [isPending, startTransition] = useTransition();
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const role = user?.publicMetadata?.role;
+  const role = currentRole ?? user?.publicMetadata?.role;
   const isProfessor = role === 'professor';
 
   const showToast = useCallback((message: string, tone: ToastNotificationState['tone'] = 'info') => {
     setToast({ id: Date.now(), message, tone });
   }, []);
 
-  const loadClassrooms = useCallback(() => {
+  const loadClassrooms = useCallback(async (options?: { quiet?: boolean }) => {
     if (!isLoaded || !role) return;
 
-    setIsLoading(true);
-    startTransition(async () => {
-      const result = isProfessor
-        ? await getProfessorClassroomsAction()
-        : await getStudentClassroomsAction();
+    if (!options?.quiet) {
+      setIsLoading(true);
+    }
 
-      if (typeof result === 'string') {
-        showToast(result, 'error');
-      } else {
-        setClassrooms(result);
+    try {
+      const response = await fetch('/api/classrooms');
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error ?? 'Something went wrong');
       }
 
+      setCurrentRole(data.role);
+      setClassrooms(data.classrooms);
+    } catch (error) {
+      showToast(error instanceof Error ? error.message : 'Something went wrong', 'error');
+    } finally {
       setIsLoading(false);
-    });
-  }, [isLoaded, isProfessor, role, showToast]);
+    }
+  }, [isLoaded, role, showToast]);
 
   useEffect(() => {
-    loadClassrooms();
+    void loadClassrooms();
   }, [loadClassrooms]);
 
   const filteredClassrooms = useMemo(() => {
@@ -191,7 +195,7 @@ export function ClassroomsPage() {
         classroom={selectedClassroom}
         onClose={() => setSelectedClassroom(null)}
         onToast={showToast}
-        onChanged={loadClassrooms}
+        onChanged={() => void loadClassrooms({ quiet: true })}
       />
 
       {sidebarOpen && (
@@ -234,6 +238,7 @@ export function ClassroomsPage() {
               isProfessor={isProfessor}
               search={search}
               sortOrder={sortOrder}
+              role={isProfessor ? 'professor' : role === 'student' ? 'student' : null}
               onSearchChange={setSearch}
               onSortOrderChange={setSortOrder}
               onCreateClassroom={() => setIsCreateModalOpen(true)}
@@ -260,7 +265,7 @@ export function ClassroomsPage() {
               />
               <ClassroomStatCard
                 icon={ClipboardDocumentListIcon}
-                label="Lessons"
+                label="Documents"
                 value={0}
                 tone="blue"
               />

@@ -2,82 +2,49 @@ import { and, asc, eq } from 'drizzle-orm';
 
 import { db } from '@/lib/db';
 import {
+  classroomMaterials,
   classrooms,
-  lessonMaterials,
-  lessons,
 } from '@/lib/db/schema/classrooms';
 
-export async function createLessonMaterialRecord(
-  input: typeof lessonMaterials.$inferInsert,
+export async function createClassroomMaterialRecord(
+  input: typeof classroomMaterials.$inferInsert,
 ) {
-  const [material] = await db.insert(lessonMaterials).values(input).returning();
+  const [material] = await db.insert(classroomMaterials).values(input).returning();
   return material;
 }
 
-export async function getLessonMaterialById(materialId: string) {
-  const [material] = await db
-    .select()
-    .from(lessonMaterials)
-    .where(eq(lessonMaterials.id, materialId))
-    .limit(1);
-
-  return material;
-}
-
-export async function getLessonMaterialWithLessonAndClassroom(materialId: string) {
+export async function getClassroomMaterialWithClassroom(materialId: string) {
   const [material] = await db
     .select({
-      material: lessonMaterials,
-      lesson: lessons,
+      material: classroomMaterials,
       classroom: classrooms,
     })
-    .from(lessonMaterials)
-    .innerJoin(lessons, eq(lessons.id, lessonMaterials.lessonId))
-    .innerJoin(classrooms, eq(classrooms.id, lessons.classroomId))
-    .where(eq(lessonMaterials.id, materialId))
+    .from(classroomMaterials)
+    .innerJoin(classrooms, eq(classrooms.id, classroomMaterials.classroomId))
+    .where(eq(classroomMaterials.id, materialId))
     .limit(1);
 
   return material;
 }
 
-export async function getLessonMaterialsByLessonId(lessonId: string) {
+export async function getClassroomMaterialsByClassroomId(classroomId: string) {
   return db
     .select()
-    .from(lessonMaterials)
-    .where(eq(lessonMaterials.lessonId, lessonId))
-    .orderBy(asc(lessonMaterials.createdAt));
+    .from(classroomMaterials)
+    .where(eq(classroomMaterials.classroomId, classroomId))
+    .orderBy(asc(classroomMaterials.createdAt));
 }
 
-export async function getLessonMaterialsByClassroomId(classroomId: string) {
-  return db
-    .select({
-      id: lessonMaterials.id,
-      lessonId: lessonMaterials.lessonId,
-      title: lessonMaterials.title,
-      fileName: lessonMaterials.fileName,
-      fileUrl: lessonMaterials.fileUrl,
-      storageKey: lessonMaterials.storageKey,
-      mimeType: lessonMaterials.mimeType,
-      size: lessonMaterials.size,
-      createdAt: lessonMaterials.createdAt,
-      updatedAt: lessonMaterials.updatedAt,
-    })
-    .from(lessonMaterials)
-    .innerJoin(lessons, eq(lessons.id, lessonMaterials.lessonId))
-    .where(eq(lessons.classroomId, classroomId))
-    .orderBy(asc(lessonMaterials.createdAt));
-}
-
-export async function deleteLessonMaterialRecord(
+export async function deleteClassroomMaterialRecord(
   materialId: string,
-  lessonId: string,
+  classroomId: string,
 ) {
   const [material] = await db
-    .delete(lessonMaterials)
+    .delete(classroomMaterials)
     .where(
       and(
-        eq(lessonMaterials.id, materialId),
-        eq(lessonMaterials.lessonId, lessonId),
+        eq(classroomMaterials.id, materialId),
+        eq(classroomMaterials.classroomId, classroomId),
       ),
     )
     .returning();

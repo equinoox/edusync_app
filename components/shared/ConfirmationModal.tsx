@@ -55,7 +55,7 @@ export function ConfirmationModal({
             type="button"
             onClick={onConfirm}
             disabled={isLoading}
-            className="inline-flex h-9 items-center rounded-md bg-red-600 px-4 text-sm font-medium text-white transition-colors hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60"
+            className="inline-flex h-9 items-center rounded-md bg-orange-500 px-4 text-sm font-medium text-black transition-colors hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {isLoading ? loadingLabel : confirmLabel}
           </button>

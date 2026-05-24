@@ -130,15 +130,23 @@ export function ClassroomStudentsManager({
         ) : (
           students.map(student => (
             <div key={student.id} className="flex items-center gap-3 py-3">
-              <div className={`flex h-9 w-9 items-center justify-center rounded-lg text-sm font-bold ${darkMode ? 'bg-slate-800 text-violet-300' : 'bg-violet-50 text-violet-700'}`}>
-                {student.studentId.slice(0, 2).toUpperCase()}
-              </div>
+              {student.profile?.imageUrl ? (
+                <img
+                  src={student.profile.imageUrl}
+                  alt={student.profile.fullName ?? student.studentId}
+                  className="h-9 w-9 rounded-lg object-cover"
+                />
+              ) : (
+                <div className={`flex h-9 w-9 items-center justify-center rounded-lg text-sm font-bold ${darkMode ? 'bg-slate-800 text-violet-300' : 'bg-violet-50 text-violet-700'}`}>
+                  {(student.profile?.fullName ?? student.studentId).slice(0, 2).toUpperCase()}
+                </div>
+              )}
               <div className="min-w-0 flex-1">
                 <p className={`truncate text-sm font-semibold ${darkMode ? 'text-white' : 'text-slate-950'}`}>
-                  {student.studentId}
+                  {student.profile?.fullName ?? student.studentId}
                 </p>
                 <p className={`text-xs ${darkMode ? 'text-slate-500' : 'text-slate-400'}`}>
-                  Joined {new Date(student.createdAt).toLocaleDateString()}
+                  {student.profile?.email ?? student.studentId}
                 </p>
               </div>
               {canManage && (

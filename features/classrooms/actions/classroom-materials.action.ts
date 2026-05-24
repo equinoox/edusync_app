@@ -2,30 +2,18 @@
 
 import {
   addClassroomMaterial,
-  addLessonMaterial,
-  copyLessonMaterialToMyDocuments,
-  deleteLessonMaterial,
-  getLessonMaterials,
+  copyClassroomMaterialToMyDocuments,
+  deleteClassroomMaterial,
+  getClassroomMaterials,
 } from '@/features/classrooms/server/classroom-materials.service';
 import { put } from '@vercel/blob';
 import { classroomMaterialFileNameSchema } from '@/features/classrooms/schemas';
-import type {
-  AddLessonMaterialInput,
-  CopyLessonMaterialInput,
-} from '@/features/classrooms/types';
+import type { CopyClassroomMaterialInput } from '@/features/classrooms/types';
 
 const toActionError = (error: unknown) =>
   error instanceof Error && error.message.length > 0
     ? error.message
     : 'Something went wrong';
-
-export async function addLessonMaterialAction(input: AddLessonMaterialInput) {
-  try {
-    return await addLessonMaterial(input);
-  } catch (error) {
-    return toActionError(error);
-  }
-}
 
 export async function addClassroomMaterialAction(formData: FormData) {
   try {
@@ -64,27 +52,27 @@ export async function addClassroomMaterialAction(formData: FormData) {
   }
 }
 
-export async function getLessonMaterialsAction(lessonId: string) {
+export async function getClassroomMaterialsAction(classroomId: string) {
   try {
-    return await getLessonMaterials(lessonId);
+    return await getClassroomMaterials(classroomId);
   } catch (error) {
     return toActionError(error);
   }
 }
 
-export async function deleteLessonMaterialAction(materialId: string) {
+export async function deleteClassroomMaterialAction(materialId: string) {
   try {
-    return await deleteLessonMaterial(materialId);
+    return await deleteClassroomMaterial(materialId);
   } catch (error) {
     return toActionError(error);
   }
 }
 
-export async function copyLessonMaterialToMyDocumentsAction(
-  input: CopyLessonMaterialInput,
+export async function copyClassroomMaterialToMyDocumentsAction(
+  input: CopyClassroomMaterialInput,
 ) {
   try {
-    return await copyLessonMaterialToMyDocuments(input);
+    return await copyClassroomMaterialToMyDocuments(input);
   } catch (error) {
     return toActionError(error);
   }

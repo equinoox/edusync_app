@@ -10,8 +10,8 @@ import {
 import { ConfirmationModal } from '@/components/shared/ConfirmationModal';
 import {
   addClassroomMaterialAction,
-  copyLessonMaterialToMyDocumentsAction,
-  deleteLessonMaterialAction,
+  copyClassroomMaterialToMyDocumentsAction,
+  deleteClassroomMaterialAction,
 } from '@/features/classrooms/actions/classroom-materials.action';
 import { CopyClassroomMaterialButton } from '@/features/classrooms/components/CopyClassroomMaterialButton';
 import type { ClassroomMaterial } from '@/features/classrooms/types';
@@ -75,7 +75,7 @@ export function ClassroomMaterialsManager({
     const result =
       pendingAction.type === 'add'
         ? await addMaterial(pendingAction.file)
-        : await deleteLessonMaterialAction(pendingAction.material.id);
+        : await deleteClassroomMaterialAction(pendingAction.material.id);
 
     setLoadingAction(null);
 
@@ -101,7 +101,7 @@ export function ClassroomMaterialsManager({
 
   const copyMaterial = async (material: ClassroomMaterial) => {
     setLoadingAction(material.id);
-    const result = await copyLessonMaterialToMyDocumentsAction({
+    const result = await copyClassroomMaterialToMyDocumentsAction({
       materialId: material.id,
     });
     setLoadingAction(null);

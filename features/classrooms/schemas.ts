@@ -24,24 +24,8 @@ export const removeStudentFromClassroomSchema = z.object({
   studentId: z.string().min(1).optional(),
 });
 
-export const createLessonSchema = z.object({
+export const addClassroomMaterialSchema = z.object({
   classroomId: z.string().min(1),
-  sequenceNumber: z.number().int().positive(),
-  title: z.string().min(1).max(255),
-});
-
-export const updateLessonSchema = z.object({
-  title: z.string().min(1).max(255).optional(),
-  sequenceNumber: z.number().int().positive().optional(),
-});
-
-export const reorderLessonsSchema = z.object({
-  classroomId: z.string().min(1),
-  lessonIds: z.array(z.string().min(1)).min(1),
-});
-
-export const addLessonMaterialSchema = z.object({
-  lessonId: z.string().min(1),
   title: z.string().min(1).max(255),
   fileName: z.string().min(1).max(255),
   fileUrl: z.string().url(),
@@ -50,7 +34,7 @@ export const addLessonMaterialSchema = z.object({
   size: z.number().int().positive(),
 });
 
-export const copyLessonMaterialToUserDocumentsSchema = z.object({
+export const copyClassroomMaterialToUserDocumentsSchema = z.object({
   materialId: z.string().min(1),
 });
 

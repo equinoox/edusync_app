@@ -16,6 +16,7 @@ type ClassroomsDashboardHeaderProps = {
   isProfessor: boolean;
   search: string;
   sortOrder: SortOrder;
+  role: 'student' | 'professor' | null;
   onSearchChange: (value: string) => void;
   onSortOrderChange: (value: SortOrder) => void;
   onCreateClassroom: () => void;
@@ -25,6 +26,7 @@ export function ClassroomsDashboardHeader({
   isProfessor,
   search,
   sortOrder,
+  role,
   onSearchChange,
   onSortOrderChange,
   onCreateClassroom,
@@ -45,6 +47,11 @@ export function ClassroomsDashboardHeader({
           <p className={`mt-1 text-sm ${darkMode ? "text-slate-200" : "text-slate-600"}`}>
             Classes, materials, and students in one place.
           </p>
+          {role && (
+            <span className={`mt-2 inline-flex rounded-full px-3 py-1 text-xs font-bold ${darkMode ? "bg-slate-800 text-violet-300" : "bg-violet-50 text-violet-700"}`}>
+              Role: {role === 'professor' ? 'Professor' : 'Student'}
+            </span>
+          )}
         </div>
       </div>
 

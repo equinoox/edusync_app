@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useUser } from "@clerk/nextjs";
 import { useTheme } from "@/providers/ThemeProvider";
 import { Loader } from "@/components/shared/loader";
@@ -14,43 +14,9 @@ export default function HomePage() {
   const { isSignedIn, isLoaded, user } = useUser();
   const { darkMode } = useTheme();
 
-  const [showLoader, setShowLoader] = useState(false);
-  const [canShowPage, setCanShowPage] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  useEffect(() => {
-    if (!isSignedIn) {
-      sessionStorage.removeItem("home-loader-shown");
-    }
-  }, [isSignedIn]);
-
-  useEffect(() => {
-    if (!isLoaded) return;
-
-    if (!isSignedIn) {
-      setCanShowPage(true);
-      return;
-    }
-
-    const loaderAlreadyShown = sessionStorage.getItem("home-loader-shown");
-
-    if (loaderAlreadyShown) {
-      setCanShowPage(true);
-      return;
-    }
-
-    sessionStorage.setItem("home-loader-shown", "true");
-    setShowLoader(true);
-
-    const timer = setTimeout(() => {
-      setShowLoader(false);
-      setCanShowPage(true);
-    }, 5000);
-
-    return () => clearTimeout(timer);
-  }, [isLoaded, isSignedIn]);
-
-  if (!canShowPage || showLoader) {
+  if (!isLoaded) {
     return <Loader />;
   }
 

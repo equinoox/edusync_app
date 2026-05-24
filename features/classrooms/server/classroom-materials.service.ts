@@ -1,16 +1,16 @@
 import {
-  createLessonMaterialRecord,
-  deleteLessonMaterialRecord,
-  getLessonMaterialsByLessonId,
-  getLessonMaterialWithLessonAndClassroom,
+  createClassroomMaterialRecord,
+  deleteClassroomMaterialRecord,
+  getClassroomMaterialsByClassroomId,
+  getClassroomMaterialWithClassroom,
 } from '@/features/classrooms/repositories/classroom-materials.repository';
 import {
-  addLessonMaterialSchema,
-  copyLessonMaterialToUserDocumentsSchema,
+  addClassroomMaterialSchema,
+  copyClassroomMaterialToUserDocumentsSchema,
 } from '@/features/classrooms/schemas';
 import type {
-  AddLessonMaterialInput,
-  CopyLessonMaterialInput,
+  AddClassroomMaterialInput,
+  CopyClassroomMaterialInput,
 } from '@/features/classrooms/types';
 import { requireCurrentUserRole } from '@/features/auth/server/roles.service';
 import {
@@ -18,108 +18,61 @@ import {
   assertProfessorOwnsClassroom,
   checkStudentAccessToClassroom,
 } from '@/features/classrooms/server/classrooms.service';
-import {
-  createLessonRecord,
-  getFirstLessonByClassroomId,
-  getLessonById,
-} from '@/features/classrooms/repositories/lessons.repository';
 import { copyDocumentFromUrlForUser } from '@/features/documents/server/documents.service';
 
-export async function addLessonMaterial(input: AddLessonMaterialInput) {
+export async function addClassroomMaterial(input: AddClassroomMaterialInput) {
   const { userId } = await requireCurrentUserRole('professor');
-  const values = addLessonMaterialSchema.parse(input);
-  const lesson = await getLessonById(values.lessonId);
+  const values = addClassroomMaterialSchema.parse(input);
 
-  if (!lesson) {
-    throw new Error('Lesson not found');
-  }
-
-  await assertProfessorOwnsClassroom(lesson.classroomId, userId);
-
-  return createLessonMaterialRecord(values);
+  await assertProfessorOwnsClassroom(values.classroomId, userId);
+  return createClassroomMaterialRecord(values);
 }
 
-async function getOrCreateClassroomMaterialsLesson(classroomId: string) {
-  const existingLesson = await getFirstLessonByClassroomId(classroomId);
-
-  if (existingLesson) {
-    return existingLesson;
-  }
-
-  return createLessonRecord({
-    classroomId,
-    sequenceNumber: 1,
-    title: 'Classroom Materials',
-  });
+export async function getClassroomMaterials(classroomId: string) {
+  await assertCurrentUserCanViewClassroom(classroomId);
+  return getClassroomMaterialsByClassroomId(classroomId);
 }
 
-export async function addClassroomMaterial(input: Omit<AddLessonMaterialInput, 'lessonId'> & {
-  classroomId: string;
-}) {
+export async function deleteClassroomMaterial(materialId: string) {
   const { userId } = await requireCurrentUserRole('professor');
+  const materialWithClassroom = await getClassroomMaterialWithClassroom(materialId);
 
-  await assertProfessorOwnsClassroom(input.classroomId, userId);
-
-  const lesson = await getOrCreateClassroomMaterialsLesson(input.classroomId);
-  const values = addLessonMaterialSchema.parse({
-    ...input,
-    lessonId: lesson.id,
-  });
-
-  return createLessonMaterialRecord(values);
-}
-
-export async function getLessonMaterials(lessonId: string) {
-  const lesson = await getLessonById(lessonId);
-
-  if (!lesson) {
-    throw new Error('Lesson not found');
-  }
-
-  await assertCurrentUserCanViewClassroom(lesson.classroomId);
-  return getLessonMaterialsByLessonId(lessonId);
-}
-
-export async function deleteLessonMaterial(materialId: string) {
-  const { userId } = await requireCurrentUserRole('professor');
-  const materialWithLesson = await getLessonMaterialWithLessonAndClassroom(materialId);
-
-  if (!materialWithLesson) {
-    throw new Error('Lesson material not found');
+  if (!materialWithClassroom) {
+    throw new Error('Classroom material not found');
   }
 
   await assertProfessorOwnsClassroom(
-    materialWithLesson.lesson.classroomId,
+    materialWithClassroom.material.classroomId,
     userId,
   );
 
-  const material = await deleteLessonMaterialRecord(
+  const material = await deleteClassroomMaterialRecord(
     materialId,
-    materialWithLesson.lesson.id,
+    materialWithClassroom.material.classroomId,
   );
 
   if (!material) {
-    throw new Error('Lesson material not found');
+    throw new Error('Classroom material not found');
   }
 
   return material;
 }
 
-export async function copyLessonMaterialToMyDocuments(
-  input: CopyLessonMaterialInput,
+export async function copyClassroomMaterialToMyDocuments(
+  input: CopyClassroomMaterialInput,
 ) {
   const { userId } = await requireCurrentUserRole('student');
-  const values = copyLessonMaterialToUserDocumentsSchema.parse(input);
-  const materialWithLesson = await getLessonMaterialWithLessonAndClassroom(
+  const values = copyClassroomMaterialToUserDocumentsSchema.parse(input);
+  const materialWithClassroom = await getClassroomMaterialWithClassroom(
     values.materialId,
   );
 
-  if (!materialWithLesson) {
-    throw new Error('Lesson material not found');
+  if (!materialWithClassroom) {
+    throw new Error('Classroom material not found');
   }
 
   const hasAccess = await checkStudentAccessToClassroom(
-    materialWithLesson.lesson.classroomId,
+    materialWithClassroom.material.classroomId,
     userId,
   );
 
@@ -129,9 +82,9 @@ export async function copyLessonMaterialToMyDocuments(
 
   return copyDocumentFromUrlForUser({
     userId,
-    fileName: materialWithLesson.material.fileName,
-    fileUrl: materialWithLesson.material.fileUrl,
-    mimeType: materialWithLesson.material.mimeType,
-    storageKey: materialWithLesson.material.storageKey,
+    fileName: materialWithClassroom.material.fileName,
+    fileUrl: materialWithClassroom.material.fileUrl,
+    mimeType: materialWithClassroom.material.mimeType,
+    storageKey: materialWithClassroom.material.storageKey,
   });
 }
