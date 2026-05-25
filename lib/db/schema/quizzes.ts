@@ -35,6 +35,7 @@ export const quizzes = pgTable('quizzes', {
     .notNull()
     .default(0),
   timeLimitMinutes: integer('time_limit_minutes').notNull(),
+  quizDate: timestamp('quiz_date'),
   createdAt: timestamp('created_at').notNull().default(sql`now()`),
   updatedAt: timestamp('updated_at').notNull().default(sql`now()`),
 });

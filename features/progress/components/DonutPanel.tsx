@@ -18,6 +18,7 @@ export function DonutPanel({
   centerLabel,
   segments,
   footerLabel,
+  onViewAll,
 }: DonutPanelProps) {
   let offset = 0;
 
@@ -79,7 +80,7 @@ export function DonutPanel({
       </div>
 
       <div className="mt-5 border-t border-white/[0.06] pt-4 text-center">
-        <ProgressLinkButton>
+        <ProgressLinkButton onClick={onViewAll}>
           {footerLabel}
           <ArrowRightIcon className="h-4 w-4" />
         </ProgressLinkButton>

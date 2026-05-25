@@ -70,6 +70,7 @@ export type SubjectPerformanceItem = {
 
 export type SubjectPerformanceProps = {
   items: SubjectPerformanceItem[];
+  onViewAll?: () => void;
 };
 
 export type DonutSegment = {
@@ -85,10 +86,12 @@ export type DonutPanelProps = {
   centerLabel: string;
   segments: DonutSegment[];
   footerLabel: string;
+  onViewAll?: () => void;
 };
 
 export type RecentAchievementsProps = {
   activities: ProgressActivity[];
+  onViewAll?: () => void;
 };
 
 export type AiStudyInsightProps = {

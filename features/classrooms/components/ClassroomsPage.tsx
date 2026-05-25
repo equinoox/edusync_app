@@ -17,11 +17,15 @@ import SmallBar from '@/components/layout/SmallBar';
 import TopBar from '@/components/layout/TopBar';
 import { ConfirmationModal } from '@/components/shared/ConfirmationModal';
 import { QuickActionsPanel } from '@/components/shared/QuickActionsPanel';
-import { RecentActivityPanel } from '@/components/shared/RecentActivityPanel';
+import {
+  RecentActivityPanel,
+  type RecentActivityItem,
+} from '@/components/shared/RecentActivityPanel';
 import {
   ToastNotification,
   type ToastNotificationState,
 } from '@/components/shared/ToastNotification';
+import { ViewAllModal } from '@/components/shared/ViewAllModal';
 import {
   createClassroomAction,
   deleteClassroomAction,
@@ -58,6 +62,7 @@ export function ClassroomsPage() {
   const [search, setSearch] = useState('');
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
   const [currentRole, setCurrentRole] = useState<'student' | 'professor' | null>(null);
+  const [isActivityModalOpen, setIsActivityModalOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -124,11 +129,12 @@ export function ClassroomsPage() {
     [classrooms],
   );
 
-  const recentActivityItems = useMemo(
+  const allRecentActivityItems = useMemo<RecentActivityItem[]>(
     () =>
-      classrooms.slice(0, 4).map(classroom => ({
+      classrooms.map(classroom => ({
         id: classroom.id,
         title: `Classroom created in ${classroom.title}`,
+        description: classroom.description,
         timestamp: classroom.createdAt,
         Icon: BuildingLibraryIcon,
       })),
@@ -237,6 +243,56 @@ export function ClassroomsPage() {
         onClose={() => setSelectedClassroom(null)}
         onToast={showToast}
         onChanged={() => void loadClassrooms({ quiet: true })}
+      />
+      <ViewAllModal
+        isOpen={isActivityModalOpen}
+        title="All Classroom Activity"
+        items={allRecentActivityItems}
+        emptyMessage="No classroom activity yet."
+        onClose={() => setIsActivityModalOpen(false)}
+        renderItem={item => {
+          const Icon = item.Icon ?? BuildingLibraryIcon;
+
+          return (
+            <div
+              key={item.id}
+              className={`flex items-center gap-3 rounded-xl border p-4 ${
+                darkMode
+                  ? 'border-white/5 bg-slate-800'
+                  : 'border-slate-300 bg-slate-200'
+              }`}
+            >
+              <span
+                className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${
+                  darkMode
+                    ? 'bg-violet-500/20 text-violet-300'
+                    : 'bg-violet-500/15 text-violet-700'
+                }`}
+              >
+                <Icon className="h-5 w-5" />
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="line-clamp-2 text-sm font-semibold">{item.title}</p>
+                <p
+                  className={`mt-1 line-clamp-2 text-xs ${
+                    darkMode ? 'text-slate-400' : 'text-slate-600'
+                  }`}
+                >
+                  {item.description}
+                </p>
+              </div>
+              {item.timestamp && (
+                <time
+                  className={`shrink-0 text-xs ${
+                    darkMode ? 'text-slate-500' : 'text-slate-600'
+                  }`}
+                >
+                  {new Date(item.timestamp).toLocaleDateString()}
+                </time>
+              )}
+            </div>
+          );
+        }}
       />
 
       {sidebarOpen && (
@@ -372,7 +428,9 @@ export function ClassroomsPage() {
                 <UpcomingPanel />
                 <RecentActivityPanel
                   emptyMessage="No classroom activity yet."
-                  items={recentActivityItems}
+                  items={allRecentActivityItems}
+                  previewLimit={4}
+                  onViewAll={() => setIsActivityModalOpen(true)}
                 />
                 <QuickActionsPanel items={quickActions} />
               </div>

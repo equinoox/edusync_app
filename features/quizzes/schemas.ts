@@ -13,6 +13,15 @@ const nullableClassroomIdSchema = z
   .nullable()
   .optional();
 
+const nullableQuizDateSchema = z
+  .string()
+  .min(1)
+  .refine(value => !Number.isNaN(new Date(value).getTime()), {
+    message: 'Quiz date is invalid',
+  })
+  .nullable()
+  .optional();
+
 export const quizOptionSchema = z.object({
   id: z.string().min(1).optional(),
   label: z.enum(quizOptionLabels),
@@ -48,6 +57,7 @@ export const createQuizSchema = z.object({
   description: z.string().max(2000).optional().default(''),
   weight: z.number().min(0).default(0),
   timeLimitMinutes: z.number().int().positive(),
+  quizDate: nullableQuizDateSchema,
 });
 
 export const updateQuizSchema = createQuizSchema.partial();

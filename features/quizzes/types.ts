@@ -32,6 +32,7 @@ export type QuizListItem = {
   totalPoints: number;
   weight: number;
   timeLimitMinutes: number;
+  quizDate: Date | string | null;
   createdAt: Date | string;
   updatedAt: Date | string;
 };

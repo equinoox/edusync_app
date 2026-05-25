@@ -2,6 +2,10 @@ import {
   assertProfessorOwnsClassroom,
   checkStudentAccessToClassroom,
 } from '@/features/classrooms/server/classrooms.service';
+import {
+  checkQuizCanBeTakenToday,
+  createQuizCalendarEvent,
+} from '@/features/calendar/server/calendar.service';
 import { getCurrentUserWithRole, requireCurrentUserRole } from '@/features/auth/server/roles.service';
 import {
   addQuestionToQuizSchema,
@@ -57,6 +61,22 @@ const toQuestionWithOptions = async (quizId: string) => {
   }));
 };
 
+const normalizeQuizDate = (value: string | null | undefined) => {
+  if (!value) return value === null ? null : undefined;
+
+  const dateOnlyMatch = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+  const date = dateOnlyMatch
+    ? new Date(
+        Number(dateOnlyMatch[1]),
+        Number(dateOnlyMatch[2]) - 1,
+        Number(dateOnlyMatch[3]),
+      )
+    : new Date(value);
+
+  date.setHours(0, 0, 0, 0);
+  return date;
+};
+
 async function recalculateQuizPoints(quizId: string) {
   const questions = await getQuestionsByQuizId(quizId);
   const totalPoints = questions.reduce(
@@ -104,6 +124,10 @@ export async function assertCurrentStudentCanTakeQuiz(quizId: string) {
     }
   }
 
+  if (!checkQuizCanBeTakenToday(quiz.quizDate)) {
+    throw new Error('This quiz can only be taken on its assigned date');
+  }
+
   return { quiz, studentId: userId };
 }
 
@@ -115,12 +139,24 @@ export async function createQuiz(input: CreateQuizInput) {
     await assertProfessorOwnsClassroom(values.classroomId, userId);
   }
 
-  return createQuizRecord({
+  const quiz = await createQuizRecord({
     ...values,
     classroomId: values.classroomId ?? null,
+    quizDate: normalizeQuizDate(values.quizDate),
     professorId: userId,
     totalPoints: 0,
   });
+
+  await createQuizCalendarEvent({
+    quizId: quiz.id,
+    professorId: userId,
+    classroomId: quiz.classroomId,
+    title: quiz.title,
+    description: quiz.description,
+    date: quiz.quizDate,
+  });
+
+  return quiz;
 }
 
 export async function updateQuiz(quizId: string, input: UpdateQuizInput) {
@@ -132,11 +168,23 @@ export async function updateQuiz(quizId: string, input: UpdateQuizInput) {
     await assertProfessorOwnsClassroom(values.classroomId, userId);
   }
 
-  const quiz = await updateQuizRecord(quizId, userId, values);
+  const quiz = await updateQuizRecord(quizId, userId, {
+    ...values,
+    quizDate: normalizeQuizDate(values.quizDate),
+  });
 
   if (!quiz) {
     throw new Error('Quiz not found');
   }
+
+  await createQuizCalendarEvent({
+    quizId: quiz.id,
+    professorId: userId,
+    classroomId: quiz.classroomId,
+    title: quiz.title,
+    description: quiz.description,
+    date: quiz.quizDate,
+  });
 
   return quiz;
 }

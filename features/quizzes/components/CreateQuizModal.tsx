@@ -22,6 +22,7 @@ const defaultFormState: CreateQuizInput = {
   weight: 0,
   timeLimitMinutes: 15,
   classroomId: null,
+  quizDate: null,
 };
 
 export function CreateQuizModal({
@@ -138,6 +139,21 @@ export function CreateQuizModal({
               />
             </label>
           </div>
+
+          <label className="block">
+            <span className={`mb-2 block text-sm font-semibold ${darkMode ? 'text-slate-200' : 'text-slate-800'}`}>
+              Quiz date
+            </span>
+            <input
+              type="date"
+              value={formState.quizDate ?? ''}
+              onChange={event => setFormState(previous => ({ ...previous, quizDate: event.target.value || null }))}
+              className={`h-11 w-full rounded-lg border px-3 text-sm outline-none focus:ring-2 focus:ring-violet-500 ${darkMode ? 'border-slate-700 bg-slate-950 text-white' : 'border-slate-500 bg-slate-400 text-slate-950'}`}
+            />
+            <span className={`mt-1 block text-xs ${darkMode ? 'text-slate-400' : 'text-slate-700'}`}>
+              Students can take scheduled quizzes only on this date.
+            </span>
+          </label>
 
           <div className="grid grid-cols-2 gap-2">
             {(['general', 'classroom'] as const).map(scope => (

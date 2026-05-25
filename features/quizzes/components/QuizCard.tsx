@@ -1,6 +1,7 @@
 'use client';
 
 import {
+  CalendarDaysIcon,
   DocumentCheckIcon,
   TrophyIcon,
 } from '@heroicons/react/24/outline';
@@ -26,6 +27,14 @@ type QuizCardProps = {
 const formatPoints = (points: number) =>
   Number.isInteger(points) ? String(points) : points.toFixed(1);
 
+const formatQuizDate = (date: Date | string | null) =>
+  date
+    ? new Intl.DateTimeFormat('en', {
+        month: 'short',
+        day: 'numeric',
+      }).format(new Date(date))
+    : null;
+
 export function QuizCard({
   quiz,
   isProfessor,
@@ -37,6 +46,7 @@ export function QuizCard({
   const completedAttempt = quiz.attempt?.status === 'submitted' ? quiz.attempt : null;
   const expiredAttempt = quiz.attempt?.status === 'expired' ? quiz.attempt : null;
   const inProgressAttempt = quiz.attempt?.status === 'in_progress' ? quiz.attempt : null;
+  const quizDateLabel = formatQuizDate(quiz.quizDate);
 
   return (
     <div
@@ -63,6 +73,12 @@ export function QuizCard({
           <p className={`mt-1 line-clamp-1 text-xs ${darkMode ? 'text-slate-400' : 'text-slate-700'}`}>
             {quiz.description || 'No description provided.'}
           </p>
+          {quizDateLabel && (
+            <p className={`mt-1 flex items-center gap-1 text-xs ${darkMode ? 'text-violet-300' : 'text-violet-700'}`}>
+              <CalendarDaysIcon className="h-3.5 w-3.5" />
+              {quizDateLabel}
+            </p>
+          )}
         </div>
       </button>
 

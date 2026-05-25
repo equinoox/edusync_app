@@ -113,10 +113,15 @@ export function QuizDetailsModal({
         </div>
 
         <div className="min-h-0 flex-1 overflow-y-auto px-5 py-5">
-          <div className={`mb-4 grid gap-3 rounded-xl border p-3 text-sm ${darkMode ? 'border-slate-700 bg-slate-950 text-slate-300' : 'border-slate-500 bg-slate-400 text-slate-800'} sm:grid-cols-4`}>
+          <div className={`mb-4 grid gap-3 rounded-xl border p-3 text-sm ${darkMode ? 'border-slate-700 bg-slate-950 text-slate-300' : 'border-slate-500 bg-slate-400 text-slate-800'} sm:grid-cols-5`}>
             <span>{Number(activeQuiz.totalPoints).toFixed(1)} pts</span>
             <span>Weight {Number(activeQuiz.weight).toFixed(1)}</span>
             <span>{activeQuiz.timeLimitMinutes} min</span>
+            <span>
+              {activeQuiz.quizDate
+                ? new Date(activeQuiz.quizDate).toLocaleDateString()
+                : 'No date'}
+            </span>
             <span>{details?.questions.length ?? 0} questions</span>
           </div>
 

@@ -23,6 +23,8 @@ type RecentActivityPanelProps = {
   emptyMessage: string;
   items: RecentActivityItem[];
   actionLabel?: string;
+  previewLimit?: number;
+  onViewAll?: () => void;
 };
 
 const formatRelative = (value: Date | string) => {
@@ -43,8 +45,11 @@ export function RecentActivityPanel({
   emptyMessage,
   items,
   actionLabel = 'View all activity',
+  previewLimit,
+  onViewAll,
 }: RecentActivityPanelProps) {
   const { darkMode } = useTheme();
+  const visibleItems = previewLimit ? items.slice(0, previewLimit) : items;
 
   return (
     <aside className={`rounded-xl border p-5 shadow-md ${darkMode ? 'border-white/5 bg-slate-800' : 'border-slate-500 bg-slate-400'}`}>
@@ -56,12 +61,12 @@ export function RecentActivityPanel({
       </div>
 
       <div className={`mt-5 divide-y ${darkMode ? 'divide-white/5' : 'divide-slate-500'}`}>
-        {items.length === 0 ? (
+        {visibleItems.length === 0 ? (
           <p className={`py-4 text-sm ${darkMode ? 'text-slate-300' : 'text-slate-700'}`}>
             {emptyMessage}
           </p>
         ) : (
-          items.map(item => {
+          visibleItems.map(item => {
             const Icon = item.Icon ?? SparklesIcon;
 
             return (
@@ -93,6 +98,7 @@ export function RecentActivityPanel({
 
       <button
         type="button"
+        onClick={onViewAll}
         className={`mt-5 inline-flex w-full items-center justify-center gap-2 text-sm font-medium transition ${darkMode ? 'text-violet-300 hover:text-violet-200' : 'text-violet-700 hover:text-violet-800'}`}
       >
         {actionLabel}

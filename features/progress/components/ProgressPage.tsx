@@ -17,6 +17,7 @@ import {
 
 import Sidebar from '@/components/layout/sidebar';
 import SmallBar from '@/components/layout/SmallBar';
+import { ViewAllModal } from '@/components/shared/ViewAllModal';
 import { AiStudyInsight } from '@/features/progress/components/AiStudyInsight';
 import { DonutPanel } from '@/features/progress/components/DonutPanel';
 import { ProgressHeader } from '@/features/progress/components/ProgressHeader';
@@ -34,6 +35,13 @@ import type {
   SubjectPerformanceItem,
 } from '@/features/progress/types';
 import { cn } from '@/lib/utils';
+
+type ProgressModalType =
+  | 'subjects'
+  | 'quizPerformance'
+  | 'studyPoints'
+  | 'achievements'
+  | null;
 
 type DocumentListItem = {
   id: string;
@@ -171,7 +179,7 @@ const getSubjectTone = (index: number): SubjectPerformanceItem['tone'] =>
   ['violet', 'orange', 'green', 'cyan', 'pink', 'blue'][index % 6] as SubjectPerformanceItem['tone'];
 
 const toSubjectItems = (topics: ProgressTopic[]): SubjectPerformanceItem[] => {
-  return topics.slice(0, 6).map((topic, index) => ({
+  return topics.map((topic, index) => ({
     id: `${topic.sourceType}-${topic.topicName}`,
     name: topic.topicName,
     percent: Math.round(topic.averageScore),
@@ -218,6 +226,7 @@ export function ProgressPage() {
   const [documents, setDocuments] = useState<DocumentListItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [activeModal, setActiveModal] = useState<ProgressModalType>(null);
 
   const role = user?.publicMetadata?.role;
 
@@ -310,6 +319,117 @@ export function ProgressPage() {
       </div>
 
       <section className="relative flex min-w-0 flex-1 flex-col overflow-hidden">
+        {data && (
+          <>
+            <ViewAllModal
+              isOpen={activeModal === 'subjects'}
+              title="All Subject Performance"
+              items={subjectItems}
+              emptyMessage="Complete quizzes to unlock subject performance."
+              onClose={() => setActiveModal(null)}
+              renderItem={item => (
+                <div
+                  key={item.id}
+                  className="grid grid-cols-[2.5rem_minmax(0,1fr)_3rem] items-center gap-3 rounded-xl border border-white/[0.06] bg-slate-800 p-4"
+                >
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-violet-500/20 text-violet-300">
+                    <item.Icon className="h-5 w-5" />
+                  </span>
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-semibold">{item.name}</p>
+                    <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-slate-700">
+                      <div
+                        className="h-full rounded-full bg-violet-500"
+                        style={{ width: `${item.percent}%` }}
+                      />
+                    </div>
+                  </div>
+                  <p className="text-right text-sm font-bold">{item.percent}%</p>
+                </div>
+              )}
+            />
+            <ViewAllModal
+              isOpen={activeModal === 'quizPerformance'}
+              title="All Quiz Performance"
+              items={data.quizPerformance}
+              emptyMessage="Complete quizzes to see performance history."
+              onClose={() => setActiveModal(null)}
+              renderItem={item => (
+                <div
+                  key={item.quizId}
+                  className="grid gap-3 rounded-xl border border-white/[0.06] bg-slate-800 p-4 sm:grid-cols-[minmax(0,1fr)_5rem_5rem_5rem]"
+                >
+                  <div className="min-w-0">
+                    <p className="truncate text-sm font-semibold">{item.quizTitle}</p>
+                    <p className="mt-1 text-xs text-slate-400">
+                      {item.classroomTitle ?? 'General quiz'} -{' '}
+                      {new Date(item.submittedAt).toLocaleDateString()}
+                    </p>
+                  </div>
+                  <p className="text-sm">
+                    <span className="block text-xs text-slate-400">Score</span>
+                    <b>{Math.round(item.scorePercent)}%</b>
+                  </p>
+                  <p className="text-sm">
+                    <span className="block text-xs text-slate-400">Accuracy</span>
+                    <b>{Math.round(item.accuracyPercent)}%</b>
+                  </p>
+                  <p className="text-sm">
+                    <span className="block text-xs text-slate-400">Weighted</span>
+                    <b>{Math.round(item.weightedScore)}</b>
+                  </p>
+                </div>
+              )}
+            />
+            <ViewAllModal
+              isOpen={activeModal === 'studyPoints'}
+              title="Study Points Breakdown"
+              items={studySegments}
+              emptyMessage="Complete quizzes to generate study points."
+              onClose={() => setActiveModal(null)}
+              renderItem={item => (
+                <div
+                  key={item.label}
+                  className="grid grid-cols-[1rem_minmax(0,1fr)_5rem_4rem] items-center gap-3 rounded-xl border border-white/[0.06] bg-slate-800 p-4"
+                >
+                  <span
+                    className="h-3 w-3 rounded-full"
+                    style={{ backgroundColor: item.color }}
+                  />
+                  <p className="truncate text-sm font-semibold">{item.label}</p>
+                  <p className="text-right text-sm text-slate-300">{item.detail}</p>
+                  <p className="text-right text-sm font-bold">{item.value}%</p>
+                </div>
+              )}
+            />
+            <ViewAllModal
+              isOpen={activeModal === 'achievements'}
+              title="All Recent Achievements"
+              items={data.recentActivity}
+              emptyMessage="Recent quiz milestones will appear here."
+              onClose={() => setActiveModal(null)}
+              renderItem={item => (
+                <div
+                  key={item.id}
+                  className="rounded-xl border border-white/[0.06] bg-slate-800 p-4"
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-semibold">{item.title}</p>
+                      <p className="mt-1 line-clamp-2 text-xs text-slate-400">
+                        {item.description}
+                      </p>
+                    </div>
+                    <time className="shrink-0 text-xs text-slate-500">
+                      {new Date(item.occurredAt).toLocaleDateString()}
+                    </time>
+                  </div>
+                </div>
+              )}
+            />
+          </>
+        )}
+
         <SmallBar
           sidebarOpen={sidebarOpen}
           onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
@@ -407,7 +527,10 @@ export function ProgressPage() {
 
                 <div className="mt-5 grid gap-5 xl:grid-cols-[minmax(0,2fr)_minmax(320px,1fr)]">
                   <ProgressLineChart points={lineChartPoints} />
-                  <SubjectPerformance items={subjectItems} />
+                  <SubjectPerformance
+                    items={subjectItems}
+                    onViewAll={() => setActiveModal('subjects')}
+                  />
                 </div>
 
                 <div className="mt-5 grid gap-5 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(320px,1fr)]">
@@ -417,6 +540,7 @@ export function ProgressPage() {
                     centerLabel="Average Score"
                     segments={quizSegments}
                     footerLabel="View all quizzes"
+                    onViewAll={() => setActiveModal('quizPerformance')}
                   />
                   <DonutPanel
                     title="Study Points Breakdown"
@@ -424,8 +548,12 @@ export function ProgressPage() {
                     centerLabel="Total"
                     segments={studySegments}
                     footerLabel="View detailed breakdown"
+                    onViewAll={() => setActiveModal('studyPoints')}
                   />
-                  <RecentAchievements activities={data.recentActivity} />
+                  <RecentAchievements
+                    activities={data.recentActivity}
+                    onViewAll={() => setActiveModal('achievements')}
+                  />
                 </div>
 
                 <div className="mt-5">

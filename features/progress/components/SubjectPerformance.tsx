@@ -24,19 +24,25 @@ const barClasses = {
   pink: 'bg-pink-400',
 };
 
-export function SubjectPerformance({ items }: SubjectPerformanceProps) {
+export function SubjectPerformance({ items, onViewAll }: SubjectPerformanceProps) {
+  const visibleItems = items.slice(0, 6);
+
   return (
     <ProgressPanel className="p-5">
       <ProgressSectionTitle
         title="Subject Performance"
         action={
-          <button type="button" className="text-sm font-medium text-violet-400">
+          <button
+            type="button"
+            onClick={onViewAll}
+            className="text-sm font-medium text-violet-400"
+          >
             View all
           </button>
         }
       />
 
-      {items.length === 0 ? (
+      {visibleItems.length === 0 ? (
         <div className="grid min-h-48 place-items-center rounded-xl border border-dashed border-slate-700 text-center">
           <p className="px-6 text-sm text-slate-400">
             Complete quizzes to unlock subject performance.
@@ -44,7 +50,7 @@ export function SubjectPerformance({ items }: SubjectPerformanceProps) {
         </div>
       ) : (
         <div className="space-y-4">
-        {items.map(item => (
+        {visibleItems.map(item => (
           <div key={item.id} className="grid grid-cols-[2.5rem_minmax(0,1fr)_2.75rem_1rem] items-center gap-3">
             <span className={cn('flex h-9 w-9 items-center justify-center rounded-full', toneClasses[item.tone])}>
               <item.Icon className="h-5 w-5" />

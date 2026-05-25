@@ -21,6 +21,7 @@ import {
   ToastNotification,
   type ToastNotificationState,
 } from '@/components/shared/ToastNotification';
+import { ViewAllModal } from '@/components/shared/ViewAllModal';
 import type { ClassroomListItem } from '@/features/classrooms/types';
 import {
   createQuizAction,
@@ -108,6 +109,7 @@ export function QuizzesPage() {
   const [quizForDetails, setQuizForDetails] = useState<QuizCardItem | null>(null);
   const [quizForTaking, setQuizForTaking] = useState<QuizCardItem | null>(null);
   const [activityItems, setActivityItems] = useState<RecentActivityItem[]>([]);
+  const [isActivityModalOpen, setIsActivityModalOpen] = useState(false);
   const [handledQueryQuizId, setHandledQueryQuizId] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
   const [isDeleting, setIsDeleting] = useState(false);
@@ -248,10 +250,10 @@ export function QuizzesPage() {
         )
       : 0;
 
-  const recentActivity = useMemo(
+  const recentActivity = useMemo<RecentActivityItem[]>(
     () => [
       ...activityItems,
-      ...quizzes.slice(0, 4).map(quiz => ({
+      ...quizzes.map(quiz => ({
         id: `quiz-${quiz.id}`,
         title: quiz.attempt?.status === 'submitted'
           ? `You completed ${quiz.title}`
@@ -260,7 +262,7 @@ export function QuizzesPage() {
         timestamp: quiz.updatedAt,
         Icon: ClipboardDocumentListIcon,
       })),
-    ].slice(0, 5),
+    ],
     [activityItems, quizzes],
   );
 
@@ -407,6 +409,56 @@ export function QuizzesPage() {
         onClose={() => setQuizForTaking(null)}
         onSubmitted={() => void loadQuizzes({ quiet: true })}
         onToast={showToast}
+      />
+      <ViewAllModal
+        isOpen={isActivityModalOpen}
+        title="All Quiz Activity"
+        items={recentActivity}
+        emptyMessage="No quiz activity yet."
+        onClose={() => setIsActivityModalOpen(false)}
+        renderItem={item => {
+          const Icon = item.Icon ?? ClipboardDocumentListIcon;
+
+          return (
+            <div
+              key={item.id}
+              className={`flex items-center gap-3 rounded-xl border p-4 ${
+                darkMode
+                  ? 'border-white/5 bg-slate-800'
+                  : 'border-slate-300 bg-slate-200'
+              }`}
+            >
+              <span
+                className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${
+                  darkMode
+                    ? 'bg-violet-500/20 text-violet-300'
+                    : 'bg-violet-500/15 text-violet-700'
+                }`}
+              >
+                <Icon className="h-5 w-5" />
+              </span>
+              <div className="min-w-0 flex-1">
+                <p className="line-clamp-2 text-sm font-semibold">{item.title}</p>
+                <p
+                  className={`mt-1 line-clamp-2 text-xs ${
+                    darkMode ? 'text-slate-400' : 'text-slate-600'
+                  }`}
+                >
+                  {item.description}
+                </p>
+              </div>
+              {item.timestamp && (
+                <time
+                  className={`shrink-0 text-xs ${
+                    darkMode ? 'text-slate-500' : 'text-slate-600'
+                  }`}
+                >
+                  {new Date(item.timestamp).toLocaleDateString()}
+                </time>
+              )}
+            </div>
+          );
+        }}
       />
       <ConfirmationModal
         isOpen={Boolean(quizToCreate)}
@@ -561,6 +613,8 @@ export function QuizzesPage() {
                   title="Recent Activity"
                   emptyMessage="No quiz activity yet."
                   items={recentActivity}
+                  previewLimit={5}
+                  onViewAll={() => setIsActivityModalOpen(true)}
                 />
                 <QuickActionsPanel items={quickActions} />
               </div>

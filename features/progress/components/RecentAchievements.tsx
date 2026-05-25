@@ -31,7 +31,10 @@ const getActivityIcon = (activity: ProgressActivity) => {
   return TrophyIcon;
 };
 
-export function RecentAchievements({ activities }: RecentAchievementsProps) {
+export function RecentAchievements({
+  activities,
+  onViewAll,
+}: RecentAchievementsProps) {
   const visibleActivities = activities.slice(0, 4);
 
   return (
@@ -39,7 +42,11 @@ export function RecentAchievements({ activities }: RecentAchievementsProps) {
       <ProgressSectionTitle
         title="Recent Achievements"
         action={
-          <button type="button" className="text-sm font-medium text-violet-400">
+          <button
+            type="button"
+            onClick={onViewAll}
+            className="text-sm font-medium text-violet-400"
+          >
             View all
           </button>
         }
@@ -82,7 +89,7 @@ export function RecentAchievements({ activities }: RecentAchievementsProps) {
       )}
 
       <div className="pt-4 text-center">
-        <ProgressLinkButton>
+        <ProgressLinkButton onClick={onViewAll}>
           View all achievements
           <span aria-hidden="true">{'->'}</span>
         </ProgressLinkButton>

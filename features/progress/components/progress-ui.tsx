@@ -39,10 +39,17 @@ export function ProgressSectionTitle({
   );
 }
 
-export function ProgressLinkButton({ children }: { children: ReactNode }) {
+export function ProgressLinkButton({
+  children,
+  onClick,
+}: {
+  children: ReactNode;
+  onClick?: () => void;
+}) {
   return (
     <button
       type="button"
+      onClick={onClick}
       className="inline-flex items-center gap-2 text-sm font-medium text-violet-400 transition hover:text-violet-300"
     >
       {children}
