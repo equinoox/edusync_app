@@ -1,6 +1,7 @@
 import { sql } from 'drizzle-orm';
 import {
   boolean,
+  index,
   integer,
   jsonb,
   numeric,
@@ -100,6 +101,9 @@ export const quizAttempts = pgTable(
     updatedAt: timestamp('updated_at').notNull().default(sql`now()`),
   },
   table => ({
+    quizAttemptStudentStatusSubmittedAtIdx: index(
+      'quiz_attempt_student_status_submitted_at_idx',
+    ).on(table.studentId, table.status, table.submittedAt),
     quizStudentAttemptUnique: uniqueIndex('quiz_student_attempt_unique').on(
       table.quizId,
       table.studentId,

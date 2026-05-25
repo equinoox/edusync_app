@@ -29,6 +29,13 @@
       "when": 1779627000000,
       "tag": "0003_quizzes_backend",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1779729000000,
+      "tag": "0004_progress_attempt_indexes",
+      "breakpoints": true
     }
   ]
 }
