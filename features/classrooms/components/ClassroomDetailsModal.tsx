@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState, useTransition } from 'react';
 import Link from 'next/link';
-import { ClipboardDocumentListIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { CalendarDaysIcon, XMarkIcon } from '@heroicons/react/24/outline';
 
 import { ClassroomMaterialsManager } from '@/features/classrooms/components/ClassroomMaterialsManager';
 import { ClassroomStudentsManager } from '@/features/classrooms/components/ClassroomStudentsManager';
@@ -28,7 +28,7 @@ export function ClassroomDetailsModal({
 }: ClassroomDetailsModalProps) {
   const { darkMode } = useTheme();
   const [details, setDetails] = useState<ClassroomDetails | null>(null);
-  const [classroomQuizzes, setClassroomQuizzes] = useState<QuizListItem[]>([]);
+  const [upcomingQuizzes, setUpcomingQuizzes] = useState<QuizListItem[]>([]);
   const [isPending, startTransition] = useTransition();
 
   const loadDetails = useCallback(() => {
@@ -37,7 +37,7 @@ export function ClassroomDetailsModal({
     startTransition(async () => {
       const [response, quizzesResponse] = await Promise.all([
         fetch(`/api/classrooms/${classroom.id}`),
-        fetch(`/api/classrooms/${classroom.id}/quizzes`),
+        fetch(`/api/classrooms/${classroom.id}/upcoming-quizzes`),
       ]);
       const result = await response.json();
       const quizzesResult = await quizzesResponse.json();
@@ -49,14 +49,14 @@ export function ClassroomDetailsModal({
       }
 
       setDetails(result);
-      setClassroomQuizzes(quizzesResponse.ok ? quizzesResult : []);
+      setUpcomingQuizzes(quizzesResponse.ok ? quizzesResult : []);
     });
   }, [classroom, onClose, onToast]);
 
   useEffect(() => {
     if (!classroom) {
       setDetails(null);
-      setClassroomQuizzes([]);
+      setUpcomingQuizzes([]);
       return;
     }
 
@@ -69,6 +69,14 @@ export function ClassroomDetailsModal({
   const classroomInfo = activeDetails?.classroom ?? classroom;
   const canManage = Boolean(activeDetails?.canManage);
   const isStudent = activeDetails?.viewerRole === 'student';
+  const formatQuizDate = (value: Date | string | null) =>
+    value
+      ? new Date(value).toLocaleDateString(undefined, {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric',
+        })
+      : 'No date';
 
   const handleChildChanged = () => {
     loadDetails();
@@ -86,23 +94,25 @@ export function ClassroomDetailsModal({
         role="dialog"
         aria-modal="true"
       >
-        <div className={`flex shrink-0 items-start justify-between gap-4 border-b p-5 ${darkMode ? 'border-slate-800' : 'border-slate-200'}`}>
-          <div className="min-w-0">
+        <div className={`relative shrink-0 border-b p-5 text-center ${darkMode ? 'border-slate-800' : 'border-slate-200'}`}>
+          <div className="mx-auto max-w-2xl">
             <h2 className={`truncate text-2xl font-bold ${darkMode ? 'text-white' : 'text-slate-950'}`}>
               {classroomInfo.title}
             </h2>
             <p className={`mt-1 text-sm ${darkMode ? 'text-slate-300' : 'text-slate-600'}`}>
               {classroomInfo.description}
             </p>
-            <p className={`mt-2 text-sm ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>
-              {classroomInfo.numberOfStudents} students - {activeDetails?.materials.length ?? 0} documents
-            </p>
+            <div className={`mt-3 flex flex-wrap items-center justify-center gap-3 text-sm ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>
+              <span>{classroomInfo.numberOfStudents} students</span>
+              <span className={darkMode ? 'text-slate-700' : 'text-slate-400'}>|</span>
+              <span>{activeDetails?.materials.length ?? 0} documents</span>
+            </div>
           </div>
 
           <button
             type="button"
             onClick={onClose}
-            className={`rounded-lg p-2 transition ${darkMode ? 'text-slate-300 hover:bg-slate-800' : 'text-slate-600 hover:bg-white'}`}
+            className={`absolute right-4 top-4 rounded-lg p-2 transition ${darkMode ? 'text-slate-300 hover:bg-slate-800' : 'text-slate-600 hover:bg-white'}`}
             aria-label="Close classroom details"
             title="Close"
           >
@@ -112,8 +122,8 @@ export function ClassroomDetailsModal({
 
         <div className="min-h-0 flex-1 overflow-y-auto p-4 sm:p-5">
           {isPending && !activeDetails ? (
-            <div className={`rounded-xl border p-8 text-center ${darkMode ? 'border-slate-700 bg-slate-900 text-slate-300' : 'border-slate-200 bg-white text-slate-600'}`}>
-              Loading classroom...
+            <div className={`grid min-h-48 place-items-center rounded-xl border p-8 ${darkMode ? 'border-slate-700 bg-slate-900 text-slate-300' : 'border-slate-200 bg-white text-slate-600'}`}>
+              <span className="h-8 w-8 animate-spin rounded-full border-2 border-violet-400 border-t-transparent" />
             </div>
           ) : activeDetails ? (
             <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_20rem]">
@@ -128,29 +138,29 @@ export function ClassroomDetailsModal({
                 />
                 <section className={`rounded-xl border p-4 ${darkMode ? 'border-slate-700 bg-slate-900' : 'border-slate-200 bg-white'}`}>
                   <div className="flex items-center gap-2">
-                    <ClipboardDocumentListIcon className={`h-5 w-5 ${darkMode ? 'text-violet-300' : 'text-violet-600'}`} />
+                    <CalendarDaysIcon className={`h-5 w-5 ${darkMode ? 'text-violet-300' : 'text-violet-600'}`} />
                     <h3 className={`font-bold ${darkMode ? 'text-white' : 'text-slate-950'}`}>
-                      Quizzes
+                      Upcoming Quizzes
                     </h3>
                     <span className={`ml-auto text-sm ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>
-                      {classroomQuizzes.length}
+                      {upcomingQuizzes.length}
                     </span>
                   </div>
 
                   <div className={`mt-4 divide-y ${darkMode ? 'divide-slate-800' : 'divide-slate-100'}`}>
-                    {classroomQuizzes.length === 0 ? (
+                    {upcomingQuizzes.length === 0 ? (
                       <p className={`py-3 text-sm ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>
-                        No quizzes attached to this classroom yet.
+                        No upcoming quizzes with assigned dates.
                       </p>
                     ) : (
-                      classroomQuizzes.map(quiz => (
+                      upcomingQuizzes.map(quiz => (
                         <div key={quiz.id} className="flex flex-col gap-3 py-3 sm:flex-row sm:items-center">
                           <div className="min-w-0 flex-1">
                             <p className={`truncate text-sm font-semibold ${darkMode ? 'text-white' : 'text-slate-950'}`}>
                               {quiz.title}
                             </p>
                             <p className={`text-xs ${darkMode ? 'text-slate-500' : 'text-slate-500'}`}>
-                              {quiz.totalPoints} pts - {quiz.timeLimitMinutes} min
+                              {formatQuizDate(quiz.quizDate)} - {quiz.timeLimitMinutes} min - {quiz.totalPoints} pts - weight {quiz.weight}
                             </p>
                           </div>
                           <Link

@@ -41,9 +41,11 @@ export type NotificationsDropdownProps = {
   onClose: () => void;
   onMarkAsRead: (notification: NotificationItem) => void;
   onMarkAllAsRead: () => void;
+  onRequestDelete: (notification: NotificationItem) => void;
 };
 
 export type NotificationItemProps = {
   notification: NotificationItem;
   onMarkAsRead: (notification: NotificationItem) => void;
+  onRequestDelete: (notification: NotificationItem) => void;
 };

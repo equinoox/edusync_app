@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { UserButton, useUser } from '@clerk/nextjs';
+import { useUser } from '@clerk/nextjs';
 import {
   AcademicCapIcon,
   BeakerIcon,
@@ -16,6 +16,7 @@ import {
 
 import Sidebar from '@/components/layout/sidebar';
 import SmallBar from '@/components/layout/SmallBar';
+import { UserAccountSummary } from '@/components/layout/UserAccountSummary';
 import { ViewAllModal } from '@/components/shared/ViewAllModal';
 import { NotificationBell } from '@/features/notifications/components/NotificationBell';
 import { AiStudyInsight } from '@/features/progress/components/AiStudyInsight';
@@ -438,16 +439,7 @@ export function ProgressPage() {
         <div className="hidden h-20 shrink-0 items-center justify-end gap-5 px-8 lg:flex">
           <NotificationBell />
           <div className="rounded-xl bg-slate-900/75 px-3 py-2">
-            <UserButton
-              appearance={{
-                elements: {
-                  userButtonBox: 'flex-row-reverse gap-3',
-                  userButtonOuterIdentifier: 'text-white text-sm font-semibold',
-                  avatarBox: 'h-9 w-9',
-                },
-              }}
-              showName
-            />
+            <UserAccountSummary compactText variant="onDark" />
           </div>
         </div>
 

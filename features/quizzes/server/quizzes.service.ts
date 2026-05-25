@@ -38,6 +38,7 @@ import {
   getQuizRecordById,
   getQuizzesByClassroom,
   getQuizzesByProfessor,
+  getUpcomingQuizzesByClassroom,
   replaceQuestionOptions,
   updateQuestionRecord,
   updateQuestionSequenceNumber,
@@ -377,6 +378,28 @@ export async function getClassroomQuizzes(classroomId: string) {
   }
 
   return getQuizzesByClassroom(classroomId);
+}
+
+export async function getUpcomingClassroomQuizzes(classroomId: string) {
+  const currentUser = await getCurrentUserWithRole();
+
+  if (currentUser.role === 'professor') {
+    await assertProfessorOwnsClassroom(classroomId, currentUser.userId);
+  } else {
+    const hasAccess = await checkStudentAccessToClassroom(
+      classroomId,
+      currentUser.userId,
+    );
+
+    if (!hasAccess) {
+      throw new Error('Forbidden');
+    }
+  }
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  return getUpcomingQuizzesByClassroom(classroomId, today);
 }
 
 export async function getQuizForTaking(

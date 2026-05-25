@@ -6,6 +6,7 @@ import {
   BellAlertIcon,
   CalendarDaysIcon,
   DocumentTextIcon,
+  TrashIcon,
   UserGroupIcon,
 } from '@heroicons/react/24/outline';
 
@@ -39,22 +40,12 @@ const getIcon = (notification: NotificationItemType) => {
 export function NotificationItem({
   notification,
   onMarkAsRead,
+  onRequestDelete,
 }: NotificationItemProps) {
   const { darkMode } = useTheme();
   const Icon = getIcon(notification);
-  const content = (
-    <div
-      className={cn(
-        'flex w-full gap-3 rounded-xl border p-3 text-left transition',
-        darkMode
-          ? notification.read
-            ? 'border-white/5 bg-slate-900 hover:bg-slate-800'
-            : 'border-violet-500/30 bg-violet-950/40 hover:bg-violet-950/60'
-          : notification.read
-            ? 'border-slate-500 bg-slate-300 hover:bg-slate-400'
-            : 'border-indigo-300 bg-indigo-100 hover:bg-indigo-200',
-      )}
-    >
+  const innerContent = (
+    <>
       <span
         className={cn(
           'flex h-9 w-9 shrink-0 items-center justify-center rounded-lg',
@@ -104,20 +95,58 @@ export function NotificationItem({
           )}
         </div>
       </div>
-    </div>
+    </>
+  );
+  const linkedContent = notification.link ? (
+    <Link
+      href={notification.link}
+      onClick={() => onMarkAsRead(notification)}
+      className="flex min-w-0 flex-1 gap-3 text-left"
+    >
+      {innerContent}
+    </Link>
+  ) : (
+    <button
+      type="button"
+      onClick={() => onMarkAsRead(notification)}
+      className="flex min-w-0 flex-1 gap-3 text-left"
+    >
+      {innerContent}
+    </button>
   );
 
-  if (notification.link) {
-    return (
-      <Link href={notification.link} onClick={() => onMarkAsRead(notification)}>
-        {content}
-      </Link>
-    );
-  }
-
   return (
-    <button type="button" onClick={() => onMarkAsRead(notification)}>
-      {content}
-    </button>
+    <div
+      className={cn(
+        'flex w-full items-start gap-2 rounded-xl border p-3 text-left transition',
+        darkMode
+          ? notification.read
+            ? 'border-white/5 bg-slate-900 hover:bg-slate-800'
+            : 'border-violet-500/30 bg-violet-950/40 hover:bg-violet-950/60'
+          : notification.read
+            ? 'border-slate-500 bg-slate-300 hover:bg-slate-400'
+            : 'border-indigo-300 bg-indigo-100 hover:bg-indigo-200',
+      )}
+    >
+      {linkedContent}
+      <button
+        type="button"
+        onClick={event => {
+          event.preventDefault();
+          event.stopPropagation();
+          onRequestDelete(notification);
+        }}
+        className={cn(
+          'mt-0.5 shrink-0 rounded-lg p-1.5 transition',
+          darkMode
+            ? 'text-slate-500 hover:bg-slate-800 hover:text-red-300'
+            : 'text-slate-600 hover:bg-slate-400 hover:text-red-700',
+        )}
+        aria-label="Delete notification"
+        title="Delete"
+      >
+        <TrashIcon className="h-4 w-4" />
+      </button>
+    </div>
   );
 }

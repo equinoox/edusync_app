@@ -2,10 +2,10 @@
 
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { UserButton } from "@clerk/nextjs";
 import { AcademicCapIcon } from "@heroicons/react/24/outline";
 
 import { NotificationBell } from "@/features/notifications/components/NotificationBell";
+import { UserAccountSummary } from "@/components/layout/UserAccountSummary";
 import { useTheme } from "@/providers/ThemeProvider";
 
 type TopBarProps = {
@@ -36,9 +36,7 @@ export default function TopBar({ pageName, actions }: TopBarProps) {
         <div className="flex items-center gap-3">
           {actions}
           <NotificationBell />
-          <div className="scale-125 origin-center">
-            <UserButton />
-          </div>
+          <UserAccountSummary compactText variant="onDark" />
         </div>
       </div>
     </header>

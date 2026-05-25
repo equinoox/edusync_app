@@ -1,4 +1,4 @@
-import { and, asc, desc, eq, inArray, isNull, or } from 'drizzle-orm';
+import { and, asc, desc, eq, gte, inArray, isNotNull, isNull, or } from 'drizzle-orm';
 
 import { classroomMemberships } from '@/lib/db/schema/classrooms';
 import { db } from '@/lib/db';
@@ -65,6 +65,23 @@ export async function getQuizzesByClassroom(classroomId: string) {
     .from(quizzes)
     .where(eq(quizzes.classroomId, classroomId))
     .orderBy(desc(quizzes.createdAt));
+}
+
+export async function getUpcomingQuizzesByClassroom(
+  classroomId: string,
+  fromDate: Date,
+) {
+  return db
+    .select()
+    .from(quizzes)
+    .where(
+      and(
+        eq(quizzes.classroomId, classroomId),
+        isNotNull(quizzes.quizDate),
+        gte(quizzes.quizDate, fromDate),
+      ),
+    )
+    .orderBy(asc(quizzes.quizDate), asc(quizzes.createdAt));
 }
 
 export async function updateQuizRecord(

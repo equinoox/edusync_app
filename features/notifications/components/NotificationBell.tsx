@@ -4,11 +4,16 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { BellIcon } from '@heroicons/react/24/outline';
 
 import {
+  deleteNotificationAction,
   getMyNotificationsAction,
   markAllNotificationsAsReadAction,
   markNotificationAsReadAction,
 } from '@/features/notifications/actions/notifications.action';
 import { NotificationsDropdown } from '@/features/notifications/components/NotificationsDropdown';
+import {
+  ToastNotification,
+  type ToastNotificationState,
+} from '@/components/shared/ToastNotification';
 import type {
   NotificationBellProps,
   NotificationItem,
@@ -22,6 +27,7 @@ export function NotificationBell({ compact = false }: NotificationBellProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
+  const [toast, setToast] = useState<ToastNotificationState | null>(null);
 
   const unreadCount = notifications.filter(notification => !notification.read).length;
 
@@ -78,8 +84,25 @@ export function NotificationBell({ compact = false }: NotificationBellProps) {
     await markAllNotificationsAsReadAction();
   };
 
+  const handleDeleteNotification = async (notification: NotificationItem) => {
+    setNotifications(previous =>
+      previous.filter(item => item.id !== notification.id),
+    );
+
+    const result = await deleteNotificationAction(notification.id);
+    if (typeof result === 'string') {
+      setNotifications(previous => [notification, ...previous]);
+      setToast({ id: Date.now(), message: result, tone: 'error' });
+      return;
+    }
+
+    setToast({ id: Date.now(), message: 'Notification deleted', tone: 'success' });
+  };
+
   return (
     <div ref={containerRef} className="relative">
+      <ToastNotification toast={toast} onDismiss={() => setToast(null)} />
+
       <button
         type="button"
         onClick={handleToggle}
@@ -112,6 +135,7 @@ export function NotificationBell({ compact = false }: NotificationBellProps) {
           onClose={() => setIsOpen(false)}
           onMarkAsRead={handleMarkAsRead}
           onMarkAllAsRead={handleMarkAllAsRead}
+          onRequestDelete={handleDeleteNotification}
         />
       )}
     </div>

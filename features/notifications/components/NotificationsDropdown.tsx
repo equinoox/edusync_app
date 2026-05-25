@@ -13,6 +13,7 @@ export function NotificationsDropdown({
   onClose,
   onMarkAsRead,
   onMarkAllAsRead,
+  onRequestDelete,
 }: NotificationsDropdownProps) {
   const { darkMode } = useTheme();
 
@@ -50,7 +51,7 @@ export function NotificationsDropdown({
           <button
             type="button"
             onClick={onClose}
-            className={`rounded-lg p-2 ${
+            className={`rounded-lg text-white p-2 ${
               darkMode ? 'hover:bg-slate-800' : 'hover:bg-slate-400'
             }`}
             aria-label="Close notifications"
@@ -83,6 +84,7 @@ export function NotificationsDropdown({
                 key={notification.id}
                 notification={notification}
                 onMarkAsRead={onMarkAsRead}
+                onRequestDelete={onRequestDelete}
               />
             ))}
           </div>

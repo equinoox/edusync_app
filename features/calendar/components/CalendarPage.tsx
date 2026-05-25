@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useMemo, useState, useTransition } from 'react';
 import { useRouter } from 'next/navigation';
-import { UserButton } from '@clerk/nextjs';
 import {
   CalendarDaysIcon,
   ChatBubbleLeftRightIcon,
@@ -13,6 +12,7 @@ import {
 
 import Sidebar from '@/components/layout/sidebar';
 import SmallBar from '@/components/layout/SmallBar';
+import { UserAccountSummary } from '@/components/layout/UserAccountSummary';
 import { ConfirmationModal } from '@/components/shared/ConfirmationModal';
 import { QuickActionsPanel } from '@/components/shared/QuickActionsPanel';
 import {
@@ -347,16 +347,7 @@ export function CalendarPage() {
         <div className="hidden h-16 shrink-0 items-center justify-end gap-4 px-6 lg:flex">
           <NotificationBell />
           <div className="rounded-xl bg-slate-900/75 px-3 py-2">
-            <UserButton
-              appearance={{
-                elements: {
-                  userButtonBox: 'flex-row-reverse gap-3',
-                  userButtonOuterIdentifier: 'text-white text-sm font-semibold',
-                  avatarBox: 'h-9 w-9',
-                },
-              }}
-              showName
-            />
+            <UserAccountSummary compactText variant="onDark" />
           </div>
         </div>
 
