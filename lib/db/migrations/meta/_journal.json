@@ -43,6 +43,13 @@
       "when": 1779735000000,
       "tag": "0005_calendar_backend",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1779741000000,
+      "tag": "0006_notifications_backend",
+      "breakpoints": true
     }
   ]
 }

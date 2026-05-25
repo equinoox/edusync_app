@@ -19,13 +19,26 @@ import {
   checkStudentAccessToClassroom,
 } from '@/features/classrooms/server/classrooms.service';
 import { copyDocumentFromUrlForUser } from '@/features/documents/server/documents.service';
+import { createNotificationsForClassroomStudents } from '@/features/notifications/server/notifications.service';
 
 export async function addClassroomMaterial(input: AddClassroomMaterialInput) {
   const { userId } = await requireCurrentUserRole('professor');
   const values = addClassroomMaterialSchema.parse(input);
 
-  await assertProfessorOwnsClassroom(values.classroomId, userId);
-  return createClassroomMaterialRecord(values);
+  const classroom = await assertProfessorOwnsClassroom(values.classroomId, userId);
+  const material = await createClassroomMaterialRecord(values);
+
+  await createNotificationsForClassroomStudents({
+    classroomId: classroom.id,
+    type: 'classroom_document_added',
+    title: 'New classroom document',
+    message: `A new document was added to ${classroom.title}.`,
+    link: '/classrooms',
+    relatedClassroomId: classroom.id,
+    relatedMaterialId: material.id,
+  });
+
+  return material;
 }
 
 export async function getClassroomMaterials(classroomId: string) {

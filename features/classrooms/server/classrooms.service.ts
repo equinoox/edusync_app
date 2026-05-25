@@ -30,6 +30,7 @@ import {
   requireCurrentUserRole,
 } from '@/features/auth/server/roles.service';
 import { getUsersByIds } from '@/features/auth/server/users.service';
+import { notifyStudentAddedToClassroom } from '@/features/notifications/server/notifications.service';
 
 export async function createClassroom(input: CreateClassroomInput) {
   const { userId } = await requireCurrentUserRole('professor');
@@ -221,7 +222,19 @@ export async function addStudentToClassroom(input: AddStudentToClassroomInput) {
       throw new Error('Student id is required');
     }
 
-    return addClassroomMembership(values.classroomId, values.studentId);
+    const membership = await addClassroomMembership(
+      values.classroomId,
+      values.studentId,
+    );
+
+    if (membership) {
+      await notifyStudentAddedToClassroom({
+        studentId: values.studentId,
+        classroomId: values.classroomId,
+      });
+    }
+
+    return membership;
   }
 
   return addClassroomMembership(values.classroomId, currentUser.userId);

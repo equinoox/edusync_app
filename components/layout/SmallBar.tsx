@@ -2,8 +2,9 @@
 
 import type { ReactNode } from "react";
 import { UserButton } from "@clerk/nextjs";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
+import { NotificationBell } from "@/features/notifications/components/NotificationBell";
 import { useTheme } from "@/providers/ThemeProvider";
 
 type SmallBarProps = {
@@ -30,17 +31,7 @@ export default function SmallBar({
       <div className="flex items-center gap-3">
         {actions}
 
-        {showNotifications && (
-          <button
-            type="button"
-            className={`relative flex-shrink-0 rounded-lg p-2 transition-colors ${darkMode ? "hover:bg-slate-800" : "hover:bg-gray-100"}`}
-            aria-label="Notifications"
-            title="Notifications"
-          >
-            <BellIcon className={`h-5 w-5 ${darkMode ? "text-violet-400" : "text-slate-600"}`} />
-            <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full border-2 border-white bg-indigo-500" />
-          </button>
-        )}
+        {showNotifications && <NotificationBell compact />}
 
         <div className="scale-125 origin-center flex-shrink-0">
           <UserButton />

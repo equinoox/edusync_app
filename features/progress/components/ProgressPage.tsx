@@ -5,7 +5,6 @@ import { UserButton, useUser } from '@clerk/nextjs';
 import {
   AcademicCapIcon,
   BeakerIcon,
-  BellIcon,
   BookOpenIcon,
   ChartBarIcon,
   CheckCircleIcon,
@@ -18,6 +17,7 @@ import {
 import Sidebar from '@/components/layout/sidebar';
 import SmallBar from '@/components/layout/SmallBar';
 import { ViewAllModal } from '@/components/shared/ViewAllModal';
+import { NotificationBell } from '@/features/notifications/components/NotificationBell';
 import { AiStudyInsight } from '@/features/progress/components/AiStudyInsight';
 import { DonutPanel } from '@/features/progress/components/DonutPanel';
 import { ProgressHeader } from '@/features/progress/components/ProgressHeader';
@@ -436,15 +436,7 @@ export function ProgressPage() {
         />
 
         <div className="hidden h-20 shrink-0 items-center justify-end gap-5 px-8 lg:flex">
-          <button
-            type="button"
-            className="relative rounded-xl p-2 text-slate-300 transition hover:bg-slate-900"
-            aria-label="Notifications"
-            title="Notifications"
-          >
-            <BellIcon className="h-5 w-5" />
-            <span className="absolute right-2 top-1.5 h-2 w-2 rounded-full bg-violet-500" />
-          </button>
+          <NotificationBell />
           <div className="rounded-xl bg-slate-900/75 px-3 py-2">
             <UserButton
               appearance={{

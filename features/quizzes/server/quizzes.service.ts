@@ -6,6 +6,7 @@ import {
   checkQuizCanBeTakenToday,
   createQuizCalendarEvent,
 } from '@/features/calendar/server/calendar.service';
+import { createNotificationsForClassroomStudents } from '@/features/notifications/server/notifications.service';
 import { getCurrentUserWithRole, requireCurrentUserRole } from '@/features/auth/server/roles.service';
 import {
   addQuestionToQuizSchema,
@@ -135,9 +136,9 @@ export async function createQuiz(input: CreateQuizInput) {
   const { userId } = await requireCurrentUserRole('professor');
   const values = createQuizSchema.parse(input);
 
-  if (values.classroomId) {
-    await assertProfessorOwnsClassroom(values.classroomId, userId);
-  }
+  const classroom = values.classroomId
+    ? await assertProfessorOwnsClassroom(values.classroomId, userId)
+    : null;
 
   const quiz = await createQuizRecord({
     ...values,
@@ -155,6 +156,18 @@ export async function createQuiz(input: CreateQuizInput) {
     description: quiz.description,
     date: quiz.quizDate,
   });
+
+  if (classroom) {
+    await createNotificationsForClassroomStudents({
+      classroomId: classroom.id,
+      type: 'classroom_quiz_added',
+      title: 'New classroom quiz',
+      message: `A new quiz was added to ${classroom.title}.`,
+      link: `/quizzes?quizId=${quiz.id}`,
+      relatedClassroomId: classroom.id,
+      relatedQuizId: quiz.id,
+    });
+  }
 
   return quiz;
 }
