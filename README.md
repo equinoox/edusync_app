@@ -1,22 +1,29 @@
 # EduSync
 
-EduSync is an AI-powered learning web application designed to help students learn more efficiently by using an AI assistant, study materials, and organized learning features.
+EduSync is an AI-powered web application for Micro-learning, designed to help students and professors manage learning materials, classrooms, quizzes, events, and AI-assisted studying in one place.
 
-The goal of the project is to provide students with a modern platform where they can upload or store learning resources, ask questions, receive explanations, and improve their studying process through AI-assisted learning.
+The application allows users to upload documents, use an AI chat assistant, organize classrooms, create quizzes, track progress, and receive important learning notifications.
 
-> ⚠️ This project is still in development. Some features are incomplete, experimental, or subject to change.
+> ⚠️ This project is still in development. Some features are experimental, incomplete, or subject to change.
+
+---
 
 ## Features
 
-- AI-powered chat assistant
 - User authentication with Clerk
-- Knowledge base support for storing and retrieving learning resources
-- Retrieval-Augmented Generation logic for answering questions based on available materials
-- Token usage validation and message length validation
-- Modern landing page for EduSync
+- Student and Professor roles
+- AI-powered chat assistant
+- Document upload and PDF parsing
+- Retrieval-Augmented Generation for answering questions from uploaded materials
+- Classroom management
+- Quiz creation and quiz attempts
+- Calendar events
+- Student progress page
+- Notification system
+- Light and dark mode support
 - Responsive UI built with Tailwind CSS
-- Feature-based project structure
-- Database integration with Drizzle ORM and PostgreSQL
+
+---
 
 ## Tech Stack
 
@@ -25,28 +32,54 @@ The goal of the project is to provide students with a modern platform where they
 - TypeScript
 - Tailwind CSS
 - Clerk
-- Vercel AI SDK
 - Drizzle ORM
 - PostgreSQL
-- Zod
-- shadcn/ui
-- Heroicons
-- Lucide React
+- Vercel Blob
+- Vercel AI SDK
+
+---
+
+## Architecture
+
+EduSync follows a **Feature-Based Architecture**.
+
+The project is organized around application features instead of technical layers only. Each major feature has its own folder and contains the logic, components, actions, services, schemas, and types related to that feature.
+
+This makes the codebase easier to scale, maintain, and understand as the application grows.
+
+---
 
 ## Project Structure
 
 ```txt
 edusync_app/
-├── app/                 # Next.js App Router pages and API routes
-├── components/          # Shared UI components
-├── features/            # Feature-based application modules
-│   ├── chat/            # AI chat feature
-│   ├── resources/       # Learning resources and retrieval logic
-│   └── tokens/          # Token usage and validation logic
-├── lib/                 # Shared libraries, database and AI utilities
-├── providers/           # Global providers
-├── public/              # Static assets
-├── styles/              # Global and page-specific styles
-├── middleware.ts        # Clerk middleware and route protection
-├── drizzle.config.ts    # Drizzle ORM configuration
+├── app/                    # Next.js App Router pages and API routes
+│   ├── api/                # Backend API routes
+│   ├── calendar/           # Calendar page
+│   ├── chat/               # AI chat page
+│   ├── classrooms/         # Classrooms page
+│   ├── documents/          # Documents page
+│   ├── home/               # Home page
+│   ├── progress/           # Progress page
+│   └── quizzes/            # Quizzes page
+│
+├── components/             # Shared UI and layout components
+│
+├── features/               # Feature-based application modules
+│   ├── auth/               # Authentication and roles
+│   ├── calendar/           # Calendar feature
+│   ├── chat/               # AI chat feature
+│   ├── classrooms/         # Classroom feature
+│   ├── home/               # Home page feature
+│   ├── notifications/      # Notifications feature
+│   ├── progress/           # Progress feature
+│   ├── quizzes/            # Quizzes feature
+│   ├── resources/          # Learning resources and RAG logic
+│   └── tokens/             # Token validation and usage logic
+│
+├── lib/                    # Shared utilities, AI logic and database setup
+├── providers/              # Global React providers
+├── public/                 # Static assets
+├── drizzle.config.ts       # Drizzle configuration
+├── middleware.ts           # Clerk middleware
 └── package.json
