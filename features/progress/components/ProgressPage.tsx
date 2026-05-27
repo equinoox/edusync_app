@@ -16,9 +16,8 @@ import {
 
 import Sidebar from '@/components/layout/sidebar';
 import SmallBar from '@/components/layout/SmallBar';
-import { UserAccountSummary } from '@/components/layout/UserAccountSummary';
+import TopBar from '@/components/layout/TopBar';
 import { ViewAllModal } from '@/components/shared/ViewAllModal';
-import { NotificationBell } from '@/features/notifications/components/NotificationBell';
 import { AiStudyInsight } from '@/features/progress/components/AiStudyInsight';
 import { DonutPanel } from '@/features/progress/components/DonutPanel';
 import { ProgressHeader } from '@/features/progress/components/ProgressHeader';
@@ -36,6 +35,7 @@ import type {
   SubjectPerformanceItem,
 } from '@/features/progress/types';
 import { cn } from '@/lib/utils';
+import { useTheme } from '@/providers/ThemeProvider';
 
 type ProgressModalType =
   | 'subjects'
@@ -221,6 +221,7 @@ const toLineChartPoints = (
 };
 
 export function ProgressPage() {
+  const { darkMode } = useTheme();
   const { isLoaded, user } = useUser();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [data, setData] = useState<ProgressApiResponse | null>(null);
@@ -302,7 +303,7 @@ export function ProgressPage() {
   const weeklyStudyGoalSeconds = 10 * 3600;
 
   return (
-    <main className="flex h-screen overflow-hidden bg-[#060d1d] text-white">
+    <main className={cn('flex h-screen overflow-hidden text-white', darkMode ? 'bg-slate-950' : 'bg-slate-300')}>
       {sidebarOpen && (
         <div
           className="fixed inset-0 z-40 bg-black/60 lg:hidden"
@@ -436,15 +437,12 @@ export function ProgressPage() {
           onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
         />
 
-        <div className="hidden h-20 shrink-0 items-center justify-end gap-5 px-8 lg:flex">
-          <NotificationBell />
-          <div className="rounded-xl bg-slate-900/75 px-3 py-2">
-            <UserAccountSummary compactText variant="onDark" />
-          </div>
+        <div className="hidden lg:block">
+          <TopBar pageName="Progress" />
         </div>
 
-        <div className="min-h-0 flex-1 overflow-y-auto px-3 pb-5 sm:px-5 lg:px-6">
-          <div className="mx-auto max-w-[1560px] rounded-2xl border border-white/[0.04] bg-slate-950/70 p-4 shadow-[0_26px_70px_rgba(0,0,0,0.28)] sm:p-5">
+        <div className="min-h-0 flex-1 overflow-y-auto px-3 py-4 sm:px-4 lg:px-5">
+          <div className="mx-auto max-w-[1480px] rounded-xl border border-white/[0.04] bg-slate-950/70 p-3 shadow-lg sm:p-4">
             <ProgressHeader
               classroomLabel="All Classrooms"
               periodLabel="This Semester"
@@ -466,7 +464,7 @@ export function ProgressPage() {
               </div>
             ) : data ? (
               <>
-                <div className="mt-7 grid gap-4 md:grid-cols-2 xl:grid-cols-[1fr_1fr_1fr_1.5fr]">
+                <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-[1fr_1fr_1fr_1.5fr]">
                   <ProgressMetricCard
                     Icon={ChartBarIcon}
                     label="Overall Progress"
@@ -509,7 +507,7 @@ export function ProgressPage() {
                   />
                 </div>
 
-                <div className="mt-5 grid gap-5 xl:grid-cols-[minmax(0,2fr)_minmax(320px,1fr)]">
+                <div className="mt-4 grid gap-4 xl:grid-cols-[minmax(0,2fr)_minmax(300px,1fr)]">
                   <ProgressLineChart points={lineChartPoints} />
                   <SubjectPerformance
                     items={subjectItems}
@@ -517,7 +515,7 @@ export function ProgressPage() {
                   />
                 </div>
 
-                <div className="mt-5 grid gap-5 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(320px,1fr)]">
+                <div className="mt-4 grid gap-4 xl:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(300px,1fr)]">
                   <DonutPanel
                     title="Quiz Performance"
                     centerValue={formatPercent(averageScore)}
@@ -540,7 +538,7 @@ export function ProgressPage() {
                   />
                 </div>
 
-                <div className="mt-5">
+                <div className="mt-4">
                   <AiStudyInsight weakestTopic={data.overview.weakestTopic} />
                 </div>
               </>

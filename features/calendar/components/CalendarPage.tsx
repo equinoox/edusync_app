@@ -12,7 +12,7 @@ import {
 
 import Sidebar from '@/components/layout/sidebar';
 import SmallBar from '@/components/layout/SmallBar';
-import { UserAccountSummary } from '@/components/layout/UserAccountSummary';
+import TopBar from '@/components/layout/TopBar';
 import { ConfirmationModal } from '@/components/shared/ConfirmationModal';
 import { QuickActionsPanel } from '@/components/shared/QuickActionsPanel';
 import {
@@ -20,7 +20,6 @@ import {
   type ToastNotificationState,
 } from '@/components/shared/ToastNotification';
 import { ViewAllModal } from '@/components/shared/ViewAllModal';
-import { NotificationBell } from '@/features/notifications/components/NotificationBell';
 import {
   createCalendarEventAction,
   deleteCalendarEventAction,
@@ -336,7 +335,7 @@ export function CalendarPage() {
             <button
               type="button"
               onClick={() => setIsCreateModalOpen(true)}
-              className="inline-flex h-9 items-center gap-1 rounded-lg bg-violet-600 px-3 text-sm font-bold text-white"
+              className="edusync-button-motion inline-flex h-9 items-center gap-1 rounded-lg bg-violet-600 px-3 text-sm font-bold text-white"
             >
               <PlusIcon className="h-4 w-4" />
               Event
@@ -344,16 +343,25 @@ export function CalendarPage() {
           }
         />
 
-        <div className="hidden h-16 shrink-0 items-center justify-end gap-4 px-6 lg:flex">
-          <NotificationBell />
-          <div className="rounded-xl bg-slate-900/75 px-3 py-2">
-            <UserAccountSummary compactText variant="onDark" />
-          </div>
+        <div className="hidden lg:block">
+          <TopBar
+            pageName="Calendar"
+            actions={
+              <button
+                type="button"
+                onClick={() => setIsCreateModalOpen(true)}
+                className="edusync-button-motion inline-flex h-9 items-center gap-2 rounded-lg bg-violet-600 px-3 text-sm font-bold text-white transition hover:bg-violet-700"
+              >
+                <PlusIcon className="h-4 w-4" />
+                Add Event
+              </button>
+            }
+          />
         </div>
 
         <div className="min-h-0 flex-1 p-3 sm:p-4 lg:p-5">
           <div
-            className={`flex h-full min-h-0 flex-col overflow-hidden rounded-2xl border p-4 sm:p-5 ${
+            className={`edusync-enter flex h-full min-h-0 flex-col overflow-hidden rounded-2xl border p-4 sm:p-5 ${
               darkMode
                 ? 'border-white/5 bg-slate-900'
                 : 'border-slate-500 bg-slate-400'
@@ -383,7 +391,7 @@ export function CalendarPage() {
               </section>
 
               <aside className="min-h-0 space-y-5 overflow-y-auto pr-1">
-                <section className={`rounded-xl border p-5 shadow-md ${darkMode ? 'border-white/5 bg-slate-800' : 'border-slate-500 bg-slate-300'}`}>
+                <section className={`edusync-enter edusync-card-motion rounded-xl border p-5 shadow-md ${darkMode ? 'border-white/5 bg-slate-800' : 'border-slate-500 bg-slate-300'}`}>
                   <div className="mb-5 flex items-center justify-between">
                     <h2 className={`font-bold ${darkMode ? 'text-white' : 'text-slate-950'}`}>
                       Mini Calendar
@@ -398,31 +406,37 @@ export function CalendarPage() {
                         {day}
                       </span>
                     ))}
-                    {miniCalendarDays.map(day => (
-                      <button
-                        key={day.toISOString()}
-                        type="button"
-                        onClick={() => setVisibleMonth(new Date(day.getFullYear(), day.getMonth(), 1))}
-                        className={cn(
-                          'flex h-8 items-center justify-center rounded-full text-sm',
-                          isSameDay(day, new Date())
-                            ? 'bg-violet-600 font-bold text-white'
-                            : day.getMonth() === visibleMonth.getMonth()
+                    {miniCalendarDays.map(day => {
+                      const isCurrentDay = isSameDay(day, new Date());
+
+                      return (
+                        <button
+                          key={day.toISOString()}
+                          type="button"
+                          onClick={() => setVisibleMonth(new Date(day.getFullYear(), day.getMonth(), 1))}
+                          className={cn(
+                            'edusync-button-motion flex h-8 items-center justify-center rounded-full text-sm transition',
+                            isCurrentDay
                               ? darkMode
-                                ? 'text-white hover:bg-slate-700'
-                                : 'text-slate-950 hover:bg-slate-400'
-                              : darkMode
-                                ? 'text-slate-600'
-                                : 'text-slate-600',
-                        )}
-                      >
-                        {day.getDate()}
-                      </button>
-                    ))}
+                                ? 'bg-orange-500 font-bold text-slate-950 shadow-md shadow-orange-950/30'
+                                : 'bg-indigo-500 font-bold text-white shadow-md shadow-indigo-500/25'
+                              : day.getMonth() === visibleMonth.getMonth()
+                                ? darkMode
+                                  ? 'text-white hover:bg-slate-700'
+                                  : 'text-slate-950 hover:bg-slate-400'
+                                : darkMode
+                                  ? 'text-slate-600'
+                                  : 'text-slate-600',
+                          )}
+                        >
+                          {day.getDate()}
+                        </button>
+                      );
+                    })}
                   </div>
                 </section>
 
-                <section className={`rounded-xl border p-5 shadow-md ${darkMode ? 'border-white/5 bg-slate-800' : 'border-slate-500 bg-slate-300'}`}>
+                <section className={`edusync-enter edusync-card-motion rounded-xl border p-5 shadow-md ${darkMode ? 'border-white/5 bg-slate-800' : 'border-slate-500 bg-slate-300'}`}>
                   <div className="mb-5 flex items-center justify-between">
                     <h2 className={`font-bold ${darkMode ? 'text-white' : 'text-slate-950'}`}>
                       Upcoming Events
@@ -430,7 +444,7 @@ export function CalendarPage() {
                     <button
                       type="button"
                       onClick={() => setIsUpcomingModalOpen(true)}
-                      className="text-sm font-medium text-violet-400"
+                      className="edusync-button-motion text-sm font-medium text-violet-400"
                     >
                       View all
                     </button>

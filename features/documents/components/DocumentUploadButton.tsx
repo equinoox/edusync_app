@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { ACCEPTED_DOCUMENT_TYPE } from '@/features/documents/schemas';
 import type { DocumentUploadResult } from '@/features/documents/types';
 import { cn } from '@/lib/utils';
+import { useTheme } from '@/providers/ThemeProvider';
 
 type DocumentUploadButtonProps = {
   className?: string;
@@ -23,6 +24,7 @@ export function DocumentUploadButton({
   onUploadError,
   size = 'default',
 }: DocumentUploadButtonProps) {
+  const { darkMode } = useTheme();
   const inputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
 
@@ -93,7 +95,10 @@ return (
       variant="secondary"
       disabled={disabled || isUploading}
       className={cn(
-        "bg-orange-500 text-black shadow-sm transition hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-50",
+        "edusync-button-motion border font-bold shadow-lg transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 active:scale-95 disabled:cursor-not-allowed disabled:opacity-55",
+        darkMode
+          ? "border-orange-300/40 bg-orange-500 text-slate-950 shadow-orange-950/30 hover:bg-orange-400 focus-visible:ring-orange-300 focus-visible:ring-offset-slate-950"
+          : "border-indigo-300 bg-indigo-600 text-white shadow-indigo-500/25 hover:bg-indigo-700 focus-visible:ring-indigo-600 focus-visible:ring-offset-slate-300",
         size === 'compact'
           ? "h-10 w-10 rounded-xl"
           : "h-[52px] w-[52px] rounded-2xl",
@@ -103,7 +108,7 @@ return (
       onClick={() => inputRef.current?.click()}
     >
       {isUploading ? (
-        <span className={cn("animate-spin rounded-full border-2 border-white border-t-transparent", size === 'compact' ? "h-4 w-4" : "h-5 w-5")} />
+        <span className={cn("animate-spin rounded-full border-2 border-current border-t-transparent", size === 'compact' ? "h-4 w-4" : "h-5 w-5")} />
       ) : (
         <DocumentArrowUpIcon className={size === 'compact' ? "h-6 w-6" : "h-8 w-8"} />
       )}

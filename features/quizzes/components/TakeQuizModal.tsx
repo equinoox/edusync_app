@@ -153,7 +153,7 @@ export function TakeQuizModal({
   };
 
   return (
-    <div className="fixed inset-0 z-[70] flex items-center justify-center bg-slate-950/70 px-4 py-6 backdrop-blur-sm">
+    <div className="fixed inset-0 z-[70] flex items-center justify-center bg-slate-950/70 px-4 py-6 backdrop-blur-sm edusync-enter-fast">
       <ConfirmationModal
         isOpen={isConfirmingSubmit}
         isLoading={isSubmitting}
@@ -163,7 +163,7 @@ export function TakeQuizModal({
         onConfirm={handleSubmit}
       />
 
-      <div className={`flex max-h-[92vh] w-full max-w-4xl flex-col overflow-hidden rounded-xl border shadow-2xl ${darkMode ? 'border-slate-700 bg-slate-900 shadow-black/40' : 'border-slate-500 bg-slate-300 shadow-slate-950/20'}`}>
+      <div className={`edusync-scale-in flex max-h-[92vh] w-full max-w-4xl flex-col overflow-hidden rounded-xl border shadow-2xl ${darkMode ? 'border-slate-700 bg-slate-900 shadow-black/40' : 'border-slate-500 bg-slate-300 shadow-slate-950/20'}`}>
         <div className={`flex shrink-0 items-start justify-between gap-4 border-b px-5 py-4 ${darkMode ? 'border-slate-800' : 'border-slate-500'}`}>
           <div className="min-w-0">
             <h2 className={`truncate text-xl font-bold ${darkMode ? 'text-white' : 'text-slate-950'}`}>
@@ -180,7 +180,7 @@ export function TakeQuizModal({
             <button
               type="button"
               onClick={onClose}
-              className={`rounded-lg p-2 transition ${darkMode ? 'text-slate-400 hover:bg-slate-800 hover:text-slate-200' : 'text-slate-700 hover:bg-slate-400'}`}
+              className={`edusync-button-motion rounded-lg p-2 transition ${darkMode ? 'text-slate-400 hover:bg-slate-800 hover:text-slate-200' : 'text-slate-700 hover:bg-slate-400'}`}
               aria-label="Close quiz"
               title="Close"
             >
@@ -196,8 +196,12 @@ export function TakeQuizModal({
             </div>
           ) : (
             <div className="space-y-4">
-              {quizForTaking.questions.map(question => (
-                <section key={question.id} className={`rounded-xl border p-4 ${darkMode ? 'border-slate-700 bg-slate-950' : 'border-slate-500 bg-slate-400'}`}>
+              {quizForTaking.questions.map((question, index) => (
+                <section
+                  key={question.id}
+                  className={`edusync-enter-fast rounded-xl border p-4 ${darkMode ? 'border-slate-700 bg-slate-950' : 'border-slate-500 bg-slate-400'}`}
+                  style={{ animationDelay: `${Math.min(index, 8) * 35}ms` }}
+                >
                   <div className="flex items-start justify-between gap-3">
                     <h3 className={`text-sm font-bold ${darkMode ? 'text-white' : 'text-slate-950'}`}>
                       {question.sequenceNumber}. {question.content}
@@ -216,7 +220,7 @@ export function TakeQuizModal({
                           key={option.id}
                           type="button"
                           onClick={() => toggleOption(question.id, option.id)}
-                          className={`rounded-lg border px-3 py-3 text-left text-sm transition ${isSelected ? 'border-violet-500 bg-violet-600 text-white' : darkMode ? 'border-slate-700 bg-slate-900 text-slate-200 hover:bg-slate-800' : 'border-slate-500 bg-slate-300 text-slate-900 hover:bg-slate-200'}`}
+                          className={`edusync-button-motion rounded-lg border px-3 py-3 text-left text-sm transition ${isSelected ? 'border-violet-500 bg-violet-600 text-white' : darkMode ? 'border-slate-700 bg-slate-900 text-slate-200 hover:bg-slate-800' : 'border-slate-500 bg-slate-300 text-slate-900 hover:bg-slate-200'}`}
                         >
                           <span className="font-bold uppercase">{option.label}.</span> {option.content}
                         </button>
@@ -234,7 +238,7 @@ export function TakeQuizModal({
             type="button"
             onClick={() => setIsConfirmingSubmit(true)}
             disabled={isLoading || !quizForTaking || remainingSeconds <= 0}
-            className="h-10 rounded-lg bg-violet-600 px-5 text-sm font-bold text-white transition hover:bg-violet-700 disabled:cursor-not-allowed disabled:opacity-60"
+            className="edusync-button-motion h-10 rounded-lg bg-violet-600 px-5 text-sm font-bold text-white transition hover:bg-violet-700 disabled:cursor-not-allowed disabled:opacity-60"
           >
             Finish Quiz
           </button>

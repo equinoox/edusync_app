@@ -87,10 +87,10 @@ export function CreateQuestionModal({
   };
 
   return (
-    <div className="fixed inset-0 z-[75] flex items-center justify-center bg-slate-950/70 px-4 py-6 backdrop-blur-sm">
+    <div className="fixed inset-0 z-[75] flex items-center justify-center bg-slate-950/70 px-4 py-6 backdrop-blur-sm edusync-enter-fast">
       <form
         onSubmit={handleSubmit}
-        className={`flex max-h-[92vh] w-full max-w-2xl flex-col overflow-hidden rounded-xl border shadow-2xl ${darkMode ? 'border-slate-700 bg-slate-900 shadow-black/40' : 'border-slate-500 bg-slate-300 shadow-slate-950/20'}`}
+        className={`edusync-scale-in flex max-h-[92vh] w-full max-w-2xl flex-col overflow-hidden rounded-xl border shadow-2xl ${darkMode ? 'border-slate-700 bg-slate-900 shadow-black/40' : 'border-slate-500 bg-slate-300 shadow-slate-950/20'}`}
       >
         <div className={`flex shrink-0 items-center justify-between border-b px-5 py-4 ${darkMode ? 'border-slate-800' : 'border-slate-500'}`}>
           <div>
@@ -104,7 +104,7 @@ export function CreateQuestionModal({
           <button
             type="button"
             onClick={onClose}
-            className={`rounded-lg p-2 transition ${darkMode ? 'text-slate-400 hover:bg-slate-800 hover:text-slate-200' : 'text-slate-700 hover:bg-slate-400'}`}
+            className={`edusync-button-motion rounded-lg p-2 transition ${darkMode ? 'text-slate-400 hover:bg-slate-800 hover:text-slate-200' : 'text-slate-700 hover:bg-slate-400'}`}
             aria-label="Close question modal"
             title="Close"
           >
@@ -157,7 +157,11 @@ export function CreateQuestionModal({
               Options
             </p>
             {options.map((option, index) => (
-              <div key={option.label} className="flex items-center gap-2">
+              <div
+                key={option.label}
+                className="edusync-enter-fast flex items-center gap-2"
+                style={{ animationDelay: `${index * 35}ms` }}
+              >
                 <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-sm font-bold uppercase ${darkMode ? 'bg-violet-500/20 text-violet-300' : 'bg-violet-500/15 text-violet-700'}`}>
                   {option.label}
                 </span>
@@ -201,14 +205,14 @@ export function CreateQuestionModal({
           <button
             type="button"
             onClick={onClose}
-            className={`h-10 rounded-lg px-4 text-sm font-bold transition ${darkMode ? 'bg-slate-800 text-slate-200 hover:bg-slate-700' : 'bg-slate-400 text-slate-950 hover:bg-slate-500'}`}
+            className={`edusync-button-motion h-10 rounded-lg px-4 text-sm font-bold transition ${darkMode ? 'bg-slate-800 text-slate-200 hover:bg-slate-700' : 'bg-slate-400 text-slate-950 hover:bg-slate-500'}`}
           >
             Done
           </button>
           <button
             type="submit"
             disabled={isSaving}
-            className="h-10 rounded-lg bg-violet-600 px-4 text-sm font-bold text-white transition hover:bg-violet-700 disabled:opacity-60"
+            className="edusync-button-motion h-10 rounded-lg bg-violet-600 px-4 text-sm font-bold text-white transition hover:bg-violet-700 disabled:opacity-60"
           >
             {isSaving ? 'Adding...' : 'Add Question'}
           </button>

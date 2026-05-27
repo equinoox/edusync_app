@@ -15,6 +15,7 @@ type ClassroomCardProps = {
   classroom: ClassroomListItem;
   actions?: ReactNode;
   onView: (classroom: ClassroomListItem) => void;
+  animationDelayMs?: number;
 };
 
 const formatCreatedDate = (value: Date | string) =>
@@ -24,14 +25,22 @@ const formatCreatedDate = (value: Date | string) =>
     year: 'numeric',
   });
 
-export function ClassroomCard({ classroom, actions, onView }: ClassroomCardProps) {
+export function ClassroomCard({
+  classroom,
+  actions,
+  onView,
+  animationDelayMs = 0,
+}: ClassroomCardProps) {
   const color = getClassroomColorOption(classroom.color);
   const icon = getClassroomIconOption(classroom.icon);
   const Icon = icon.Icon;
   const { darkMode } = useTheme();
 
   return (
-    <article className={`group relative overflow-hidden rounded-xl border p-4 shadow-md transition hover:-translate-y-0.5 hover:shadow-lg h-72 flex flex-col ${darkMode ? "border-white/5 bg-slate-800" : "border-slate-200/70 bg-slate-400"}`}>
+    <article
+      className={`edusync-enter edusync-card-motion group relative overflow-hidden rounded-xl border p-4 shadow-md transition hover:shadow-lg h-72 flex flex-col ${darkMode ? "border-white/5 bg-slate-800" : "border-slate-200/70 bg-slate-400"}`}
+      style={{ animationDelay: `${animationDelayMs}ms` }}
+    >
       <div className={cn('absolute inset-x-0 top-0 h-24 bg-gradient-to-b to-transparent opacity-80', color.glowClass)} />
 
       <div className="relative flex justify-center">
@@ -64,7 +73,7 @@ export function ClassroomCard({ classroom, actions, onView }: ClassroomCardProps
         <button
           type="button"
           onClick={() => onView(classroom)}
-          className={cn('inline-flex items-center gap-2 text-sm font-medium transition hover:opacity-75', darkMode ? color.darkActionClass : color.actionClass)}
+          className={cn('edusync-button-motion inline-flex items-center gap-2 text-sm font-medium transition hover:opacity-75', darkMode ? color.darkActionClass : color.actionClass)}
         >
           View Classroom
           <ArrowRightIcon className="h-4 w-4" />

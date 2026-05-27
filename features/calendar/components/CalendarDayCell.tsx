@@ -9,6 +9,7 @@ export function CalendarDayCell({
   day,
   onSelectEvent,
   onViewDayEvents,
+  animationDelayMs = 0,
 }: CalendarDayCellProps) {
   const { darkMode } = useTheme();
   const visibleEvents = day.events.slice(0, 2);
@@ -17,7 +18,7 @@ export function CalendarDayCell({
   return (
     <div
       className={cn(
-        'min-h-[8.5rem] border-r border-t p-3 last:border-r-0',
+        'edusync-enter-fast min-h-[8.5rem] border-r border-t p-3 last:border-r-0 transition-colors duration-200',
         darkMode ? 'border-slate-800' : 'border-slate-500',
         day.isCurrentMonth
           ? darkMode
@@ -27,12 +28,13 @@ export function CalendarDayCell({
             ? 'bg-slate-950/40 text-slate-600'
             : 'bg-slate-400/60 text-slate-600',
       )}
+      style={{ animationDelay: `${animationDelayMs}ms` }}
     >
       <div
         className={cn(
-          'mb-3 flex h-7 w-7 items-center justify-center rounded-full text-sm font-bold',
+          'mb-3 flex h-7 w-7 items-center justify-center rounded-full text-sm font-bold transition-all duration-300',
           day.isToday
-            ? 'bg-violet-600 text-white'
+            ? 'bg-violet-600 text-white edusync-scale-in shadow-lg shadow-violet-950/30'
             : day.isCurrentMonth
               ? darkMode
                 ? 'text-white'
@@ -56,7 +58,7 @@ export function CalendarDayCell({
           <button
             type="button"
             onClick={() => onViewDayEvents(day)}
-            className="text-xs font-semibold text-violet-400"
+            className="edusync-button-motion text-xs font-semibold text-violet-400"
           >
             + {hiddenCount} more
           </button>

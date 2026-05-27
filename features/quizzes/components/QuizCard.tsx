@@ -22,6 +22,7 @@ type QuizCardProps = {
   onManage: (quiz: QuizCardItem) => void;
   onTake: (quiz: QuizCardItem) => void;
   onDelete: (quiz: QuizCardItem) => void;
+  animationDelayMs?: number;
 };
 
 const formatPoints = (points: number) =>
@@ -41,6 +42,7 @@ export function QuizCard({
   onManage,
   onTake,
   onDelete,
+  animationDelayMs = 0,
 }: QuizCardProps) {
   const { darkMode } = useTheme();
   const completedAttempt = quiz.attempt?.status === 'submitted' ? quiz.attempt : null;
@@ -50,17 +52,18 @@ export function QuizCard({
 
   return (
     <div
-      className={`grid min-w-[820px] grid-cols-[minmax(220px,1.7fr)_minmax(180px,1.15fr)_110px_130px_120px_110px_44px] items-center gap-4 border-b px-5 py-4 transition last:border-b-0 ${
+      className={`edusync-enter-fast grid min-w-[820px] grid-cols-[minmax(220px,1.7fr)_minmax(180px,1.15fr)_110px_130px_120px_110px_44px] items-center gap-4 border-b px-5 py-4 transition last:border-b-0 ${
         darkMode
           ? 'border-white/5 hover:bg-slate-800/80'
           : 'border-slate-500 hover:bg-slate-300'
       }`}
+      style={{ animationDelay: `${animationDelayMs}ms` }}
     >
       <button
         type="button"
         onClick={() => (isProfessor ? onManage(quiz) : onTake(quiz))}
         disabled={!isProfessor && Boolean(completedAttempt || expiredAttempt)}
-        className="flex min-w-0 items-center gap-3 text-left disabled:cursor-not-allowed"
+        className="edusync-button-motion flex min-w-0 items-center gap-3 text-left disabled:cursor-not-allowed"
       >
         <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-xs font-bold uppercase ${darkMode ? 'bg-violet-500/20 text-violet-300' : 'bg-violet-500/15 text-violet-700'}`}>
           {quiz.title.slice(0, 4)}

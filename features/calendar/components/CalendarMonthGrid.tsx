@@ -15,7 +15,7 @@ export function CalendarMonthGrid({
 
   return (
     <section
-      className={`overflow-hidden rounded-xl border shadow-md ${
+      className={`edusync-enter overflow-hidden rounded-xl border shadow-md ${
         darkMode ? 'border-slate-800 bg-slate-900' : 'border-slate-500 bg-slate-300'
       }`}
     >
@@ -36,10 +36,11 @@ export function CalendarMonthGrid({
         ))}
       </div>
       <div className="grid grid-cols-7">
-        {days.map(day => (
+        {days.map((day, index) => (
           <CalendarDayCell
             key={day.date.toISOString()}
             day={day}
+            animationDelayMs={Math.min(index, 13) * 12}
             onSelectEvent={onSelectEvent}
             onViewDayEvents={onViewDayEvents}
           />

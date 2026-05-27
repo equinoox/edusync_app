@@ -64,7 +64,7 @@ export function Picker({
         disabled={isDisabled}
         onClick={() => setIsOpen(current => !current)}
         aria-label={ariaLabel}
-        className={`flex h-[52px] w-full items-center justify-between gap-3 rounded-2xl border-2 px-4 text-sm font-semibold shadow-sm transition-all duration-300 focus:outline-none focus:ring-4 disabled:cursor-not-allowed disabled:opacity-60 ${
+        className={`edusync-button-motion flex h-[52px] w-full items-center justify-between gap-3 rounded-2xl border-2 px-4 text-sm font-semibold shadow-sm transition-all duration-300 focus:outline-none focus:ring-4 disabled:cursor-not-allowed disabled:opacity-60 ${
           darkMode
             ? "border-slate-600 bg-slate-700 text-white hover:border-orange-500 focus:border-orange-500 focus:ring-orange-500/20"
             : "border-indigo-100 bg-white/80 text-slate-800 backdrop-blur-sm hover:border-indigo-400 focus:border-indigo-400 focus:ring-indigo-500/10"
@@ -83,7 +83,7 @@ export function Picker({
 
       {isOpen && (
         <div
-          className={`absolute bottom-full left-0 z-50 mb-2 max-h-72 w-full overflow-hidden rounded-2xl border shadow-2xl backdrop-blur-md ${
+          className={`absolute bottom-full left-0 z-50 mb-2 max-h-72 w-full overflow-hidden rounded-2xl border shadow-2xl backdrop-blur-md edusync-scale-in ${
             darkMode
               ? "border-slate-600 bg-slate-800/95 text-white"
               : "border-indigo-100 bg-white/95 text-slate-800"
@@ -97,7 +97,7 @@ export function Picker({
                   onChange?.("");
                   setIsOpen(false);
                 }}
-                className={`mb-1 flex w-full items-center gap-2 rounded-xl px-4 py-3 text-left text-sm font-semibold transition-colors duration-200 ${
+                  className={`edusync-button-motion mb-1 flex w-full items-center gap-2 rounded-xl px-4 py-3 text-left text-sm font-semibold transition-colors duration-200 ${
                   darkMode
                     ? "text-slate-300 hover:bg-slate-700 hover:text-orange-400"
                     : "text-slate-600 hover:bg-indigo-50 hover:text-indigo-600"
@@ -119,7 +119,7 @@ export function Picker({
                     onChange?.(option.value);
                     setIsOpen(false);
                   }}
-                  className={`w-full rounded-xl px-4 py-2 text-left text-sm font-medium transition-colors duration-200 ${
+                  className={`edusync-button-motion w-full rounded-xl px-4 py-2 text-left text-sm font-medium transition-colors duration-200 ${
                     isSelected
                       ? darkMode
                         ? "bg-orange-500 text-white"

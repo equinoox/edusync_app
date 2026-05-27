@@ -59,6 +59,7 @@ export type CalendarDayCellProps = {
   day: CalendarDay;
   onSelectEvent: (event: CalendarEvent) => void;
   onViewDayEvents: (day: CalendarDay) => void;
+  animationDelayMs?: number;
 };
 
 export type CalendarEventCardProps = {

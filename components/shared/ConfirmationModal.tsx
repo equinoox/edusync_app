@@ -26,9 +26,9 @@ export function ConfirmationModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/50 px-4">
+    <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/50 px-4 edusync-enter-fast">
       <div
-        className={`w-full max-w-sm rounded-lg border p-5 shadow-xl ${
+        className={`w-full max-w-sm rounded-lg border p-5 shadow-xl edusync-scale-in ${
           darkMode
             ? "border-slate-700 bg-slate-900 text-white"
             : "border-gray-200 bg-white text-slate-900"
@@ -43,7 +43,7 @@ export function ConfirmationModal({
             type="button"
             onClick={onCancel}
             disabled={isLoading}
-            className={`inline-flex h-9 items-center rounded-md px-4 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-60 ${
+            className={`edusync-button-motion inline-flex h-9 items-center rounded-md px-4 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-60 ${
               darkMode
                 ? "bg-slate-800 text-slate-100 hover:bg-slate-700"
                 : "bg-gray-100 text-slate-800 hover:bg-gray-200"
@@ -55,7 +55,7 @@ export function ConfirmationModal({
             type="button"
             onClick={onConfirm}
             disabled={isLoading}
-            className="inline-flex h-9 items-center rounded-md bg-orange-500 px-4 text-sm font-medium text-black transition-colors hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-60"
+            className="edusync-button-motion inline-flex h-9 items-center rounded-md bg-orange-500 px-4 text-sm font-medium text-black transition-colors hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {isLoading ? loadingLabel : confirmLabel}
           </button>

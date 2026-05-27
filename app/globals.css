@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 @import "../styles/home-animations.css";
+@import "../styles/app-animations.css";
  
 @layer base {
   :root {

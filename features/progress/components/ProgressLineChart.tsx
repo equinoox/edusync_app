@@ -8,7 +8,7 @@ import type { ProgressLineChartPoint } from '@/features/progress/types';
 import type { ProgressLineChartProps } from '@/features/progress/types';
 
 const chartWidth = 760;
-const chartHeight = 250;
+const chartHeight = 230;
 const padding = { top: 18, right: 22, bottom: 32, left: 44 };
 const plotWidth = chartWidth - padding.left - padding.right;
 const plotHeight = chartHeight - padding.top - padding.bottom;
@@ -50,13 +50,13 @@ export function ProgressLineChart({ points }: ProgressLineChartProps) {
       : null;
 
   return (
-    <ProgressPanel className="p-5">
+    <ProgressPanel className="p-4">
       <ProgressSectionTitle
         title="Progress Over Time"
         action={
           <button
             type="button"
-            className="flex h-10 items-center gap-3 rounded-xl bg-slate-800/80 px-4 text-sm text-slate-200"
+            className="flex h-9 items-center gap-3 rounded-xl bg-slate-800/80 px-3 text-sm text-slate-200"
           >
             Weekly
             <ChevronDownIcon className="h-4 w-4 text-slate-400" />
@@ -85,7 +85,7 @@ export function ProgressLineChart({ points }: ProgressLineChartProps) {
       >
         <svg
           viewBox={`0 0 ${chartWidth} ${chartHeight}`}
-          className="h-[270px] w-full"
+          className="h-[245px] w-full"
           role="img"
           aria-label="Progress over time chart"
         >
@@ -132,9 +132,9 @@ export function ProgressLineChart({ points }: ProgressLineChartProps) {
             ) : null;
           })}
 
-          <path d={buildPath(chartPoints, 'quizAverage')} fill="none" stroke="#4ade80" strokeWidth="2.4" />
-          <path d={buildPath(chartPoints, 'overallProgress')} fill="none" stroke="#8b5cf6" strokeWidth="2.4" />
-          <path d={buildPath(chartPoints, 'studyTimePercent')} fill="none" stroke="#fb923c" strokeWidth="2.4" />
+          <path d={buildPath(chartPoints, 'quizAverage')} fill="none" stroke="#4ade80" strokeWidth="2.4" className="transition-all duration-500 ease-out" />
+          <path d={buildPath(chartPoints, 'overallProgress')} fill="none" stroke="#8b5cf6" strokeWidth="2.4" className="transition-all duration-500 ease-out" />
+          <path d={buildPath(chartPoints, 'studyTimePercent')} fill="none" stroke="#fb923c" strokeWidth="2.4" className="transition-all duration-500 ease-out" />
 
           {(['quizAverage', 'overallProgress', 'studyTimePercent'] as const).map(key =>
             chartPoints.map((point, index) => {
@@ -156,6 +156,7 @@ export function ProgressLineChart({ points }: ProgressLineChartProps) {
                   stroke="rgba(15,23,42,0.9)"
                   strokeWidth="2"
                   onMouseEnter={() => setActiveIndex(index)}
+                  className="transition-all duration-200 ease-out"
                 />
               );
             }),
@@ -204,7 +205,7 @@ export function ProgressLineChart({ points }: ProgressLineChartProps) {
 
         {activePoint && activeCoordinates && (
           <div
-            className="absolute hidden w-48 rounded-xl border border-white/[0.04] bg-slate-950/80 p-4 text-xs shadow-2xl backdrop-blur md:block"
+            className="edusync-scale-in absolute hidden w-48 rounded-xl border border-white/[0.04] bg-slate-950/80 p-4 text-xs shadow-2xl backdrop-blur md:block"
             style={{
               left: `min(calc(100% - 12rem), max(0px, calc(${(activeCoordinates.x / chartWidth) * 100}% - 6rem)))`,
               top: '42%',

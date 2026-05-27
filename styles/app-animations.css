@@ -1,0 +1,125 @@
+@keyframes edusync-fade-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes edusync-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes edusync-soft-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -6px, 0);
+  }
+}
+
+@keyframes edusync-bar-fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.edusync-enter {
+  animation: edusync-fade-up 360ms ease-out both;
+}
+
+.edusync-enter-fast {
+  animation: edusync-fade-up 240ms ease-out both;
+}
+
+.edusync-scale-in {
+  animation: edusync-scale-in 260ms ease-out both;
+}
+
+.edusync-card-motion {
+  transition:
+    transform 220ms ease-out,
+    border-color 220ms ease-out,
+    box-shadow 220ms ease-out,
+    background-color 220ms ease-out,
+    color 220ms ease-out,
+    opacity 220ms ease-out;
+}
+
+.edusync-card-motion:hover {
+  transform: translateY(-2px);
+}
+
+.edusync-button-motion {
+  transition:
+    transform 180ms ease-out,
+    box-shadow 180ms ease-out,
+    background-color 180ms ease-out,
+    border-color 180ms ease-out,
+    color 180ms ease-out,
+    opacity 180ms ease-out;
+}
+
+.edusync-button-motion:hover {
+  transform: translateY(-1px);
+}
+
+.edusync-button-motion:active {
+  transform: scale(0.98);
+}
+
+.edusync-button-motion:disabled:hover,
+.edusync-button-motion[aria-disabled="true"]:hover {
+  transform: none;
+}
+
+.edusync-subtle-float {
+  animation: edusync-soft-float 6s ease-in-out infinite;
+}
+
+.edusync-progress-fill {
+  animation: edusync-bar-fill 900ms ease-out both;
+  transform-origin: left;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+  }
+
+  .edusync-enter,
+  .edusync-enter-fast,
+  .edusync-scale-in,
+  .edusync-subtle-float,
+  .edusync-progress-fill {
+    animation: none !important;
+  }
+
+  .edusync-card-motion,
+  .edusync-button-motion {
+    transition-duration: 1ms !important;
+  }
+
+  .edusync-card-motion:hover,
+  .edusync-button-motion:hover,
+  .edusync-button-motion:active {
+    transform: none !important;
+  }
+}

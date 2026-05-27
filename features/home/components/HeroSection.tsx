@@ -1,103 +1,130 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpTrayIcon, ChatBubbleLeftRightIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowUpTrayIcon,
+  BookOpenIcon,
+  ChartPieIcon,
+  ChatBubbleLeftRightIcon,
+  TrophyIcon,
+} from "@heroicons/react/24/outline";
 import type { HeroSectionProps } from "@/features/home/types";
 
 export default function HeroSection({ firstName }: HeroSectionProps) {
   return (
-    <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-gray-400 via-gray-300 to-gray-500 p-8 md:p-10 flex flex-col md:flex-row items-center gap-8 animate-hero-section animate-stagger-1">
-
-      <div className="absolute top-0 right-0 w-80 h-80 bg-gray-300/30 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
-      <div className="absolute bottom-0 left-1/3 w-48 h-48 bg-gray-400/20 rounded-full blur-2xl pointer-events-none" />
-
-        {/* GRID !!! */}
-      <div className="hidden md:block absolute inset-0 pointer-events-none opacity-[0.07]"
+    <section className="relative overflow-hidden rounded-3xl border border-violet-400/20 bg-slate-950 p-6 shadow-2xl shadow-slate-950/40 animate-hero-section animate-stagger-1 md:p-8 lg:p-10">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_22%_20%,rgba(124,58,237,0.24),transparent_30%),radial-gradient(circle_at_56%_16%,rgba(249,115,22,0.1),transparent_26%),linear-gradient(135deg,rgba(76,29,149,0.45),rgba(2,6,23,0.72)_42%,rgba(15,23,42,0.92))]" />
+      <div
+        className="pointer-events-none absolute inset-0 hidden opacity-[0.08] md:block"
         style={{
-          backgroundImage: "linear-gradient(to right, #6d28d9 1px, transparent 1px), linear-gradient(to bottom, #6d28d9 1px, transparent 1px)",
+          backgroundImage:
+            "linear-gradient(to right, #8b5cf6 1px, transparent 1px), linear-gradient(to bottom, #8b5cf6 1px, transparent 1px)",
           backgroundSize: "32px 32px",
         }}
       />
 
-      <div className="hidden md:block pointer-events-none">
-        <svg className="absolute top-6 left-[12%] w-10 h-10 text-violet-800/60 animate-pulse" viewBox="0 0 20 20" fill="currentColor">
-          <path d="M10 0 L11.5 8.5 L20 10 L11.5 11.5 L10 20 L8.5 11.5 L0 10 L8.5 8.5 Z" />
-        </svg>
-        <svg className="absolute top-10 left-[38%] w-7 h-7 text-violet-700/50 animate-pulse [animation-delay:400ms]" viewBox="0 0 20 20" fill="currentColor">
-          <path d="M10 0 L11.5 8.5 L20 10 L11.5 11.5 L10 20 L8.5 11.5 L0 10 L8.5 8.5 Z" />
-        </svg>
-        <svg className="absolute bottom-8 left-[18%] w-8 h-8 text-orange-900/50 animate-pulse [animation-delay:700ms]" viewBox="0 0 20 20" fill="currentColor">
-          <path d="M10 0 L11.5 8.5 L20 10 L11.5 11.5 L10 20 L8.5 11.5 L0 10 L8.5 8.5 Z" />
-        </svg>
-        <svg className="absolute top-1/2 left-[6%] w-3.5 h-3.5 text-orange-900/50 animate-pulse [animation-delay:200ms]" viewBox="0 0 20 20" fill="currentColor">
-          <path d="M10 0 L11.5 8.5 L20 10 L11.5 11.5 L10 20 L8.5 11.5 L0 10 L8.5 8.5 Z" />
-        </svg>
-        <svg className="absolute bottom-12 left-[55%] w-7 h-7 text-violet-700/60 animate-pulse [animation-delay:600ms]" viewBox="0 0 20 20" fill="currentColor">
-          <path d="M10 0 L11.5 8.5 L20 10 L11.5 11.5 L10 20 L8.5 11.5 L0 10 L8.5 8.5 Z" />
-        </svg>
-        <svg className="absolute top-4 left-[62%] w-8 h-8 text-orange-900/50 animate-pulse [animation-delay:900ms]" viewBox="0 0 20 20" fill="currentColor">
-          <path d="M10 0 L11.5 8.5 L20 10 L11.5 11.5 L10 20 L8.5 11.5 L0 10 L8.5 8.5 Z" />
-        </svg>
-
-        <div className="absolute -bottom-10 -left-10 w-48 h-48 rounded-full border border-violet-400/20" />
-        <div className="absolute -bottom-16 -left-16 w-64 h-64 rounded-full border border-violet-400/10" />
-      </div>
-
-      <div className="relative flex-1 z-10">
-        <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight mb-3 tracking-tight">
-          Master any subject<br />
-          with <span className="text-violet-600">EduSync</span>
-        </h1>
-        <p className="text-sm text-gray-500 leading-relaxed mb-6 max-w-sm">
-          Upload your study materials and chat with our AI assistant to understand, practice, and excel.
-        </p>
-        <div className="flex flex-wrap gap-3">
-          <Link
-            href="/chat"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold transition-colors shadow-sm shadow-violet-200"
-          >
-            <ChatBubbleLeftRightIcon className="w-4 h-4" />
-            Chat with AI Assistant
-          </Link>
-          <Link
-            href="/documents"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold border border-orange-400 transition-colors"
-          >
-            <ArrowUpTrayIcon className="w-4 h-4" />
-            Upload PDF
-          </Link>
-        </div>
-      </div>
-
-      <div className="relative z-10 w-full md:w-72 bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg shadow-violet-100/60 border border-white p-4 flex flex-col gap-3">
-        <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-full bg-violet-600 flex items-center justify-center text-white text-xs font-bold">
-            AI
+      <div className="relative z-10 grid items-center gap-8 xl:grid-cols-[1.05fr_minmax(19rem,0.9fr)_22rem]">
+        <div className="min-w-0">
+          <h1 className="text-3xl font-extrabold leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl">
+            Master any subject
+            <br />
+            with <span className="text-violet-500">EduSync</span>
+          </h1>
+          <p className="mt-4 max-w-md text-sm leading-7 text-slate-300 sm:text-base">
+            Upload your study materials and chat with our AI assistant to understand, practice, and excel.
+          </p>
+          <div className="mt-7 flex flex-wrap gap-3">
+            <Link
+              href="/chat"
+              className="inline-flex items-center gap-2 rounded-xl bg-violet-600 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-violet-950/40 transition hover:bg-violet-500"
+            >
+              <ChatBubbleLeftRightIcon className="h-5 w-5" />
+              Chat with AI Assistant
+            </Link>
+            <Link
+              href="/documents"
+              className="inline-flex items-center gap-2 rounded-xl border border-orange-400/70 bg-orange-500 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-orange-950/30 transition hover:bg-orange-400"
+            >
+              <ArrowUpTrayIcon className="h-5 w-5" />
+              Upload PDF
+            </Link>
           </div>
-          <div>
-            <p className="text-xs font-semibold text-gray-800">EduSync AI</p>
-            <p className="text-[10px] text-emerald-500 font-medium flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" />
-              Online
+
+          <div className="mt-8 grid max-w-xl grid-cols-3 divide-x divide-white/10 rounded-2xl border border-white/5 bg-slate-950/35 p-4">
+            {[
+              {
+                label: "Different Sources",
+                value: "10K +",
+                Icon: BookOpenIcon,
+                tone: "text-violet-300 bg-violet-500/20",
+              },
+              {
+                label: "Active Users",
+                value: "300K +",
+                Icon: TrophyIcon,
+                tone: "text-orange-300 bg-orange-500/20",
+              },
+              {
+                label: "Rating",
+                value: "95%",
+                Icon: ChartPieIcon,
+                tone: "text-emerald-300 bg-emerald-500/20",
+              },
+            ].map(({ label, value, Icon, tone }) => (
+              <div key={label} className="flex items-center justify-center gap-3 px-2">
+                <span className={`hidden h-10 w-10 shrink-0 items-center justify-center rounded-full sm:flex ${tone}`}>
+                  <Icon className="h-5 w-5" />
+                </span>
+                <div>
+                  <p className="text-lg font-extrabold leading-tight text-white">{value}</p>
+                  <p className="text-xs text-slate-400">{label}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="relative mx-auto flex w-full max-w-md justify-center xl:max-w-none">
+          <div className="absolute inset-x-6 bottom-0 h-20 rounded-full bg-violet-600/20 blur-3xl" />
+          <Image
+            src="/home_hero_img.png"
+            alt=""
+            width={560}
+            height={372}
+            priority
+            className="edusync-subtle-float relative h-auto w-full max-w-[34rem] object-contain"
+          />
+        </div>
+
+        <div className="w-full rounded-2xl border border-white/10 bg-slate-900/75 p-5 shadow-2xl shadow-slate-950/30 backdrop-blur">
+          <div className="flex items-center gap-3">
+            <div className="flex h-11 w-11 items-center justify-center rounded-full bg-violet-600 text-sm font-bold text-white">
+              AI
+            </div>
+            <div>
+              <p className="text-sm font-bold text-white">EduSync AI</p>
+              <p className="flex items-center gap-1 text-xs font-medium text-emerald-400">
+                <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                Online
+              </p>
+            </div>
+          </div>
+          <p className="mt-6 text-sm leading-7 text-slate-300">
+            Hi {firstName}! Upload your notes or a PDF and I will help you understand the topic step by step.
+          </p>
+          <div className="mt-5 ml-auto max-w-[90%] rounded-2xl rounded-tr-sm bg-violet-600 p-4 shadow-lg shadow-violet-950/40">
+            <p className="text-sm leading-6 text-white">
+              Can you explain integration by parts in simple terms?
             </p>
           </div>
-        </div>
-        <div className="bg-gray-50 rounded-xl rounded-tl-sm p-3">
-          <p className="text-xs text-gray-600 leading-relaxed">
-            Hi {firstName}! 👋 Upload your notes or a PDF and I will help you understand the topic step by step.
-          </p>
-        </div>
-        <div className="bg-violet-600 rounded-xl rounded-tr-sm p-3 self-end max-w-[90%]">
-          <p className="text-xs text-white leading-relaxed">
-            Can you explain integration by parts in simple terms?
-          </p>
-        </div>
-        <div className="flex items-center gap-1 px-1 py-2">
-          <span className="w-1.5 h-1.5 rounded-full bg-gray-300 animate-bounce [animation-delay:0ms]" />
-          <span className="w-1.5 h-1.5 rounded-full bg-gray-300 animate-bounce [animation-delay:150ms]" />
-          <span className="w-1.5 h-1.5 rounded-full bg-gray-300 animate-bounce [animation-delay:300ms]" />
+          <div className="mt-4 flex items-center gap-1">
+            <span className="h-2 w-2 rounded-full bg-slate-500 animate-bounce [animation-delay:0ms]" />
+            <span className="h-2 w-2 rounded-full bg-slate-500 animate-bounce [animation-delay:150ms]" />
+            <span className="h-2 w-2 rounded-full bg-slate-500 animate-bounce [animation-delay:300ms]" />
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

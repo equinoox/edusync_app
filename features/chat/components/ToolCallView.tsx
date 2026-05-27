@@ -143,7 +143,7 @@ export function ToolCallView({ part }: ToolCallViewProps) {
       <button
         type="button"
         onClick={() => setIsExpanded((current) => !current)}
-        className="group flex w-fit cursor-pointer items-center gap-2 rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-2 transition-all duration-200 hover:bg-indigo-100"
+        className="edusync-button-motion group flex w-fit cursor-pointer items-center gap-2 rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-2 transition-all duration-200 hover:bg-indigo-100"
         title="Click to see tool details"
       >
         <SparklesIcon className="h-4 w-4 text-indigo-600 transition-transform group-hover:scale-110" />
@@ -154,7 +154,7 @@ export function ToolCallView({ part }: ToolCallViewProps) {
       </button>
 
       {isExpanded && (
-        <div className="ml-4 space-y-2 rounded-lg border border-slate-200 bg-slate-50 p-3 animate-in fade-in slide-in-from-top-2">
+        <div className="edusync-scale-in ml-4 space-y-2 rounded-lg border border-slate-200 bg-slate-50 p-3">
           <p className="text-sm font-medium text-slate-700">
             {description}
           </p>

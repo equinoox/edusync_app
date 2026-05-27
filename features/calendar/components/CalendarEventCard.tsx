@@ -20,7 +20,7 @@ export function CalendarEventCard({
       type="button"
       onClick={() => onSelect(event)}
       className={cn(
-        'w-full rounded-lg border p-2 text-left transition',
+        'edusync-enter-fast edusync-card-motion w-full rounded-lg border p-2 text-left transition',
         darkMode
           ? 'border-white/5 bg-slate-800/80 hover:bg-slate-700'
           : 'border-slate-300 bg-slate-400 hover:bg-slate-300',

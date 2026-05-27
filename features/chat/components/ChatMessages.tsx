@@ -21,7 +21,7 @@ export function ChatMessages({ messages }: ChatMessagesProps) {
           : '';
 
         return (
-          <div key={message.id} className="flex flex-col w-full gap-3 animate-in fade-in slide-in-from-bottom-2 duration-300">
+          <div key={message.id} className="edusync-enter-fast flex flex-col w-full gap-3">
             {(textParts.length > 0 || fallbackText.length > 0) && (
               <div
                 className={`flex w-full ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
@@ -39,7 +39,7 @@ export function ChatMessages({ messages }: ChatMessagesProps) {
                 )}
 
                 <div
-                  className={`max-w-[70%] rounded-2xl px-5 py-3.5 text-base leading-relaxed ${
+                  className={`edusync-card-motion max-w-[70%] rounded-2xl px-5 py-3.5 text-base leading-relaxed ${
                     message.role === 'user'
                       ? 'bg-indigo-600 text-white  shadow-indigo-200/50'
                       : darkMode

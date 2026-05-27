@@ -41,7 +41,7 @@ export function ClassroomStatCard({
   const { darkMode } = useTheme();
 
   return (
-    <article className={`rounded-xl border p-4 backdrop-blur ${darkMode ? "border-white/5 bg-slate-800" : "border-slate-200/70 bg-slate-400"}`}>
+    <article className={`edusync-enter edusync-card-motion rounded-xl border p-4 backdrop-blur ${darkMode ? "border-white/5 bg-slate-800" : "border-slate-200/70 bg-slate-400"}`}>
       <div className="flex items-center gap-3">
         <div className={cn('flex h-11 w-11 items-center justify-center rounded-xl', darkMode ? toneClasses[tone].darkClass : toneClasses[tone].light)}>
           <Icon className="h-6 w-6" />

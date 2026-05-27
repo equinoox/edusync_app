@@ -2,6 +2,10 @@
 
 import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/20/solid';
 
+import {
+  AnimatedNumber,
+  parseAnimatedNumber,
+} from '@/components/shared/AnimatedNumber';
 import type { ProgressMetricCardProps } from '@/features/progress/types';
 import { cn } from '@/lib/utils';
 
@@ -36,22 +40,33 @@ export function ProgressMetricCard({
   const isNegativeChange = changeLabel.trim().startsWith('-');
   const ChangeIcon = isNegativeChange ? ArrowDownIcon : ArrowUpIcon;
   const [changeValue, ...changeWords] = changeLabel.split(' ');
+  const animatedValue = parseAnimatedNumber(value);
+  const clampedProgress = Math.min(100, Math.max(0, progress));
 
   return (
-    <article className="rounded-2xl border border-white/[0.04] bg-slate-900/70 p-5 shadow-[0_18px_40px_rgba(0,0,0,0.18)]">
-      <div className="flex items-start gap-4">
+    <article className="edusync-enter edusync-card-motion rounded-xl border border-white/[0.04] bg-slate-900/70 p-4 shadow-lg">
+      <div className="flex items-start gap-3">
         <span
           className={cn(
-            'flex h-12 w-12 shrink-0 items-center justify-center rounded-xl',
+            'flex h-10 w-10 shrink-0 items-center justify-center rounded-lg',
             classes.icon,
           )}
         >
-          <Icon className="h-7 w-7" />
+          <Icon className="h-6 w-6" />
         </span>
         <div className="min-w-0 flex-1">
           <p className="truncate text-xs font-medium text-slate-300">{label}</p>
-          <p className="mt-1 text-2xl font-bold leading-tight text-white">
-            {value}
+          <p className="mt-0.5 text-xl font-bold leading-tight text-white">
+            {animatedValue ? (
+              <AnimatedNumber
+                value={animatedValue.numericValue}
+                prefix={animatedValue.prefix}
+                suffix={animatedValue.suffix}
+                decimals={animatedValue.decimals}
+              />
+            ) : (
+              value
+            )}
           </p>
           <p className="mt-2 flex items-center gap-1 text-xs text-slate-300">
             <ChangeIcon
@@ -72,10 +87,10 @@ export function ProgressMetricCard({
           </p>
         </div>
       </div>
-      <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-slate-800">
+      <div className="mt-3 h-1.5 overflow-hidden rounded-full bg-slate-800">
         <div
-          className={cn('h-full rounded-full', classes.bar)}
-          style={{ width: `${Math.min(100, Math.max(0, progress))}%` }}
+          className={cn('h-full rounded-full edusync-progress-fill', classes.bar)}
+          style={{ width: `${clampedProgress}%` }}
         />
       </div>
     </article>

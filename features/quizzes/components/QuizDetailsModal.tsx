@@ -82,7 +82,7 @@ export function QuizDetailsModal({
   };
 
   return (
-    <div className="fixed inset-0 z-[65] flex items-center justify-center bg-slate-950/70 px-4 py-6 backdrop-blur-sm">
+    <div className="fixed inset-0 z-[65] flex items-center justify-center bg-slate-950/70 px-4 py-6 backdrop-blur-sm edusync-enter-fast">
       <ConfirmationModal
         isOpen={Boolean(questionToDelete)}
         isLoading={isDeletingQuestion}
@@ -91,7 +91,7 @@ export function QuizDetailsModal({
         onCancel={() => setQuestionToDelete(null)}
         onConfirm={handleDeleteQuestion}
       />
-      <div className={`flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-xl border shadow-2xl ${darkMode ? 'border-slate-700 bg-slate-900 shadow-black/40' : 'border-slate-500 bg-slate-300 shadow-slate-950/20'}`}>
+      <div className={`edusync-scale-in flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-xl border shadow-2xl ${darkMode ? 'border-slate-700 bg-slate-900 shadow-black/40' : 'border-slate-500 bg-slate-300 shadow-slate-950/20'}`}>
         <div className={`flex shrink-0 items-start justify-between gap-4 border-b px-5 py-4 ${darkMode ? 'border-slate-800' : 'border-slate-500'}`}>
           <div className="min-w-0">
             <h2 className={`truncate text-xl font-bold ${darkMode ? 'text-white' : 'text-slate-950'}`}>
@@ -104,7 +104,7 @@ export function QuizDetailsModal({
           <button
             type="button"
             onClick={onClose}
-            className={`rounded-lg p-2 transition ${darkMode ? 'text-slate-400 hover:bg-slate-800 hover:text-slate-200' : 'text-slate-700 hover:bg-slate-400'}`}
+            className={`edusync-button-motion rounded-lg p-2 transition ${darkMode ? 'text-slate-400 hover:bg-slate-800 hover:text-slate-200' : 'text-slate-700 hover:bg-slate-400'}`}
             aria-label="Close quiz details"
             title="Close"
           >
@@ -131,8 +131,12 @@ export function QuizDetailsModal({
             </div>
           ) : details?.questions.length ? (
             <div className="space-y-3">
-              {details.questions.map(question => (
-                <div key={question.id} className={`rounded-xl border p-4 ${darkMode ? 'border-slate-700 bg-slate-950' : 'border-slate-500 bg-slate-400'}`}>
+              {details.questions.map((question, index) => (
+                <div
+                  key={question.id}
+                  className={`edusync-enter-fast rounded-xl border p-4 ${darkMode ? 'border-slate-700 bg-slate-950' : 'border-slate-500 bg-slate-400'}`}
+                  style={{ animationDelay: `${Math.min(index, 8) * 35}ms` }}
+                >
                   <div className="flex items-start justify-between gap-3">
                     <p className={`text-sm font-semibold ${darkMode ? 'text-white' : 'text-slate-950'}`}>
                       {question.sequenceNumber}. {question.content}
@@ -144,7 +148,7 @@ export function QuizDetailsModal({
                       <button
                         type="button"
                         onClick={() => setQuestionToDelete(question)}
-                        className={`rounded-lg p-2 transition ${darkMode ? 'text-red-200 hover:bg-red-950' : 'text-red-700 hover:bg-red-200'}`}
+                        className={`edusync-button-motion rounded-lg p-2 transition ${darkMode ? 'text-red-200 hover:bg-red-950' : 'text-red-700 hover:bg-red-200'}`}
                         aria-label="Delete question"
                         title="Delete question"
                       >
@@ -173,7 +177,7 @@ export function QuizDetailsModal({
           <button
             type="button"
             onClick={() => onAddQuestion(activeQuiz)}
-            className="inline-flex h-10 items-center gap-2 rounded-lg bg-violet-600 px-4 text-sm font-bold text-white transition hover:bg-violet-700"
+            className="edusync-button-motion inline-flex h-10 items-center gap-2 rounded-lg bg-violet-600 px-4 text-sm font-bold text-white transition hover:bg-violet-700"
           >
             <PlusIcon className="h-5 w-5" />
             Add Question

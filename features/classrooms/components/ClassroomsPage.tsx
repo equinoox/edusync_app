@@ -381,13 +381,18 @@ export function ClassroomsPage() {
                   )}
                 </div>
 
-                {filteredClassrooms.length > 0 ? (
+                {isLoading && classrooms.length === 0 ? (
+                  <div className={`grid min-h-48 place-items-center rounded-xl border border-dashed ${darkMode ? "border-slate-700 bg-slate-800" : "border-slate-500 bg-slate-400"}`}>
+                    <span className={`h-8 w-8 animate-spin rounded-full border-2 border-t-transparent ${darkMode ? "border-violet-300" : "border-violet-700"}`} />
+                  </div>
+                ) : filteredClassrooms.length > 0 ? (
                   <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 overflow-y-auto pr-1 md:grid-cols-2 2xl:grid-cols-3">
-                    {filteredClassrooms.map(classroom => (
+                    {filteredClassrooms.map((classroom, index) => (
                       <ClassroomCard
                         key={classroom.id}
                         classroom={classroom}
                         onView={setSelectedClassroom}
+                        animationDelayMs={Math.min(index, 8) * 45}
                         actions={
                           <ClassroomActionsMenu
                             canDelete={isProfessor}
@@ -412,7 +417,7 @@ export function ClassroomsPage() {
                   </div>
                 )}
 
-                {isProfessor && (
+                {isProfessor && !isLoading && (
                   <button
                     type="button"
                     onClick={() => setIsCreateModalOpen(true)}

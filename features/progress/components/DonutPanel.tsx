@@ -3,6 +3,10 @@
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
 
 import {
+  AnimatedNumber,
+  parseAnimatedNumber,
+} from '@/components/shared/AnimatedNumber';
+import {
   ProgressLinkButton,
   ProgressPanel,
   ProgressSectionTitle,
@@ -21,13 +25,14 @@ export function DonutPanel({
   onViewAll,
 }: DonutPanelProps) {
   let offset = 0;
+  const animatedCenterValue = parseAnimatedNumber(centerValue);
 
   return (
-    <ProgressPanel className="flex min-h-[285px] flex-col p-5">
+    <ProgressPanel className="flex min-h-[255px] flex-col p-4">
       <ProgressSectionTitle title={title} />
 
-      <div className="grid flex-1 items-center gap-5 md:grid-cols-[9.5rem_minmax(0,1fr)]">
-        <div className="relative mx-auto h-40 w-40">
+      <div className="grid flex-1 items-center gap-4 md:grid-cols-[8.5rem_minmax(0,1fr)]">
+        <div className="relative mx-auto h-36 w-36">
           <svg viewBox="0 0 120 120" className="h-full w-full -rotate-90">
             <circle
               cx="60"
@@ -54,32 +59,50 @@ export function DonutPanel({
                   strokeDasharray={`${dash} ${circumference - dash}`}
                   strokeDashoffset={-currentOffset}
                   strokeLinecap="butt"
+                  className="transition-[stroke-dashoffset,stroke-dasharray] duration-500 ease-out"
                 />
               );
             })}
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-            <p className="text-2xl font-bold leading-none text-white">{centerValue}</p>
+            <p className="text-xl font-bold leading-none text-white">
+              {animatedCenterValue ? (
+                <AnimatedNumber
+                  value={animatedCenterValue.numericValue}
+                  prefix={animatedCenterValue.prefix}
+                  suffix={animatedCenterValue.suffix}
+                  decimals={animatedCenterValue.decimals}
+                />
+              ) : (
+                centerValue
+              )}
+            </p>
             <p className="mt-1 text-xs text-slate-300">{centerLabel}</p>
           </div>
         </div>
 
-        <div className="space-y-4">
-          {segments.map(segment => (
-            <div key={segment.label} className="grid grid-cols-[1rem_minmax(0,1fr)_auto_auto] items-center gap-3 text-sm">
+        <div className="space-y-3">
+          {segments.map((segment, index) => (
+            <div
+              key={segment.label}
+              className="edusync-enter-fast grid grid-cols-[1rem_minmax(0,1fr)_auto_auto] items-center gap-3 text-sm"
+              style={{ animationDelay: `${index * 45}ms` }}
+            >
               <span
                 className="h-2.5 w-2.5 rounded-full"
                 style={{ backgroundColor: segment.color }}
               />
               <span className="truncate font-medium text-white">{segment.label}</span>
               <span className="text-xs text-slate-500">{segment.detail}</span>
-              <span className="font-semibold text-white">{segment.value}%</span>
+              <span className="font-semibold text-white">
+                <AnimatedNumber value={segment.value} suffix="%" />
+              </span>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="mt-5 border-t border-white/[0.06] pt-4 text-center">
+      <div className="mt-4 border-t border-white/[0.06] pt-3 text-center">
         <ProgressLinkButton onClick={onViewAll}>
           {footerLabel}
           <ArrowRightIcon className="h-4 w-4" />

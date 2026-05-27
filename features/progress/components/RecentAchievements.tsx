@@ -60,13 +60,14 @@ export function RecentAchievements({
         </div>
       ) : (
         <div className="space-y-1">
-          {visibleActivities.map(activity => {
+          {visibleActivities.map((activity, index) => {
           const Icon = getActivityIcon(activity);
 
           return (
             <div
               key={activity.id}
-              className="grid grid-cols-[2.5rem_minmax(0,1fr)_auto] items-center gap-3 border-b border-white/[0.06] py-3 last:border-b-0"
+              className="edusync-enter-fast grid grid-cols-[2.5rem_minmax(0,1fr)_auto] items-center gap-3 border-b border-white/[0.06] py-3 last:border-b-0"
+              style={{ animationDelay: `${index * 45}ms` }}
             >
               <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-500/20 text-violet-300">
                 <Icon className="h-5 w-5" />

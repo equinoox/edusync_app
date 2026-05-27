@@ -28,9 +28,9 @@ export function CalendarEventDetailsModal({
   const Icon = isQuiz ? AcademicCapIcon : CalendarDaysIcon;
 
   return (
-    <div className="fixed inset-0 z-[65] flex items-center justify-center bg-slate-950/70 px-4 py-6 backdrop-blur-sm">
+    <div className="fixed inset-0 z-[65] flex items-center justify-center bg-slate-950/70 px-4 py-6 backdrop-blur-sm edusync-enter-fast">
       <section
-        className={`w-full max-w-lg overflow-hidden rounded-xl border shadow-2xl ${
+        className={`edusync-scale-in w-full max-w-lg overflow-hidden rounded-xl border shadow-2xl ${
           darkMode
             ? 'border-slate-700 bg-slate-900 shadow-black/40'
             : 'border-slate-500 bg-slate-300 shadow-slate-950/20'
@@ -57,7 +57,7 @@ export function CalendarEventDetailsModal({
           <button
             type="button"
             onClick={onClose}
-            className={`rounded-lg p-2 transition ${
+            className={`edusync-button-motion rounded-lg p-2 transition ${
               darkMode
                 ? 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'
                 : 'text-slate-700 hover:bg-slate-400'
@@ -105,7 +105,7 @@ export function CalendarEventDetailsModal({
                 type="button"
                 onClick={() => onDelete(event)}
                 disabled={isSaving}
-                className="inline-flex h-10 items-center gap-2 rounded-lg bg-red-600 px-4 text-sm font-bold text-white transition hover:bg-red-700 disabled:opacity-60"
+                className="edusync-button-motion inline-flex h-10 items-center gap-2 rounded-lg bg-red-600 px-4 text-sm font-bold text-white transition hover:bg-red-700 disabled:opacity-60"
               >
                 <TrashIcon className="h-4 w-4" />
                 Delete
@@ -114,7 +114,7 @@ export function CalendarEventDetailsModal({
                 type="button"
                 onClick={() => onEdit(event)}
                 disabled={isSaving}
-                className="inline-flex h-10 items-center gap-2 rounded-lg bg-violet-600 px-4 text-sm font-bold text-white transition hover:bg-violet-700 disabled:opacity-60"
+                className="edusync-button-motion inline-flex h-10 items-center gap-2 rounded-lg bg-violet-600 px-4 text-sm font-bold text-white transition hover:bg-violet-700 disabled:opacity-60"
               >
                 <PencilSquareIcon className="h-4 w-4" />
                 Edit
@@ -125,7 +125,7 @@ export function CalendarEventDetailsModal({
             <button
               type="button"
               onClick={() => onTakeQuiz(event)}
-              className="inline-flex h-10 items-center gap-2 rounded-lg bg-violet-600 px-4 text-sm font-bold text-white transition hover:bg-violet-700"
+              className="edusync-button-motion inline-flex h-10 items-center gap-2 rounded-lg bg-violet-600 px-4 text-sm font-bold text-white transition hover:bg-violet-700"
             >
               <PlayIcon className="h-4 w-4" />
               Take Quiz

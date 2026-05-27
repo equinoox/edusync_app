@@ -1,7 +1,7 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
-import { DocumentTextIcon } from '@heroicons/react/24/outline';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { DocumentTextIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
 import Sidebar from '@/components/layout/sidebar';
 import TopBar from '@/components/layout/TopBar';
@@ -32,6 +32,7 @@ export function DocumentsPage() {
   const [documentToDelete, setDocumentToDelete] = useState<DocumentListItem | null>(null);
   const [deletingDocumentId, setDeletingDocumentId] = useState<string | null>(null);
   const [toast, setToast] = useState<ToastNotificationState | null>(null);
+  const [search, setSearch] = useState('');
 
   const showToast = useCallback((message: string, tone: ToastNotificationState['tone'] = 'info') => {
     setToast({ id: Date.now(), message, tone });
@@ -111,6 +112,16 @@ export function DocumentsPage() {
     }
   };
 
+  const filteredDocuments = useMemo(() => {
+    const normalizedSearch = search.trim().toLowerCase();
+
+    if (!normalizedSearch) return documents;
+
+    return documents.filter(document =>
+      document.fileName.toLowerCase().includes(normalizedSearch),
+    );
+  }, [documents, search]);
+
   return (
     <main className={`flex min-h-screen flex-col lg:flex-row ${darkMode ? 'bg-slate-950' : 'bg-slate-300'}`}>
       <ToastNotification toast={toast} onDismiss={dismissToast} />
@@ -152,7 +163,42 @@ export function DocumentsPage() {
         </div>
 
         <div className="w-full px-4 py-6 sm:px-6">
-          <div className="mx-auto flex max-w-6xl flex-col gap-4">
+          <div className="mx-auto flex max-w-6xl flex-col gap-4 edusync-enter">
+            <div
+              className={`edusync-card-motion flex flex-col gap-3 rounded-xl border p-4 shadow-md sm:flex-row sm:items-center sm:justify-between ${
+                darkMode
+                  ? 'border-slate-700 bg-slate-800'
+                  : 'border-slate-500 bg-slate-400'
+              }`}
+            >
+              <div>
+                <h1 className={`text-lg font-bold ${darkMode ? 'text-white' : 'text-slate-950'}`}>
+                  Documents
+                </h1>
+                <p className={`text-sm ${darkMode ? 'text-slate-300' : 'text-slate-700'}`}>
+                  Search uploaded PDFs by file name.
+                </p>
+              </div>
+              <label className="relative block w-full sm:max-w-sm">
+                <MagnifyingGlassIcon
+                  className={`pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 ${
+                    darkMode ? 'text-slate-500' : 'text-slate-700'
+                  }`}
+                />
+                <input
+                  type="search"
+                  value={search}
+                  onChange={event => setSearch(event.target.value)}
+                  placeholder="Search documents"
+                  className={`h-11 w-full rounded-xl border py-2 pl-10 pr-3 text-sm outline-none transition focus:ring-2 ${
+                    darkMode
+                      ? 'border-slate-700 bg-slate-900 text-white placeholder:text-slate-500 focus:border-violet-400 focus:ring-violet-400/30'
+                      : 'border-slate-500 bg-slate-300 text-slate-950 placeholder:text-slate-600 focus:border-indigo-600 focus:ring-indigo-600/30'
+                  }`}
+                />
+              </label>
+            </div>
+
             {isLoading ? (
               <div className="flex items-center justify-center">
                 <p className={darkMode ? 'text-orange-500' : 'text-slate-600'}>
@@ -173,12 +219,20 @@ export function DocumentsPage() {
                   </p>
                 </CardContent>
               </Card>
+            ) : filteredDocuments.length === 0 ? (
+              <Card className={darkMode ? 'border-slate-700 bg-slate-800 text-white' : 'border-slate-500 bg-slate-400 text-slate-950'}>
+                <CardContent className="p-6 text-center">
+                  <DocumentTextIcon className={`mx-auto h-9 w-9 ${darkMode ? 'text-violet-300' : 'text-indigo-700'}`} />
+                  <p className="mt-3 text-sm font-semibold">No documents match your search.</p>
+                </CardContent>
+              </Card>
             ) : (
               <div className="grid gap-3">
-                {documents.map(document => (
+                {filteredDocuments.map((document, index) => (
                   <Card
                     key={document.id}
-                    className={darkMode ? 'border-slate-700 bg-slate-800 text-white' : 'border-indigo-500 bg-slate-100 text-black'}
+                    className={`${darkMode ? 'border-slate-700 bg-slate-800 text-white' : 'border-indigo-500 bg-slate-100 text-black'} edusync-enter-fast`}
+                    style={{ animationDelay: `${Math.min(index, 10) * 35}ms` }}
                   >
                     <CardContent className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between">
                       <div className="flex min-w-0 items-center gap-3">
@@ -204,8 +258,8 @@ export function DocumentsPage() {
                           rel="noopener noreferrer"
                           className={
                             darkMode
-                              ? 'inline-flex h-8 w-fit items-center rounded-md bg-violet-950 px-3 text-sm text-white transition-colors hover:bg-violet-800'
-                              : 'inline-flex h-8 w-fit items-center rounded-md bg-gray-200 px-3 text-sm text-slate-900 transition-colors hover:bg-gray-300'
+                              ? 'edusync-button-motion inline-flex h-8 w-fit items-center rounded-md bg-violet-950 px-3 text-sm text-white transition-colors hover:bg-violet-800'
+                              : 'edusync-button-motion inline-flex h-8 w-fit items-center rounded-md bg-gray-200 px-3 text-sm text-slate-900 transition-colors hover:bg-gray-300'
                           }
                         >
                           Open PDF
@@ -216,8 +270,8 @@ export function DocumentsPage() {
                           disabled={deletingDocumentId === document.id}
                           className={
                             darkMode
-                              ? 'inline-flex h-8 w-fit items-center rounded-md bg-red-950 px-3 text-sm text-red-100 transition-colors hover:bg-red-900 disabled:cursor-not-allowed disabled:opacity-60'
-                              : 'inline-flex h-8 w-fit items-center rounded-md bg-red-100 px-3 text-sm text-red-700 transition-colors hover:bg-red-200 disabled:cursor-not-allowed disabled:opacity-60'
+                              ? 'edusync-button-motion inline-flex h-8 w-fit items-center rounded-md bg-red-950 px-3 text-sm text-red-100 transition-colors hover:bg-red-900 disabled:cursor-not-allowed disabled:opacity-60'
+                              : 'edusync-button-motion inline-flex h-8 w-fit items-center rounded-md bg-red-100 px-3 text-sm text-red-700 transition-colors hover:bg-red-200 disabled:cursor-not-allowed disabled:opacity-60'
                           }
                         >
                           Delete

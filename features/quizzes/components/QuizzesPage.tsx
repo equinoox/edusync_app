@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState, useTransition } from 'react'
 import { useUser } from '@clerk/nextjs';
 import {
   ArrowPathIcon,
+  BookOpenIcon,
   CheckCircleIcon,
   ClipboardDocumentListIcon,
   DocumentCheckIcon,
@@ -66,7 +67,7 @@ function QuizStatCard({
   }[tone];
 
   return (
-    <article className={`rounded-xl border p-4 shadow-md ${darkMode ? 'border-white/5 bg-slate-800' : 'border-slate-500 bg-slate-400'}`}>
+    <article className={`edusync-enter edusync-card-motion rounded-xl border p-4 shadow-md ${darkMode ? 'border-white/5 bg-slate-800' : 'border-slate-500 bg-slate-400'}`}>
       <div className="flex items-center gap-3">
         <span className={`flex h-11 w-11 items-center justify-center rounded-xl ${toneClass}`}>
           <Icon className="h-6 w-6" />
@@ -521,29 +522,21 @@ export function QuizzesPage() {
               onCreateQuiz={() => setIsCreateModalOpen(true)}
             />
 
-            <div className="mt-7 grid shrink-0 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            <div className="mt-6 grid shrink-0 gap-4 sm:grid-cols-2 xl:grid-cols-4">
               <QuizStatCard Icon={ClipboardDocumentListIcon} label="Total Quizzes" value={quizzes.length} tone="violet" />
               <QuizStatCard Icon={DocumentCheckIcon} label="Classroom Quizzes" value={quizzes.filter(quiz => quiz.classroomId).length} tone="blue" />
-              <QuizStatCard Icon={SparklesIcon} label="General Quizzes" value={quizzes.filter(quiz => !quiz.classroomId).length} tone="orange" />
+              <QuizStatCard Icon={BookOpenIcon} label="General Quizzes" value={quizzes.filter(quiz => !quiz.classroomId).length} tone="orange" />
               <QuizStatCard Icon={CheckCircleIcon} label={isProfessor ? 'Questions Added' : 'Average Score'} value={isProfessor ? quizzes.reduce((total, quiz) => total + quiz.questionCount, 0) : `${averageScore}%`} tone="green" />
             </div>
 
-            <div className="mt-6 grid min-h-0 flex-1 gap-6 xl:grid-cols-[minmax(0,1fr)_19rem]">
+            <div className="mt-5 grid min-h-0 flex-1 gap-6 xl:grid-cols-[minmax(0,1fr)_19rem]">
               <section className="flex min-h-0 min-w-0 flex-col">
-                <div className="mb-3 flex h-5 shrink-0 justify-end">
-                  {isLoading && (
-                    <span
-                      className={`inline-flex h-5 w-5 animate-spin rounded-full border-2 border-t-transparent ${darkMode ? 'border-violet-300' : 'border-violet-700'}`}
-                      aria-label="Loading quizzes"
-                    />
-                  )}
-                </div>
 
                 {isLoading && quizzes.length === 0 ? (
                   <div className={`flex min-h-48 items-center justify-center rounded-xl border border-dashed ${darkMode ? 'border-slate-700 bg-slate-800' : 'border-slate-500 bg-slate-400'}`}>
                     <span className={`h-8 w-8 animate-spin rounded-full border-2 border-t-transparent ${darkMode ? 'border-violet-300' : 'border-violet-700'}`} />
                   </div>
-                ) : filteredQuizzes.length > 0 ? (
+                ) : (
                   <div className={`flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl border shadow-md ${darkMode ? 'border-white/5 bg-slate-800/60' : 'border-slate-500 bg-slate-400'}`}>
                     <div className={`flex shrink-0 gap-8 border-b px-5 pt-4 ${darkMode ? 'border-white/5' : 'border-slate-500'}`}>
                       {(['all', 'classroom', 'general', 'completed'] as const).map(mode => (
@@ -579,31 +572,34 @@ export function QuizzesPage() {
                         </div>
 
                         <div className="min-h-0 flex-1 overflow-y-auto">
-                          {filteredQuizzes.map(quiz => (
-                            <QuizCard
-                              key={quiz.id}
-                              quiz={quiz}
-                              isProfessor={isProfessor}
-                              onManage={setQuizForDetails}
-                              onTake={setQuizForTaking}
-                              onDelete={setQuizToDelete}
-                            />
-                          ))}
+                          {filteredQuizzes.length > 0 ? (
+                            filteredQuizzes.map((quiz, index) => (
+                              <QuizCard
+                                key={quiz.id}
+                                quiz={quiz}
+                                isProfessor={isProfessor}
+                                animationDelayMs={Math.min(index, 10) * 35}
+                                onManage={setQuizForDetails}
+                                onTake={setQuizForTaking}
+                                onDelete={setQuizToDelete}
+                              />
+                            ))
+                          ) : (
+                            <div className={`grid min-h-48 place-items-center px-5 py-8 text-center ${darkMode ? 'text-slate-300' : 'text-slate-700'}`}>
+                              <div>
+                                <ClipboardDocumentListIcon className={`mx-auto h-9 w-9 ${darkMode ? 'text-violet-300' : 'text-violet-700'}`} />
+                                <p className="mt-3 text-sm font-semibold">
+                                  No quizzes found for this filter.
+                                </p>
+                                <p className="mt-1 text-xs">
+                                  Adjust search or choose another quiz type.
+                                </p>
+                              </div>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>
-                  </div>
-                ) : (
-                  <div className={`rounded-xl border border-dashed px-5 py-12 text-center ${darkMode ? 'border-slate-700 bg-slate-800' : 'border-slate-500 bg-slate-400'}`}>
-                    <ClipboardDocumentListIcon className={`mx-auto h-10 w-10 ${darkMode ? 'text-violet-300' : 'text-violet-700'}`} />
-                    <h3 className={`mt-3 font-semibold ${darkMode ? 'text-white' : 'text-slate-950'}`}>
-                      No quizzes found
-                    </h3>
-                    <p className={`mx-auto mt-1 max-w-md text-sm ${darkMode ? 'text-slate-300' : 'text-slate-700'}`}>
-                      {isProfessor
-                        ? 'Create a quiz and add questions to get started.'
-                        : 'Available quizzes will appear here.'}
-                    </p>
                   </div>
                 )}
               </section>

@@ -77,7 +77,7 @@ export function CalendarHeader({
             aria-label="Previous month"
             title="Previous month"
           >
-            <ChevronLeftIcon className="h-5 w-5" />
+            <ChevronLeftIcon className="h-5 w-5 text-white" />
           </button>
           <button
             type="button"
@@ -88,7 +88,7 @@ export function CalendarHeader({
             aria-label="Next month"
             title="Next month"
           >
-            <ChevronRightIcon className="h-5 w-5" />
+            <ChevronRightIcon className="h-5 w-5 text-white" />
           </button>
           <h2 className="ml-3 text-lg font-bold text-white">{monthLabel}</h2>
         </div>

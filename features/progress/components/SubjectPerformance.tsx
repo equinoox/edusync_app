@@ -2,6 +2,7 @@
 
 import { ChevronRightIcon } from '@heroicons/react/20/solid';
 
+import { AnimatedNumber } from '@/components/shared/AnimatedNumber';
 import { ProgressPanel, ProgressSectionTitle } from '@/features/progress/components/progress-ui';
 import type { SubjectPerformanceProps } from '@/features/progress/types';
 import { cn } from '@/lib/utils';
@@ -50,8 +51,12 @@ export function SubjectPerformance({ items, onViewAll }: SubjectPerformanceProps
         </div>
       ) : (
         <div className="space-y-4">
-        {visibleItems.map(item => (
-          <div key={item.id} className="grid grid-cols-[2.5rem_minmax(0,1fr)_2.75rem_1rem] items-center gap-3">
+        {visibleItems.map((item, index) => (
+          <div
+            key={item.id}
+            className="edusync-enter-fast grid grid-cols-[2.5rem_minmax(0,1fr)_2.75rem_1rem] items-center gap-3"
+            style={{ animationDelay: `${index * 45}ms` }}
+          >
             <span className={cn('flex h-9 w-9 items-center justify-center rounded-full', toneClasses[item.tone])}>
               <item.Icon className="h-5 w-5" />
             </span>
@@ -59,12 +64,14 @@ export function SubjectPerformance({ items, onViewAll }: SubjectPerformanceProps
               <p className="truncate text-sm font-medium text-white">{item.name}</p>
               <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-slate-800">
                 <div
-                  className={cn('h-full rounded-full', barClasses[item.tone])}
+                  className={cn('h-full rounded-full edusync-progress-fill', barClasses[item.tone])}
                   style={{ width: `${item.percent}%` }}
                 />
               </div>
             </div>
-            <p className="text-right text-sm font-semibold text-white">{item.percent}%</p>
+            <p className="text-right text-sm font-semibold text-white">
+              <AnimatedNumber value={item.percent} suffix="%" />
+            </p>
             <ChevronRightIcon className="h-4 w-4 text-violet-400" />
           </div>
         ))}

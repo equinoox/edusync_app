@@ -31,9 +31,9 @@ export function RoleSelectionModal({
   };
 
   return (
-    <div className={`fixed inset-0 z-[90] flex items-center justify-center px-4 ${darkMode ? 'bg-slate-950' : 'bg-slate-100'}`}>
+    <div className={`fixed inset-0 z-[90] flex items-center justify-center px-4 edusync-enter-fast ${darkMode ? 'bg-slate-950' : 'bg-slate-100'}`}>
       <div
-        className={`w-full max-w-md rounded-2xl border p-6 shadow-2xl ${
+        className={`edusync-scale-in w-full max-w-md rounded-2xl border p-6 shadow-2xl ${
           darkMode
             ? 'border-slate-700 bg-slate-900 text-white'
             : 'border-indigo-100 bg-white text-slate-900'
@@ -58,7 +58,7 @@ export function RoleSelectionModal({
             type="button"
             onClick={handleStudentSelect}
             disabled={isSubmitting}
-            className={`rounded-xl border px-4 py-3 text-left transition-colors disabled:cursor-not-allowed disabled:opacity-60 ${
+            className={`edusync-button-motion rounded-xl border px-4 py-3 text-left transition-colors disabled:cursor-not-allowed disabled:opacity-60 ${
               selectedRole === 'student'
                 ? darkMode
                   ? 'border-violet-500 bg-violet-950 text-violet-100'
@@ -78,7 +78,7 @@ export function RoleSelectionModal({
             type="button"
             onClick={() => setSelectedRole('professor')}
             disabled={isSubmitting}
-            className={`rounded-xl border px-4 py-3 text-left transition-colors disabled:cursor-not-allowed disabled:opacity-60 ${
+            className={`edusync-button-motion rounded-xl border px-4 py-3 text-left transition-colors disabled:cursor-not-allowed disabled:opacity-60 ${
               selectedRole === 'professor'
                 ? darkMode
                   ? 'border-orange-500 bg-orange-950/40 text-orange-100'
@@ -116,7 +116,7 @@ export function RoleSelectionModal({
             <button
               type="submit"
               disabled={isSubmitting || professorKey.trim().length === 0}
-              className="inline-flex h-10 w-full items-center justify-center rounded-xl bg-orange-500 px-4 text-sm font-semibold text-black transition-colors hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-60"
+              className="edusync-button-motion inline-flex h-10 w-full items-center justify-center rounded-xl bg-orange-500 px-4 text-sm font-semibold text-black transition-colors hover:bg-orange-600 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {isSubmitting ? 'Checking...' : 'Continue as Professor'}
             </button>

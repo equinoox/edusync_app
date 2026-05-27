@@ -14,7 +14,7 @@ export function ProgressPanel({
   return (
     <section
       className={cn(
-        'rounded-2xl border border-white/[0.04] bg-slate-900/70 shadow-[0_18px_45px_rgba(0,0,0,0.22)]',
+        'edusync-enter edusync-card-motion rounded-xl border border-white/[0.04] bg-slate-900/70 shadow-lg',
         'bg-[radial-gradient(circle_at_top_left,rgba(51,65,85,0.42),transparent_42%)]',
         className,
       )}
@@ -32,8 +32,8 @@ export function ProgressSectionTitle({
   action?: ReactNode;
 }) {
   return (
-    <div className="mb-4 flex items-center justify-between gap-3">
-      <h2 className="text-base font-semibold text-white">{title}</h2>
+    <div className="mb-3 flex items-center justify-between gap-3">
+      <h2 className="text-sm font-semibold text-white">{title}</h2>
       {action}
     </div>
   );
@@ -50,7 +50,7 @@ export function ProgressLinkButton({
     <button
       type="button"
       onClick={onClick}
-      className="inline-flex items-center gap-2 text-sm font-medium text-violet-400 transition hover:text-violet-300"
+      className="edusync-button-motion inline-flex items-center gap-2 text-sm font-medium text-violet-400 transition hover:text-violet-300"
     >
       {children}
     </button>

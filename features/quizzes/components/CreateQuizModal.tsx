@@ -57,10 +57,10 @@ export function CreateQuizModal({
   };
 
   return (
-    <div className="fixed inset-0 z-[70] flex items-center justify-center bg-slate-950/70 px-4 py-6 backdrop-blur-sm">
+    <div className="fixed inset-0 z-[70] flex items-center justify-center bg-slate-950/70 px-4 py-6 backdrop-blur-sm edusync-enter-fast">
       <form
         onSubmit={handleSubmit}
-        className={`w-full max-w-xl overflow-hidden rounded-xl border shadow-2xl ${darkMode ? 'border-slate-700 bg-slate-900 shadow-black/40' : 'border-slate-500 bg-slate-300 shadow-slate-950/20'}`}
+        className={`edusync-scale-in w-full max-w-xl overflow-hidden rounded-xl border shadow-2xl ${darkMode ? 'border-slate-700 bg-slate-900 shadow-black/40' : 'border-slate-500 bg-slate-300 shadow-slate-950/20'}`}
       >
         <div className={`flex items-center justify-between border-b px-5 py-4 ${darkMode ? 'border-slate-800' : 'border-slate-500'}`}>
           <div>
@@ -74,7 +74,7 @@ export function CreateQuizModal({
           <button
             type="button"
             onClick={onClose}
-            className={`rounded-lg p-2 transition ${darkMode ? 'text-slate-400 hover:bg-slate-800 hover:text-slate-200' : 'text-slate-700 hover:bg-slate-400'}`}
+            className={`edusync-button-motion rounded-lg p-2 transition ${darkMode ? 'text-slate-400 hover:bg-slate-800 hover:text-slate-200' : 'text-slate-700 hover:bg-slate-400'}`}
             aria-label="Close create quiz modal"
             title="Close"
           >
@@ -161,7 +161,7 @@ export function CreateQuizModal({
                 key={scope}
                 type="button"
                 onClick={() => setQuizScope(scope)}
-                className={`h-10 rounded-lg border text-sm font-bold capitalize transition ${quizScope === scope ? 'border-violet-500 bg-violet-600 text-white' : darkMode ? 'border-slate-700 bg-slate-950 text-slate-200 hover:bg-slate-800' : 'border-slate-500 bg-slate-400 text-slate-800 hover:bg-slate-500'}`}
+                className={`edusync-button-motion h-10 rounded-lg border text-sm font-bold capitalize transition ${quizScope === scope ? 'border-violet-500 bg-violet-600 text-white' : darkMode ? 'border-slate-700 bg-slate-950 text-slate-200 hover:bg-slate-800' : 'border-slate-500 bg-slate-400 text-slate-800 hover:bg-slate-500'}`}
               >
                 {scope}
               </button>
@@ -201,14 +201,14 @@ export function CreateQuizModal({
             type="button"
             onClick={onClose}
             disabled={isSaving}
-            className={`h-10 rounded-lg px-4 text-sm font-bold transition disabled:opacity-60 ${darkMode ? 'bg-slate-800 text-slate-200 hover:bg-slate-700' : 'bg-slate-400 text-slate-950 hover:bg-slate-500'}`}
+            className={`edusync-button-motion h-10 rounded-lg px-4 text-sm font-bold transition disabled:opacity-60 ${darkMode ? 'bg-slate-800 text-slate-200 hover:bg-slate-700' : 'bg-slate-400 text-slate-950 hover:bg-slate-500'}`}
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={isSaving}
-            className="h-10 rounded-lg bg-violet-600 px-4 text-sm font-bold text-white transition hover:bg-violet-700 disabled:opacity-60"
+            className="edusync-button-motion h-10 rounded-lg bg-violet-600 px-4 text-sm font-bold text-white transition hover:bg-violet-700 disabled:opacity-60"
           >
             {isSaving ? 'Creating...' : 'Create Quiz'}
           </button>

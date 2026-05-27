@@ -60,10 +60,10 @@ export function CreateClassroomModal({
   };
 
   return (
-    <div className="fixed inset-0 z-[70] flex items-center justify-center bg-slate-950/70 px-4 py-6 backdrop-blur-sm">
+    <div className="fixed inset-0 z-[70] flex items-center justify-center bg-slate-950/70 px-4 py-6 backdrop-blur-sm edusync-enter-fast">
       <form
         onSubmit={handleSubmit}
-        className={`w-full max-w-xl overflow-hidden rounded-lg border shadow-2xl ${darkMode ? "border-slate-700 bg-slate-900 shadow-black/40" : "border-slate-200 bg-white shadow-slate-950/20"}`}
+        className={`edusync-scale-in w-full max-w-xl overflow-hidden rounded-lg border shadow-2xl ${darkMode ? "border-slate-700 bg-slate-900 shadow-black/40" : "border-slate-200 bg-white shadow-slate-950/20"}`}
       >
         <div className={`flex items-center justify-between border-b px-5 py-4 ${darkMode ? "border-slate-800" : "border-slate-200"}`}>
           <div>
@@ -77,7 +77,7 @@ export function CreateClassroomModal({
           <button
             type="button"
             onClick={onClose}
-            className={`rounded-lg p-2 text-slate-400 transition ${darkMode ? "hover:bg-slate-800 hover:text-slate-200" : "hover:bg-slate-100 hover:text-slate-700"}`}
+            className={`edusync-button-motion rounded-lg p-2 text-slate-400 transition ${darkMode ? "hover:bg-slate-800 hover:text-slate-200" : "hover:bg-slate-100 hover:text-slate-700"}`}
             aria-label="Close create classroom modal"
             title="Close"
           >
@@ -143,7 +143,7 @@ export function CreateClassroomModal({
                       }))
                     }
                     className={cn(
-                      'flex h-12 items-center justify-center rounded-lg border text-sm font-medium transition',
+                      'edusync-button-motion flex h-12 items-center justify-center rounded-lg border text-sm font-medium transition',
                       selected
                         ? `${option.borderClass} ring-2 ring-violet-500 ${darkMode ? "bg-slate-800 text-white" : "bg-slate-100 text-slate-950"}`
                         : darkMode
@@ -180,7 +180,7 @@ export function CreateClassroomModal({
                       }))
                     }
                     className={cn(
-                      'flex h-12 items-center justify-center rounded-lg border transition',
+                      'edusync-button-motion flex h-12 items-center justify-center rounded-lg border transition',
                       selected
                         ? `border-violet-500 ring-2 ring-violet-500 ${darkMode ? "bg-violet-500/15 text-violet-200" : "bg-violet-50 text-violet-600"}`
                         : darkMode

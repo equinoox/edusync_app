@@ -27,9 +27,9 @@ export function ViewAllModal<T>({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/60 p-4">
+    <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/60 p-4 edusync-enter-fast">
       <section
-        className={`flex max-h-[82vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border shadow-2xl ${
+        className={`flex max-h-[82vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border shadow-2xl edusync-scale-in ${
           darkMode
             ? 'border-white/10 bg-slate-900 text-white'
             : 'border-slate-300 bg-slate-100 text-slate-950'
@@ -49,7 +49,7 @@ export function ViewAllModal<T>({
           <button
             type="button"
             onClick={onClose}
-            className={`rounded-lg p-2 transition ${
+            className={`edusync-button-motion rounded-lg p-2 transition ${
               darkMode ? 'hover:bg-slate-800' : 'hover:bg-slate-200'
             }`}
             aria-label="Close modal"
@@ -72,7 +72,15 @@ export function ViewAllModal<T>({
             </div>
           ) : (
             <div className="space-y-3">
-              {items.map((item, index) => renderItem(item, index))}
+              {items.map((item, index) => (
+                <div
+                  key={index}
+                  className="edusync-enter-fast"
+                  style={{ animationDelay: `${Math.min(index, 8) * 35}ms` }}
+                >
+                  {renderItem(item, index)}
+                </div>
+              ))}
             </div>
           )}
         </div>
