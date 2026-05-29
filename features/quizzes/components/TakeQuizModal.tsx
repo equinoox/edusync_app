@@ -8,16 +8,8 @@ import {
   startQuizAttemptAction,
   submitQuizAttemptAction,
 } from '@/features/quizzes/actions/quiz-attempts.action';
-import type { QuizAttempt, QuizForTaking, QuizListItem } from '@/features/quizzes/types';
+import type { QuizAttempt, QuizForTaking, TakeQuizModalProps } from '@/features/quizzes/types';
 import { useTheme } from '@/providers/ThemeProvider';
-
-type TakeQuizModalProps = {
-  quiz: QuizListItem | null;
-  isOpen: boolean;
-  onClose: () => void;
-  onSubmitted: () => void;
-  onToast: (message: string, tone?: 'success' | 'error' | 'info') => void;
-};
 
 const getElapsedSeconds = (startedAt: Date | string) =>
   Math.max(0, Math.floor((Date.now() - new Date(startedAt).getTime()) / 1000));

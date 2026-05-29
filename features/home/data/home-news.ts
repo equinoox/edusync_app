@@ -1,10 +1,4 @@
-export type HomeNewsArticle = {
-  id: number;
-  title: string;
-  description: string;
-  image: string;
-  body: string;
-};
+import type { HomeNewsArticle } from '@/features/home/types';
 
 //  STATIC DATA FORN NOW 
 export const homeNewsArticles: HomeNewsArticle[] = [
@@ -61,19 +55,19 @@ export const homeNewsArticles: HomeNewsArticle[] = [
     id: 8,
     title: "Upgrade your learning with EduSync Pro",
     description: "Unlock more powerful tools for studying, organizing, and tracking progress.",
-    image: "/news/news_img_8.png",
+    image: "/news/news_img_8.jpg",
     body: "EduSync Pro gives you more control over the way you learn. With advanced AI assistance, expanded document support, smarter quiz generation, and deeper progress insights, you can study with less friction and more focus. It is built for learners who want a clearer workflow, better organization, and stronger results from every study session.",
   },
   {
     id: 9,
     title: "Track your progress with EduSync",
     description: "See how your results improve and understand where to focus next.",
-    image: "/news/news_img_9.png",
+    image: "/news/news_img_9.jpg",
     body: "Progress in EduSync helps you understand how your studying is actually going. Track quiz results, accuracy, speed, topic performance, and overall improvement in one clear place. Instead of guessing what needs more attention, you can use your progress data to study smarter, fix weak areas, and build stronger learning habits over time.",
   },
   {
     id: 10,
-    title: "Why EduSync is the tool of choice",
+    title: "Why EduSync is the tool of choice?",
     description: "Study, organize, practice, and track progress from one connected workspace.",
     image: "/news/news_img_10.jpg",
     body: "EduSync is the tool of choice because it brings the most important parts of learning into one clear workflow. Instead of switching between documents, notes, quizzes, calendars, and progress trackers, you can manage everything in one place. With AI support, organized classrooms, smart practice, and progress insights, EduSync helps students study with more focus and professors guide learning more effectively.",

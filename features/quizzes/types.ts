@@ -1,5 +1,6 @@
 import type { z } from 'zod';
 
+import type { ClassroomListItem } from '@/features/classrooms/types';
 import type {
   addQuestionToQuizSchema,
   createQuizSchema,
@@ -97,4 +98,77 @@ export type QuizResult = {
   quiz: QuizListItem;
   questions: QuizQuestion[];
   answers: QuizAnswer[];
+};
+
+export type QuizSortOrder = 'desc' | 'asc';
+export type QuizFilterMode = 'all' | 'classroom' | 'general' | 'completed';
+
+export type QuizCardItem = QuizListItem & {
+  questionCount: number;
+  classroomTitle?: string | null;
+  attempt?: QuizAttempt | null;
+};
+
+export type QuizzesDashboardHeaderProps = {
+  isProfessor: boolean;
+  search: string;
+  sortOrder: QuizSortOrder;
+  onSearchChange: (value: string) => void;
+  onSortOrderChange: (value: QuizSortOrder) => void;
+  onCreateQuiz: () => void;
+};
+
+export type QuizCardProps = {
+  quiz: QuizCardItem;
+  isProfessor: boolean;
+  onManage: (quiz: QuizCardItem) => void;
+  onTake: (quiz: QuizCardItem) => void;
+  onDelete: (quiz: QuizCardItem) => void;
+  animationDelayMs?: number;
+};
+
+export type QuizActionsMenuProps = {
+  canDelete: boolean;
+  quizTitle: string;
+  onDelete: () => void;
+};
+
+export type CreateQuizModalProps = {
+  isOpen: boolean;
+  isSaving: boolean;
+  classrooms: ClassroomListItem[];
+  error?: string | null;
+  onClose: () => void;
+  onSubmit: (input: CreateQuizInput) => void;
+};
+
+export type QuizOptionDraft = {
+  label: QuizOptionLabel;
+  content: string;
+  isCorrect: boolean;
+};
+
+export type CreateQuestionModalProps = {
+  quiz: QuizListItem | null;
+  isOpen: boolean;
+  onClose: () => void;
+  onQuestionAdded: () => void;
+  onToast: (message: string, tone?: 'success' | 'error' | 'info') => void;
+};
+
+export type QuizDetailsModalProps = {
+  quiz: QuizListItem | null;
+  isOpen: boolean;
+  onClose: () => void;
+  onAddQuestion: (quiz: QuizListItem) => void;
+  onChanged?: () => void;
+  onToast: (message: string, tone?: 'success' | 'error' | 'info') => void;
+};
+
+export type TakeQuizModalProps = {
+  quiz: QuizListItem | null;
+  isOpen: boolean;
+  onClose: () => void;
+  onSubmitted: () => void;
+  onToast: (message: string, tone?: 'success' | 'error' | 'info') => void;
 };

@@ -8,17 +8,8 @@ import {
   deleteQuestionAction,
   getQuizForEditingAction,
 } from '@/features/quizzes/actions/quizzes.action';
-import type { QuizForEditing, QuizListItem, QuizQuestion } from '@/features/quizzes/types';
+import type { QuizDetailsModalProps, QuizForEditing, QuizQuestion } from '@/features/quizzes/types';
 import { useTheme } from '@/providers/ThemeProvider';
-
-type QuizDetailsModalProps = {
-  quiz: QuizListItem | null;
-  isOpen: boolean;
-  onClose: () => void;
-  onAddQuestion: (quiz: QuizListItem) => void;
-  onChanged?: () => void;
-  onToast: (message: string, tone?: 'success' | 'error' | 'info') => void;
-};
 
 export function QuizDetailsModal({
   quiz,

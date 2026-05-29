@@ -3,14 +3,9 @@
 import { PlusIcon } from '@heroicons/react/24/outline';
 
 import { Button } from '@/components/ui/button';
+import type { CreateClassroomButtonProps } from '@/features/classrooms/types';
 import { cn } from '@/lib/utils';
 import { useTheme } from '@/providers/ThemeProvider';
-
-type CreateClassroomButtonProps = {
-  onClick: () => void;
-  compact?: boolean;
-  className?: string;
-};
 
 export function CreateClassroomButton({
   onClick,

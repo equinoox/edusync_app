@@ -17,6 +17,7 @@ import {
 import Sidebar from '@/components/layout/sidebar';
 import SmallBar from '@/components/layout/SmallBar';
 import TopBar from '@/components/layout/TopBar';
+import { UpgradePlansModal } from '@/components/shared/UpgradePlansModal';
 import { ViewAllModal } from '@/components/shared/ViewAllModal';
 import { AiStudyInsight } from '@/features/progress/components/AiStudyInsight';
 import { DonutPanel } from '@/features/progress/components/DonutPanel';
@@ -29,25 +30,15 @@ import type {
   DonutSegment,
   FakeStudyTimeStats,
   ProgressApiResponse,
+  ProgressDocumentListItem,
   ProgressLineChartPoint,
+  ProgressModalType,
   ProgressQuizPerformance,
   ProgressTopic,
   SubjectPerformanceItem,
 } from '@/features/progress/types';
 import { cn } from '@/lib/utils';
 import { useTheme } from '@/providers/ThemeProvider';
-
-type ProgressModalType =
-  | 'subjects'
-  | 'quizPerformance'
-  | 'studyPoints'
-  | 'achievements'
-  | null;
-
-type DocumentListItem = {
-  id: string;
-  createdAt: string | Date;
-};
 
 const dayMs = 24 * 60 * 60 * 1000;
 
@@ -106,7 +97,7 @@ const getAverageChangeLabel = (
   return `${formatSignedPercent(change)} from previous 7 days`;
 };
 
-const getDocumentChangeLabel = (documents: DocumentListItem[]) => {
+const getDocumentChangeLabel = (documents: ProgressDocumentListItem[]) => {
   const currentCount = documents.filter(document =>
     isInDayRange(document.createdAt, 0, 6),
   ).length;
@@ -225,10 +216,11 @@ export function ProgressPage() {
   const { isLoaded, user } = useUser();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [data, setData] = useState<ProgressApiResponse | null>(null);
-  const [documents, setDocuments] = useState<DocumentListItem[]>([]);
+  const [documents, setDocuments] = useState<ProgressDocumentListItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeModal, setActiveModal] = useState<ProgressModalType>(null);
+  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
 
   const role = user?.publicMetadata?.role;
 
@@ -304,6 +296,10 @@ export function ProgressPage() {
 
   return (
     <main className={cn('flex h-screen overflow-hidden text-white', darkMode ? 'bg-slate-950' : 'bg-slate-300')}>
+      <UpgradePlansModal
+        isOpen={isUpgradeModalOpen}
+        onClose={() => setIsUpgradeModalOpen(false)}
+      />
       {sidebarOpen && (
         <div
           className="fixed inset-0 z-40 bg-black/60 lg:hidden"
@@ -539,7 +535,10 @@ export function ProgressPage() {
                 </div>
 
                 <div className="mt-4">
-                  <AiStudyInsight weakestTopic={data.overview.weakestTopic} />
+                  <AiStudyInsight
+                    weakestTopic={data.overview.weakestTopic}
+                    onUpgradeClick={() => setIsUpgradeModalOpen(true)}
+                  />
                 </div>
               </>
             ) : null}

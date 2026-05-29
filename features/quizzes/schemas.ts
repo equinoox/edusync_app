@@ -25,7 +25,7 @@ const nullableQuizDateSchema = z
 export const quizOptionSchema = z.object({
   id: z.string().min(1).optional(),
   label: z.enum(quizOptionLabels),
-  content: z.string().min(1),
+  content: z.string().trim().min(1, 'Option text is required'),
   isCorrect: z.boolean(),
 });
 
@@ -53,9 +53,9 @@ const optionsSchema = z
 
 export const createQuizSchema = z.object({
   classroomId: nullableClassroomIdSchema,
-  title: z.string().min(1).max(255),
-  description: z.string().max(2000).optional().default(''),
-  weight: z.number().min(0).default(0),
+  title: z.string().trim().min(1, 'Quiz title is required').max(255),
+  description: z.string().trim().min(1, 'Quiz description is required').max(2000),
+  weight: z.number().positive('Quiz weight must be greater than 0'),
   timeLimitMinutes: z.number().int().positive(),
   quizDate: nullableQuizDateSchema,
 });
@@ -65,15 +65,15 @@ export const updateQuizSchema = createQuizSchema.partial();
 export const addQuestionToQuizSchema = z.object({
   quizId: z.string().min(1),
   sequenceNumber: z.number().int().positive().optional(),
-  content: z.string().min(1),
-  points: z.number().positive(),
+  content: z.string().trim().min(1, 'Question text is required'),
+  points: z.number().positive('Question points must be greater than 0'),
   hasNegativePoints: z.boolean().default(false),
   options: optionsSchema,
 });
 
 export const updateQuestionSchema = z.object({
   sequenceNumber: z.number().int().positive().optional(),
-  content: z.string().min(1).optional(),
+  content: z.string().trim().min(1).optional(),
   points: z.number().positive().optional(),
   hasNegativePoints: z.boolean().optional(),
   options: optionsSchema.optional(),

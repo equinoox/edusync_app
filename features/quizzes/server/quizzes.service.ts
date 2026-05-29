@@ -38,7 +38,9 @@ import {
   getQuizRecordById,
   getQuizzesByClassroom,
   getQuizzesByProfessor,
+  getUpcomingQuizzesByProfessor,
   getUpcomingQuizzesByClassroom,
+  getUpcomingQuizzesForStudent,
   replaceQuestionOptions,
   updateQuestionRecord,
   updateQuestionSequenceNumber,
@@ -77,6 +79,12 @@ const normalizeQuizDate = (value: string | null | undefined) => {
 
   date.setHours(0, 0, 0, 0);
   return date;
+};
+
+const parseOrThrow = <T>(result: { success: true; data: T } | { success: false; error: { issues: Array<{ message: string }> } }) => {
+  if (result.success) return result.data;
+
+  throw new Error(result.error.issues[0]?.message ?? 'Invalid quiz data');
 };
 
 async function recalculateQuizPoints(quizId: string) {
@@ -135,7 +143,7 @@ export async function assertCurrentStudentCanTakeQuiz(quizId: string) {
 
 export async function createQuiz(input: CreateQuizInput) {
   const { userId } = await requireCurrentUserRole('professor');
-  const values = createQuizSchema.parse(input);
+  const values = parseOrThrow(createQuizSchema.safeParse(input));
 
   const classroom = values.classroomId
     ? await assertProfessorOwnsClassroom(values.classroomId, userId)
@@ -218,7 +226,7 @@ export async function deleteQuiz(quizId: string) {
 
 export async function addQuestionToQuiz(input: AddQuestionToQuizInput) {
   const { userId } = await requireCurrentUserRole('professor');
-  const values = addQuestionToQuizSchema.parse(input);
+  const values = parseOrThrow(addQuestionToQuizSchema.safeParse(input));
   await assertProfessorOwnsQuiz(values.quizId, userId);
 
   const questions = await getQuestionsByQuizId(values.quizId);
@@ -351,6 +359,67 @@ export async function getQuizForEditing(
   };
 }
 
+export async function validateQuizForPublishing(quizId: string) {
+  const { userId } = await requireCurrentUserRole('professor');
+  const quiz = await assertProfessorOwnsQuiz(quizId, userId);
+  const questions = await toQuestionWithOptions(quizId);
+
+  if (!quiz.title.trim()) {
+    throw new Error('Quiz title is required');
+  }
+
+  if (!quiz.description.trim()) {
+    throw new Error('Quiz description is required');
+  }
+
+  if (!Number.isFinite(Number(quiz.timeLimitMinutes)) || Number(quiz.timeLimitMinutes) <= 0) {
+    throw new Error('Quiz duration must be greater than 0');
+  }
+
+  if (!Number.isFinite(Number(quiz.weight)) || Number(quiz.weight) <= 0) {
+    throw new Error('Quiz weight must be greater than 0');
+  }
+
+  if (questions.length === 0) {
+    throw new Error('Add at least one question before finishing this quiz');
+  }
+
+  for (const [index, question] of questions.entries()) {
+    const questionLabel = `Question ${index + 1}`;
+
+    if (!question.content.trim()) {
+      throw new Error(`${questionLabel} text is required`);
+    }
+
+    if (!Number.isFinite(Number(question.points)) || Number(question.points) <= 0) {
+      throw new Error(`${questionLabel} points must be greater than 0`);
+    }
+
+    if (question.options.length < 2) {
+      throw new Error(`${questionLabel} needs at least two answer options`);
+    }
+
+    if (question.options.some(option => !option.content.trim())) {
+      throw new Error(`${questionLabel} has an empty answer option`);
+    }
+
+    if (!question.options.some(option => option.isCorrect)) {
+      throw new Error(`${questionLabel} needs at least one correct answer`);
+    }
+  }
+
+  const totalPoints = questions.reduce(
+    (total, question) => total + Number(question.points),
+    0,
+  );
+
+  if (!Number.isFinite(totalPoints) || totalPoints <= 0) {
+    throw new Error('Quiz points must be greater than 0');
+  }
+
+  return { ok: true };
+}
+
 export async function getAvailableQuizzes() {
   const currentUser = await getCurrentUserWithRole();
 
@@ -400,6 +469,18 @@ export async function getUpcomingClassroomQuizzes(classroomId: string) {
   today.setHours(0, 0, 0, 0);
 
   return getUpcomingQuizzesByClassroom(classroomId, today);
+}
+
+export async function getUpcomingQuizzes() {
+  const currentUser = await getCurrentUserWithRole();
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  if (currentUser.role === 'professor') {
+    return getUpcomingQuizzesByProfessor(currentUser.userId, today);
+  }
+
+  return getUpcomingQuizzesForStudent(currentUser.userId, today);
 }
 
 export async function getQuizForTaking(

@@ -1,11 +1,6 @@
 import { clerkClient } from '@clerk/nextjs/server';
 
-export type ClerkUserProfile = {
-  id: string;
-  fullName: string | null;
-  email: string | null;
-  imageUrl: string | null;
-};
+import type { ClerkUserProfile } from '@/features/auth/types';
 
 export async function getUsersByIds(userIds: string[]) {
   const uniqueUserIds = Array.from(new Set(userIds)).filter(Boolean);

@@ -84,6 +84,49 @@ export async function getUpcomingQuizzesByClassroom(
     .orderBy(asc(quizzes.quizDate), asc(quizzes.createdAt));
 }
 
+export async function getUpcomingQuizzesByProfessor(
+  professorId: string,
+  fromDate: Date,
+) {
+  return db
+    .select()
+    .from(quizzes)
+    .where(
+      and(
+        eq(quizzes.professorId, professorId),
+        isNotNull(quizzes.quizDate),
+        gte(quizzes.quizDate, fromDate),
+      ),
+    )
+    .orderBy(asc(quizzes.quizDate), asc(quizzes.createdAt));
+}
+
+export async function getUpcomingQuizzesForStudent(
+  studentId: string,
+  fromDate: Date,
+) {
+  const memberships = await db
+    .select({ classroomId: classroomMemberships.classroomId })
+    .from(classroomMemberships)
+    .where(eq(classroomMemberships.studentId, studentId));
+
+  const classroomIds = memberships.map(membership => membership.classroomId);
+
+  return db
+    .select()
+    .from(quizzes)
+    .where(
+      and(
+        isNotNull(quizzes.quizDate),
+        gte(quizzes.quizDate, fromDate),
+        classroomIds.length > 0
+          ? or(isNull(quizzes.classroomId), inArray(quizzes.classroomId, classroomIds))
+          : isNull(quizzes.classroomId),
+      ),
+    )
+    .orderBy(asc(quizzes.quizDate), asc(quizzes.createdAt));
+}
+
 export async function updateQuizRecord(
   quizId: string,
   professorId: string,

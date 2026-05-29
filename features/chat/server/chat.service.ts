@@ -12,6 +12,7 @@ import { createChatTools } from '@/features/chat/server/chat.tools';
 export const createChatResponse = async (
   messages: UIMessage[],
   documentId?: string,
+  onFinish?: (text: string) => Promise<void> | void,
 ) => {
   return streamText({
     model: CHAT_MODEL,
@@ -19,5 +20,10 @@ export const createChatResponse = async (
     stopWhen: stepCountIs(MAX_CHAT_STEPS),
     system: CHAT_SYSTEM_PROMPT,
     tools: createChatTools(documentId),
+    onFinish: async ({ text }) => {
+      if (text.trim()) {
+        await onFinish?.(text);
+      }
+    },
   });
 };

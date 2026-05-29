@@ -2,10 +2,7 @@
 
 import { ArrowDownTrayIcon } from '@heroicons/react/24/outline';
 
-type CopyClassroomMaterialButtonProps = {
-  isLoading: boolean;
-  onCopy: () => void;
-};
+import type { CopyClassroomMaterialButtonProps } from '@/features/classrooms/types';
 
 export function CopyClassroomMaterialButton({
   isLoading,

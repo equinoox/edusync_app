@@ -2,9 +2,12 @@
 
 import { SparklesIcon } from '@heroicons/react/24/outline';
 
-import type { AiStudyInsightProps } from '@/features/progress/types';
+import type { AiStudyInsightComponentProps } from '@/features/progress/types';
 
-export function AiStudyInsight({ weakestTopic }: AiStudyInsightProps) {
+export function AiStudyInsight({
+  weakestTopic,
+  onUpgradeClick,
+}: AiStudyInsightComponentProps) {
   return (
     <section className="flex flex-col gap-3.5 rounded-2xl border border-violet-500/20 bg-violet-950/70 p-3.5 shadow-[0_18px_45px_rgba(76,29,149,0.24)] sm:flex-row sm:items-center sm:justify-between">
       <div className="flex min-w-0 items-center gap-3.5">
@@ -23,10 +26,11 @@ export function AiStudyInsight({ weakestTopic }: AiStudyInsightProps) {
 
       <button
         type="button"
+        onClick={onUpgradeClick}
         className="inline-flex h-10 shrink-0 items-center justify-center gap-2 rounded-xl bg-violet-600 px-4 text-sm font-semibold text-white shadow-lg shadow-violet-950/40 transition hover:bg-violet-500"
       >
         <SparklesIcon className="h-4 w-4" />
-        Get AI Study Tips
+        AI Insight
       </button>
     </section>
   );

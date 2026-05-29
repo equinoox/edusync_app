@@ -7,20 +7,8 @@ import {
 } from '@heroicons/react/24/outline';
 
 import { CreateClassroomButton } from '@/features/classrooms/components/CreateClassroomButton';
+import type { ClassroomsDashboardHeaderProps, ClassroomSortOrder } from '@/features/classrooms/types';
 import { useTheme } from '@/providers/ThemeProvider';
-
-type SortOrder = 'desc' | 'asc';
-
-
-type ClassroomsDashboardHeaderProps = {
-  isProfessor: boolean;
-  search: string;
-  sortOrder: SortOrder;
-  role: 'student' | 'professor' | null;
-  onSearchChange: (value: string) => void;
-  onSortOrderChange: (value: SortOrder) => void;
-  onCreateClassroom: () => void;
-};
 
 export function ClassroomsDashboardHeader({
   isProfessor,
@@ -76,7 +64,7 @@ export function ClassroomsDashboardHeader({
           <FunnelIcon className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
           <select
             value={sortOrder}
-            onChange={event => onSortOrderChange(event.target.value as SortOrder)}
+            onChange={event => onSortOrderChange(event.target.value as ClassroomSortOrder)}
             className={`h-9 appearance-none rounded-lg border px-9 text-sm font-bold outline-none transition shadow-sm focus:ring-2 focus:ring-violet-500 ${
               darkMode
                 ? "border-white/5 bg-slate-800 text-slate-100"

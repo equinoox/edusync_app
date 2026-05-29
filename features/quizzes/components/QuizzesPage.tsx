@@ -30,22 +30,22 @@ import {
 } from '@/features/quizzes/actions/quizzes.action';
 import { CreateQuestionModal } from '@/features/quizzes/components/CreateQuestionModal';
 import { CreateQuizModal } from '@/features/quizzes/components/CreateQuizModal';
-import { QuizCard, type QuizCardItem } from '@/features/quizzes/components/QuizCard';
+import { QuizCard } from '@/features/quizzes/components/QuizCard';
 import { QuizDetailsModal } from '@/features/quizzes/components/QuizDetailsModal';
 import { QuizzesDashboardHeader } from '@/features/quizzes/components/QuizzesDashboardHeader';
 import { TakeQuizModal } from '@/features/quizzes/components/TakeQuizModal';
 import type {
   CreateQuizInput,
+  QuizCardItem,
+  QuizFilterMode,
   QuizAttempt,
   QuizForEditing,
   QuizForTaking,
   QuizListItem,
+  QuizSortOrder,
 } from '@/features/quizzes/types';
 import { cn } from '@/lib/utils';
 import { useTheme } from '@/providers/ThemeProvider';
-
-type SortOrder = 'desc' | 'asc';
-type FilterMode = 'all' | 'classroom' | 'general' | 'completed';
 
 function QuizStatCard({
   label,
@@ -99,8 +99,8 @@ export function QuizzesPage() {
   const [attempts, setAttempts] = useState<QuizAttempt[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState('');
-  const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
-  const [filterMode, setFilterMode] = useState<FilterMode>('all');
+  const [sortOrder, setSortOrder] = useState<QuizSortOrder>('desc');
+  const [filterMode, setFilterMode] = useState<QuizFilterMode>('all');
   const [toast, setToast] = useState<ToastNotificationState | null>(null);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [quizToCreate, setQuizToCreate] = useState<CreateQuizInput | null>(null);

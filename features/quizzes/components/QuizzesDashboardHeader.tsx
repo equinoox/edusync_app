@@ -7,18 +7,8 @@ import {
   PlusIcon,
 } from '@heroicons/react/24/outline';
 
+import type { QuizzesDashboardHeaderProps, QuizSortOrder } from '@/features/quizzes/types';
 import { useTheme } from '@/providers/ThemeProvider';
-
-type SortOrder = 'desc' | 'asc';
-
-type QuizzesDashboardHeaderProps = {
-  isProfessor: boolean;
-  search: string;
-  sortOrder: SortOrder;
-  onSearchChange: (value: string) => void;
-  onSortOrderChange: (value: SortOrder) => void;
-  onCreateQuiz: () => void;
-};
 
 export function QuizzesDashboardHeader({
   isProfessor,
@@ -63,7 +53,7 @@ export function QuizzesDashboardHeader({
           <FunnelIcon className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
           <select
             value={sortOrder}
-            onChange={event => onSortOrderChange(event.target.value as SortOrder)}
+            onChange={event => onSortOrderChange(event.target.value as QuizSortOrder)}
             className={`h-9 appearance-none rounded-lg border px-9 text-sm font-bold outline-none transition shadow-sm focus:ring-2 focus:ring-violet-500 ${darkMode ? 'border-white/5 bg-slate-800 text-slate-100' : 'border-slate-500 bg-slate-400 text-slate-800'}`}
           >
             <option value="desc">Created DSC</option>

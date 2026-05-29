@@ -97,3 +97,19 @@ export type RecentAchievementsProps = {
 export type AiStudyInsightProps = {
   weakestTopic: string | null;
 };
+
+export type AiStudyInsightComponentProps = AiStudyInsightProps & {
+  onUpgradeClick?: () => void;
+};
+
+export type ProgressModalType =
+  | 'subjects'
+  | 'quizPerformance'
+  | 'studyPoints'
+  | 'achievements'
+  | null;
+
+export type ProgressDocumentListItem = {
+  id: string;
+  createdAt: string | Date;
+};

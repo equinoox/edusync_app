@@ -5,17 +5,12 @@ import { DocumentArrowUpIcon } from '@heroicons/react/24/outline';
 
 import { Button } from '@/components/ui/button';
 import { ACCEPTED_DOCUMENT_TYPE } from '@/features/documents/schemas';
-import type { DocumentUploadResult } from '@/features/documents/types';
+import type {
+  DocumentUploadButtonProps,
+  DocumentUploadResult,
+} from '@/features/documents/types';
 import { cn } from '@/lib/utils';
 import { useTheme } from '@/providers/ThemeProvider';
-
-type DocumentUploadButtonProps = {
-  className?: string;
-  disabled?: boolean;
-  onUploaded?: (documents: DocumentUploadResult[]) => void;
-  onUploadError?: (message: string) => void;
-  size?: 'default' | 'compact';
-};
 
 export function DocumentUploadButton({
   className,

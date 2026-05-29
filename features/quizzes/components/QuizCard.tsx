@@ -7,23 +7,8 @@ import {
 } from '@heroicons/react/24/outline';
 
 import { QuizActionsMenu } from '@/features/quizzes/components/QuizActionsMenu';
-import type { QuizAttempt, QuizListItem } from '@/features/quizzes/types';
+import type { QuizCardProps } from '@/features/quizzes/types';
 import { useTheme } from '@/providers/ThemeProvider';
-
-export type QuizCardItem = QuizListItem & {
-  questionCount: number;
-  classroomTitle?: string | null;
-  attempt?: QuizAttempt | null;
-};
-
-type QuizCardProps = {
-  quiz: QuizCardItem;
-  isProfessor: boolean;
-  onManage: (quiz: QuizCardItem) => void;
-  onTake: (quiz: QuizCardItem) => void;
-  onDelete: (quiz: QuizCardItem) => void;
-  animationDelayMs?: number;
-};
 
 const formatPoints = (points: number) =>
   Number.isInteger(points) ? String(points) : points.toFixed(1);

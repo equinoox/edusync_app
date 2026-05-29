@@ -4,12 +4,7 @@ import { db } from '@/lib/db';
 import { SIMILARITY_THRESHOLD, MAX_RELEVANT_RESULTS } from '@/lib/ai/ai-config';
 import { embeddings } from '@/lib/db/schema/embeddings';
 import { resources } from '@/lib/db/schema/resources';
-
-type EmbeddingInsert = {
-  resourceId: string;
-  content: string;
-  embedding: number[];
-};
+import type { EmbeddingInsert } from '@/features/resources/types';
 
 export const createEmbeddingRecords = async (
   values: EmbeddingInsert[],

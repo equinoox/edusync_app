@@ -1,27 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 import { CalendarDaysIcon } from '@heroicons/react/24/outline';
 
+import type { UpcomingPanelProps } from '@/features/classrooms/types';
 import type { QuizListItem } from '@/features/quizzes/types';
 import { useTheme } from '@/providers/ThemeProvider';
 import { cn } from '@/lib/utils';
-
-type UpcomingPanelProps = {
-  classroomId?: string;
-  viewerRole?: 'student' | 'professor';
-  onError?: (message: string) => void;
-  items?: Array<{
-    id: string;
-    label: string;
-    title: string;
-    date: string;
-    tone: {
-      light: string;
-      darkClass: string;
-    };
-  }>;
-};
 
 const formatQuizDate = (value: Date | string | null) =>
   value
@@ -32,52 +18,31 @@ const formatQuizDate = (value: Date | string | null) =>
       })
     : 'No date';
 
-const defaultItems = [
-  {
-    id: 'planning',
-    label: 'NEW',
-    title: 'Create material plan',
-    date: 'No due date',
-    tone: {
-      light: 'bg-violet-500/15 text-violet-500',
-      darkClass: 'bg-violet-500/20 text-violet-300',
-    },
-  },
-  {
-    id: 'materials',
-    label: 'PDF',
-    title: 'Attach class material',
-    date: 'Ready when you are',
-    tone: {
-      light: 'bg-emerald-500/15 text-emerald-500',
-      darkClass: 'bg-emerald-500/20 text-emerald-300',
-    },
-  },
-];
-
 export function UpcomingPanel({
   classroomId,
   viewerRole,
   onError,
-  items = defaultItems,
 }: UpcomingPanelProps) {
   const { darkMode } = useTheme();
   const [quizzes, setQuizzes] = useState<QuizListItem[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const onErrorRef = useRef(onError);
 
   useEffect(() => {
-    if (!classroomId) return;
+    onErrorRef.current = onError;
+  }, [onError]);
 
+  useEffect(() => {
     let isActive = true;
+    const endpoint = classroomId
+      ? `/api/classrooms/${classroomId}/upcoming-quizzes`
+      : '/api/quizzes/upcoming';
 
     const loadUpcomingQuizzes = async () => {
       setIsLoading(true);
 
       try {
-        const response = await fetch(
-          `/api/classrooms/${classroomId}/upcoming-quizzes`,
-          { cache: 'no-store' },
-        );
+        const response = await fetch(endpoint, { cache: 'no-store' });
         const result = await response.json();
 
         if (!response.ok) {
@@ -90,7 +55,7 @@ export function UpcomingPanel({
       } catch (error) {
         if (isActive) {
           setQuizzes([]);
-          onError?.(
+          onErrorRef.current?.(
             error instanceof Error
               ? error.message
               : 'Unable to load upcoming quizzes',
@@ -108,7 +73,7 @@ export function UpcomingPanel({
     return () => {
       isActive = false;
     };
-  }, [classroomId, onError]);
+  }, [classroomId]);
 
   const isClassroomMode = Boolean(classroomId);
 
@@ -121,29 +86,32 @@ export function UpcomingPanel({
             {isClassroomMode ? 'Upcoming Quizzes' : 'Upcoming'}
           </h2>
         </div>
-        {isClassroomMode ? (
+        <div className="flex items-center gap-3">
           <span className={`text-sm font-medium ${darkMode ? "text-slate-400" : "text-slate-700"}`}>
             {isLoading ? 'Loading' : quizzes.length}
           </span>
-        ) : (
-          <span className={`text-sm font-medium ${darkMode ? "text-violet-300" : "text-violet-600"}`}>
-            View Calendar
-          </span>
-        )}
+          {!isClassroomMode && (
+            <Link
+              href="/calendar"
+              className={`text-sm font-medium transition hover:opacity-75 ${darkMode ? "text-violet-300" : "text-violet-600"}`}
+            >
+              Calendar
+            </Link>
+          )}
+        </div>
       </div>
 
       <div className={`mt-5 divide-y ${darkMode ? "divide-white/5" : "divide-slate-200/70"}`}>
-        {isClassroomMode ? (
-          isLoading ? (
-            <div className="grid min-h-24 place-items-center">
-              <span className="h-7 w-7 animate-spin rounded-full border-2 border-violet-400 border-t-transparent" />
-            </div>
-          ) : quizzes.length === 0 ? (
-            <p className={`py-3 text-sm ${darkMode ? 'text-slate-400' : 'text-slate-700'}`}>
-              No upcoming quizzes with assigned dates.
-            </p>
-          ) : (
-            quizzes.map(quiz => (
+        {isLoading ? (
+          <div className="grid min-h-24 place-items-center">
+            <span className="h-7 w-7 animate-spin rounded-full border-2 border-violet-400 border-t-transparent" />
+          </div>
+        ) : quizzes.length === 0 ? (
+          <p className={`py-3 text-sm ${darkMode ? 'text-slate-400' : 'text-slate-700'}`}>
+            No upcoming quizzes with assigned future dates.
+          </p>
+        ) : (
+          quizzes.map(quiz => (
               <div key={quiz.id} className="flex items-center gap-3 py-4 first:pt-0 last:pb-0">
                 <span
                   className={cn(
@@ -174,22 +142,7 @@ export function UpcomingPanel({
                 )}
               </div>
             ))
-          )
-        ) : (
-          items.map(item => (
-          <div key={item.id} className="flex items-center gap-3 py-4 first:pt-0 last:pb-0">
-            <span className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-xs font-bold ${darkMode ? item.tone.darkClass : item.tone.light}`}>
-              {item.label}
-            </span>
-            <div className="min-w-0 flex-1">
-              <p className={`line-clamp-1 text-sm font-semibold ${darkMode ? "text-white" : "text-slate-950"}`}>
-                {item.title}
-              </p>
-              <p className={`text-xs ${darkMode ? "text-violet-300" : "text-violet-500"}`}>{item.date}</p>
-            </div>
-          </div>
-          ))
-        )}
+          )}
       </div>
     </aside>
   );

@@ -4,12 +4,7 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import type { HomeNewsArticle } from "@/features/home/data/home-news";
-
-type ArticleModalProps = {
-  article: HomeNewsArticle | null;
-  onClose: () => void;
-};
+import type { ArticleModalProps } from "@/features/home/types";
 
 export default function ArticleModal({ article, onClose }: ArticleModalProps) {
   const [isMounted, setIsMounted] = useState(false);

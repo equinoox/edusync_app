@@ -1,16 +1,9 @@
 'use client';
 
-import type { ComponentType, SVGProps } from 'react';
+import type { ClassroomStatCardProps } from '@/features/classrooms/types';
 import { useTheme } from '@/providers/ThemeProvider';
 
 import { cn } from '@/lib/utils';
-
-type ClassroomStatCardProps = {
-  icon: ComponentType<SVGProps<SVGSVGElement>>;
-  label: string;
-  value: string | number;
-  tone: 'violet' | 'orange' | 'green' | 'blue';
-};
 
 const toneClasses = {
   violet: {

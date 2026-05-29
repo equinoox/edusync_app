@@ -1,9 +1,8 @@
 'use client';
 
-import type { ReactNode } from 'react';
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
 
-import type { ClassroomListItem } from '@/features/classrooms/types';
+import type { ClassroomCardProps } from '@/features/classrooms/types';
 import {
   getClassroomColorOption,
   getClassroomIconOption,
@@ -11,12 +10,6 @@ import {
 import { cn } from '@/lib/utils';
 import { useTheme } from '@/providers/ThemeProvider';
 
-type ClassroomCardProps = {
-  classroom: ClassroomListItem;
-  actions?: ReactNode;
-  onView: (classroom: ClassroomListItem) => void;
-  animationDelayMs?: number;
-};
 
 const formatCreatedDate = (value: Date | string) =>
   new Date(value).toLocaleDateString(undefined, {

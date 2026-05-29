@@ -9,8 +9,7 @@ import {
   getMostRecentUserDocument,
   getUserDocuments,
 } from '@/features/documents/repositories/documents.repository';
-
-type UserDocument = Awaited<ReturnType<typeof getUserDocuments>>[number];
+import type { UserDocument } from '@/features/resources/types';
 
 const normalizeDocumentName = (value: string) =>
   value

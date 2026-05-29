@@ -9,21 +9,16 @@ import {
   classroomColorOptions,
   classroomIconOptions,
 } from '@/features/classrooms/components/classroom-ui';
-import type { CreateClassroomInput } from '@/features/classrooms/types';
+import type {
+  CreateClassroomInput,
+  CreateClassroomModalProps,
+} from '@/features/classrooms/types';
 import type {
   ClassroomColor,
   ClassroomIcon,
 } from '@/features/classrooms/options';
 import { cn } from '@/lib/utils';
 import { useTheme } from '@/providers/ThemeProvider';
-
-type CreateClassroomModalProps = {
-  isOpen: boolean;
-  isSaving: boolean;
-  error?: string | null;
-  onClose: () => void;
-  onSubmit: (input: CreateClassroomInput) => void;
-};
 
 const defaultFormState: CreateClassroomInput = {
   title: '',

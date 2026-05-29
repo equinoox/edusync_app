@@ -4,26 +4,16 @@ import { useState, type FormEvent } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
 import { addQuestionToQuizAction } from '@/features/quizzes/actions/quizzes.action';
-import type { QuizListItem, QuizOptionLabel } from '@/features/quizzes/types';
+import type {
+  CreateQuestionModalProps,
+  QuizOptionDraft,
+  QuizOptionLabel,
+} from '@/features/quizzes/types';
 import { useTheme } from '@/providers/ThemeProvider';
-
-type OptionState = {
-  label: QuizOptionLabel;
-  content: string;
-  isCorrect: boolean;
-};
-
-type CreateQuestionModalProps = {
-  quiz: QuizListItem | null;
-  isOpen: boolean;
-  onClose: () => void;
-  onQuestionAdded: () => void;
-  onToast: (message: string, tone?: 'success' | 'error' | 'info') => void;
-};
 
 const optionLabels: QuizOptionLabel[] = ['a', 'b', 'c', 'd', 'e'];
 
-const createDefaultOptions = (): OptionState[] =>
+const createDefaultOptions = (): QuizOptionDraft[] =>
   optionLabels.map(label => ({ label, content: '', isCorrect: false }));
 
 export function CreateQuestionModal({
@@ -37,8 +27,9 @@ export function CreateQuestionModal({
   const [content, setContent] = useState('');
   const [points, setPoints] = useState(1);
   const [hasNegativePoints, setHasNegativePoints] = useState(false);
-  const [options, setOptions] = useState<OptionState[]>(createDefaultOptions);
+  const [options, setOptions] = useState<QuizOptionDraft[]>(createDefaultOptions);
   const [isSaving, setIsSaving] = useState(false);
+  const [isValidatingDone, setIsValidatingDone] = useState(false);
 
   if (!isOpen || !quiz) return null;
 
@@ -55,6 +46,23 @@ export function CreateQuestionModal({
     const preparedOptions = options
       .map(option => ({ ...option, content: option.content.trim() }))
       .filter(option => option.content.length > 0);
+    const trimmedContent = content.trim();
+    const numericPoints = Number(points);
+
+    if (!trimmedContent) {
+      onToast('Question text is required', 'error');
+      return;
+    }
+
+    if (!Number.isFinite(numericPoints) || numericPoints <= 0) {
+      onToast('Question points must be greater than 0', 'error');
+      return;
+    }
+
+    if (options.some(option => option.isCorrect && !option.content.trim())) {
+      onToast('Correct answers cannot be empty', 'error');
+      return;
+    }
 
     if (preparedOptions.length < 2) {
       onToast('Add at least two options', 'error');
@@ -69,8 +77,8 @@ export function CreateQuestionModal({
     setIsSaving(true);
     const result = await addQuestionToQuizAction({
       quizId: quiz.id,
-      content: content.trim(),
-      points,
+      content: trimmedContent,
+      points: numericPoints,
       hasNegativePoints,
       options: preparedOptions,
     });
@@ -84,6 +92,32 @@ export function CreateQuestionModal({
     onToast('Question added', 'success');
     resetForm();
     onQuestionAdded();
+  };
+
+  const handleDone = async () => {
+    if (isSaving || isValidatingDone) return;
+
+    setIsValidatingDone(true);
+
+    try {
+      const response = await fetch(`/api/quizzes/${quiz.id}/validate`, {
+        method: 'POST',
+      });
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error ?? 'Quiz is not ready yet');
+      }
+
+      onClose();
+    } catch (error) {
+      onToast(
+        error instanceof Error ? error.message : 'Quiz is not ready yet',
+        'error',
+      );
+    } finally {
+      setIsValidatingDone(false);
+    }
   };
 
   return (
@@ -204,10 +238,11 @@ export function CreateQuestionModal({
         <div className={`flex flex-col-reverse gap-2 border-t px-5 py-4 sm:flex-row sm:justify-between ${darkMode ? 'border-slate-800' : 'border-slate-500'}`}>
           <button
             type="button"
-            onClick={onClose}
+            onClick={handleDone}
+            disabled={isSaving || isValidatingDone}
             className={`edusync-button-motion h-10 rounded-lg px-4 text-sm font-bold transition ${darkMode ? 'bg-slate-800 text-slate-200 hover:bg-slate-700' : 'bg-slate-400 text-slate-950 hover:bg-slate-500'}`}
           >
-            Done
+            {isValidatingDone ? 'Checking...' : 'Done'}
           </button>
           <button
             type="submit"

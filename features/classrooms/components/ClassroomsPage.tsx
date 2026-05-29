@@ -40,12 +40,11 @@ import { CreateClassroomModal } from '@/features/classrooms/components/CreateCla
 import { UpcomingPanel } from '@/features/classrooms/components/UpcomingPanel';
 import type {
   ClassroomListItem,
+  ClassroomSortOrder,
   CreateClassroomInput,
 } from '@/features/classrooms/types';
 import { useTheme } from '@/providers/ThemeProvider';
 import { cn } from '@/lib/utils';
-
-type SortOrder = 'desc' | 'asc';
 
 export function ClassroomsPage() {
   const { darkMode } = useTheme();
@@ -60,7 +59,7 @@ export function ClassroomsPage() {
   const [createError, setCreateError] = useState<string | null>(null);
   const [toast, setToast] = useState<ToastNotificationState | null>(null);
   const [search, setSearch] = useState('');
-  const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
+  const [sortOrder, setSortOrder] = useState<ClassroomSortOrder>('desc');
   const [currentRole, setCurrentRole] = useState<'student' | 'professor' | null>(null);
   const [isActivityModalOpen, setIsActivityModalOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -212,6 +211,14 @@ export function ClassroomsPage() {
     showToast('Classroom deleted', 'success');
   };
 
+  const handleCloseClassroomDetails = useCallback(() => {
+    setSelectedClassroom(null);
+  }, []);
+
+  const handleClassroomChanged = useCallback(() => {
+    void loadClassrooms({ quiet: true });
+  }, [loadClassrooms]);
+
   return (
     <main className={cn('flex h-screen overflow-hidden transition-colors duration-300', darkMode ? 'bg-slate-950' : 'bg-slate-200')}>
       <ToastNotification toast={toast} onDismiss={() => setToast(null)} />
@@ -240,9 +247,9 @@ export function ClassroomsPage() {
       />
       <ClassroomDetailsModal
         classroom={selectedClassroom}
-        onClose={() => setSelectedClassroom(null)}
+        onClose={handleCloseClassroomDetails}
         onToast={showToast}
-        onChanged={() => void loadClassrooms({ quiet: true })}
+        onChanged={handleClassroomChanged}
       />
       <ViewAllModal
         isOpen={isActivityModalOpen}

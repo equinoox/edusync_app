@@ -2,6 +2,7 @@
 
 import { useRef, useEffect, useState } from 'react';
 import { useChat } from '@ai-sdk/react';
+import type { UIMessage } from 'ai';
 import { SparklesIcon } from '@heroicons/react/24/outline';
 import { useTheme } from '@/providers/ThemeProvider';
 import Sidebar from '@/components/layout/sidebar';
@@ -15,16 +16,33 @@ import {
 import { ChatMessages } from '@/features/chat/components/ChatMessages';
 import { ChatInput } from '@/features/chat/components/ChatInput';
 import { DocumentUploadButton } from '@/features/documents/components/DocumentUploadButton';
+import type { SavedChatMessage } from '@/features/chat/types';
 import type { DocumentListItem, DocumentUploadResult } from '@/features/documents/types';
+
+const toUiMessage = (message: SavedChatMessage): UIMessage => ({
+  id: message.id,
+  role: message.role,
+  parts: [{ type: 'text', text: message.content }],
+});
 
 export function ChatPage() {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isHistoryLoading, setIsHistoryLoading] = useState(true);
+  const [isClearingHistory, setIsClearingHistory] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [documents, setDocuments] = useState<DocumentListItem[]>([]);
   const [selectedDocumentId, setSelectedDocumentId] = useState('');
   const [toast, setToast] = useState<ToastNotificationState | null>(null);
-  const { messages, sendMessage } = useChat();
+  const { messages, setMessages, sendMessage } = useChat({
+    onError: () => {
+      setToast({
+        id: Date.now(),
+        message: 'Something went wrong',
+        tone: 'error',
+      });
+    },
+  });
   const { darkMode } = useTheme();
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -51,6 +69,44 @@ export function ChatPage() {
   useEffect(() => {
     fetchDocuments();
   }, []);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchChatHistory = async () => {
+      try {
+        const response = await fetch('/api/chat/history');
+
+        if (!response.ok) {
+          throw new Error('Unable to load chat history');
+        }
+
+        const savedMessages = (await response.json()) as SavedChatMessage[];
+
+        if (isMounted) {
+          setMessages(savedMessages.map(toUiMessage));
+        }
+      } catch {
+        if (isMounted) {
+          setToast({
+            id: Date.now(),
+            message: 'Unable to load chat history',
+            tone: 'error',
+          });
+        }
+      } finally {
+        if (isMounted) {
+          setIsHistoryLoading(false);
+        }
+      }
+    };
+
+    void fetchChatHistory();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [setMessages]);
 
   useEffect(() => {
     const handleDocumentsChanged = (event: Event) => {
@@ -99,13 +155,47 @@ export function ChatPage() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!input.trim()) return;
+    if (isHistoryLoading || !input.trim()) return;
     setIsLoading(true);
     sendMessage(
       { text: input },
       { body: selectedDocumentId ? { documentId: selectedDocumentId } : {} },
     ).finally(() => setIsLoading(false));
     setInput('');
+  };
+
+  const handleClearChat = async () => {
+    if (
+      isClearingHistory ||
+      !window.confirm('Clear your saved chat messages?')
+    ) {
+      return;
+    }
+
+    setIsClearingHistory(true);
+
+    try {
+      const response = await fetch('/api/chat/history', { method: 'DELETE' });
+
+      if (!response.ok) {
+        throw new Error('Unable to clear chat');
+      }
+
+      setMessages([]);
+      setToast({
+        id: Date.now(),
+        message: 'Chat cleared',
+        tone: 'success',
+      });
+    } catch {
+      setToast({
+        id: Date.now(),
+        message: 'Unable to clear chat',
+        tone: 'error',
+      });
+    } finally {
+      setIsClearingHistory(false);
+    }
   };
 
   const handleDocumentUploaded = (documents: DocumentUploadResult[]) => {
@@ -183,7 +273,27 @@ export function ChatPage() {
                   backgroundSize: '32px 32px',
                 }}
               />
-              {messages.length === 0 ? (
+              {messages.length > 0 && (
+                <div className="relative z-10 mb-3 flex justify-end">
+                  <button
+                    type="button"
+                    onClick={handleClearChat}
+                    disabled={isClearingHistory}
+                    className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition-all duration-200 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 ${
+                      darkMode
+                        ? 'border-slate-600 bg-slate-900/70 text-slate-300 hover:border-violet-500 hover:text-white'
+                        : 'border-slate-200 bg-white/80 text-slate-600 hover:border-indigo-300 hover:text-slate-900'
+                    }`}
+                  >
+                    {isClearingHistory ? 'Clearing...' : 'Clear chat'}
+                  </button>
+                </div>
+              )}
+              {isHistoryLoading ? (
+                <div className="flex flex-1 items-center justify-center">
+                  <span className="h-8 w-8 animate-spin rounded-full border-2 border-violet-400 border-t-transparent" />
+                </div>
+              ) : messages.length === 0 ? (
                 <div className="flex flex-1 items-center justify-center">
                   <div className="edusync-scale-in text-center space-y-4 max-w-sm">
                     <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mx-auto ${darkMode ? 'bg-violet-600 shadow-violet-500/20' : 'bg-indigo-600 shadow-indigo-200/60'}`}>
@@ -218,7 +328,7 @@ export function ChatPage() {
                 value={input}
                 onChange={setInput}
                 onSubmit={handleSubmit}
-                isLoading={isLoading}
+                isLoading={isLoading || isHistoryLoading}
                 messages={messages}
                 documents={documents}
                 selectedDocumentId={selectedDocumentId}

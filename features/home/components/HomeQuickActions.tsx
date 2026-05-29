@@ -1,6 +1,5 @@
 "use client";
 
-import type { ComponentType } from "react";
 import Link from "next/link";
 import {
   ArrowUpTrayIcon,
@@ -8,18 +7,7 @@ import {
   BuildingLibraryIcon,
   ClipboardDocumentListIcon,
 } from "@heroicons/react/24/outline";
-import type { UserRole } from "@/features/auth/types";
-
-type HomeQuickActionsProps = {
-  role?: UserRole | null;
-};
-
-type HomeQuickAction = {
-  id: string;
-  label: string;
-  href: string;
-  Icon: ComponentType<{ className?: string }>;
-};
+import type { HomeQuickAction, HomeQuickActionsProps } from "@/features/home/types";
 
 export default function HomeQuickActions({ role }: HomeQuickActionsProps) {
   const isProfessor = role === "professor";

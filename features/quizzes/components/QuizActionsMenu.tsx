@@ -3,13 +3,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { EllipsisVerticalIcon, TrashIcon } from '@heroicons/react/24/outline';
 
+import type { QuizActionsMenuProps } from '@/features/quizzes/types';
 import { useTheme } from '@/providers/ThemeProvider';
-
-type QuizActionsMenuProps = {
-  canDelete: boolean;
-  quizTitle: string;
-  onDelete: () => void;
-};
 
 export function QuizActionsMenu({
   canDelete,

@@ -3,23 +3,13 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
-import type { ClassroomListItem } from '@/features/classrooms/types';
-import type { CreateQuizInput } from '@/features/quizzes/types';
+import type { CreateQuizInput, CreateQuizModalProps } from '@/features/quizzes/types';
 import { useTheme } from '@/providers/ThemeProvider';
-
-type CreateQuizModalProps = {
-  isOpen: boolean;
-  isSaving: boolean;
-  classrooms: ClassroomListItem[];
-  error?: string | null;
-  onClose: () => void;
-  onSubmit: (input: CreateQuizInput) => void;
-};
 
 const defaultFormState: CreateQuizInput = {
   title: '',
   description: '',
-  weight: 0,
+  weight: 1,
   timeLimitMinutes: 15,
   classroomId: null,
   quizDate: null,
@@ -36,11 +26,13 @@ export function CreateQuizModal({
   const { darkMode } = useTheme();
   const [formState, setFormState] = useState<CreateQuizInput>(defaultFormState);
   const [quizScope, setQuizScope] = useState<'general' | 'classroom'>('general');
+  const [localError, setLocalError] = useState<string | null>(null);
 
   useEffect(() => {
     if (isOpen) {
       setFormState(defaultFormState);
       setQuizScope('general');
+      setLocalError(null);
     }
   }, [isOpen]);
 
@@ -48,11 +40,45 @@ export function CreateQuizModal({
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const title = formState.title.trim();
+    const description = formState.description.trim();
+    const weight = Number(formState.weight);
+    const timeLimitMinutes = Number(formState.timeLimitMinutes);
+    const classroomId = quizScope === 'classroom' ? formState.classroomId : null;
+
+    if (!title) {
+      setLocalError('Quiz title is required.');
+      return;
+    }
+
+    if (!description) {
+      setLocalError('Quiz description is required.');
+      return;
+    }
+
+    if (!Number.isFinite(weight) || weight <= 0) {
+      setLocalError('Quiz weight must be greater than 0.');
+      return;
+    }
+
+    if (!Number.isInteger(timeLimitMinutes) || timeLimitMinutes <= 0) {
+      setLocalError('Quiz duration must be greater than 0.');
+      return;
+    }
+
+    if (quizScope === 'classroom' && !classroomId) {
+      setLocalError('Choose a classroom for this quiz.');
+      return;
+    }
+
+    setLocalError(null);
     onSubmit({
       ...formState,
-      title: formState.title.trim(),
-      description: formState.description?.trim() ?? '',
-      classroomId: quizScope === 'classroom' ? formState.classroomId : null,
+      title,
+      description,
+      weight,
+      timeLimitMinutes,
+      classroomId,
     });
   };
 
@@ -117,7 +143,7 @@ export function CreateQuizModal({
               </span>
               <input
                 type="number"
-                min="0"
+                min="0.1"
                 step="0.1"
                 value={formState.weight}
                 onChange={event => setFormState(previous => ({ ...previous, weight: Number(event.target.value) }))}
@@ -148,7 +174,8 @@ export function CreateQuizModal({
               type="date"
               value={formState.quizDate ?? ''}
               onChange={event => setFormState(previous => ({ ...previous, quizDate: event.target.value || null }))}
-              className={`h-11 w-full rounded-lg border px-3 text-sm outline-none focus:ring-2 focus:ring-violet-500 ${darkMode ? 'border-slate-700 bg-slate-950 text-white' : 'border-slate-500 bg-slate-400 text-slate-950'}`}
+              style={{ color: darkMode ? 'dark' : 'light' }}
+              className={`h-11 w-full rounded-lg border px-3 text-sm outline-none focus:ring-2 focus:ring-violet-500 ${darkMode ? 'border-slate-700 bg-slate-950 text-white [&::-webkit-calendar-picker-indicator]:invert' : 'border-slate-500 bg-slate-400 text-slate-950'}`}
             />
             <span className={`mt-1 block text-xs ${darkMode ? 'text-slate-400' : 'text-slate-700'}`}>
               Students can take scheduled quizzes only on this date.
@@ -189,9 +216,9 @@ export function CreateQuizModal({
             </label>
           )}
 
-          {error && (
+          {(localError || error) && (
             <p className={`rounded-lg border px-3 py-2 text-sm ${darkMode ? 'border-red-900/60 bg-red-950/50 text-red-200' : 'border-red-300 bg-red-100 text-red-700'}`}>
-              {error}
+              {localError ?? error}
             </p>
           )}
         </div>

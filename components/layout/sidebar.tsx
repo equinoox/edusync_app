@@ -1,8 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import { useTheme } from "@/providers/ThemeProvider";
 import Link from "next/link";
 import SideBarItem from "../shared/sidebar_item";
+import { UpgradePlansModal } from "@/components/shared/UpgradePlansModal";
 import {
   HomeIcon,
   BuildingLibraryIcon,
@@ -55,9 +57,14 @@ const NAV_ITEMS = [
 
 export default function Sidebar({ sidebarOpen = true }: { sidebarOpen?: boolean }) {
   const { darkMode, setDarkMode } = useTheme();
+  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
 
   return (
     <aside className={`flex flex-col w-64 min-h-screen sticky top-0 transition-colors duration-300 ${darkMode ? "bg-slate-900" : "bg-slate-200"} py-6 px-5 ${sidebarOpen ? "flex" : "hidden"} lg:flex`}>
+      <UpgradePlansModal
+        isOpen={isUpgradeModalOpen}
+        onClose={() => setIsUpgradeModalOpen(false)}
+      />
 
       <Link href="/" className="flex items-center gap-2.5 mb-7 group">
         <span className={`flex items-center justify-center w-9 h-9 rounded-lg transition-colors duration-200 ${darkMode ? "bg-violet-600 hover:bg-violet-700" : "bg-indigo-600 hover:bg-indigo-700"} text-white`}>
@@ -88,12 +95,13 @@ export default function Sidebar({ sidebarOpen = true }: { sidebarOpen?: boolean 
           <p className={`text-xs leading-relaxed mb-3 ${darkMode ? "text-violet-300" : "text-indigo-600"}`}>
             Unlock more AI messages, larger file uploads, and advanced insights.
           </p>
-          <Link
-            href="/upgrade"
-            className={`block text-center text-sm font-semibold text-white transition-colors duration-150 rounded-xl py-2 ${darkMode ? "bg-violet-600 hover:bg-violet-700" : "bg-indigo-600 hover:bg-indigo-700"}`}
+          <button
+            type="button"
+            onClick={() => setIsUpgradeModalOpen(true)}
+            className={`block w-full text-center text-sm font-semibold text-white transition-colors duration-150 rounded-xl py-2 ${darkMode ? "bg-violet-600 hover:bg-violet-700" : "bg-indigo-600 hover:bg-indigo-700"}`}
           >
             Upgrade Now
-          </Link>
+          </button>
         </div>
 
         <button

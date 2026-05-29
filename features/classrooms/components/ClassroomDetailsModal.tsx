@@ -8,16 +8,9 @@ import { ClassroomStudentsManager } from '@/features/classrooms/components/Class
 import { UpcomingPanel } from '@/features/classrooms/components/UpcomingPanel';
 import type {
   ClassroomDetails,
-  ClassroomListItem,
+  ClassroomDetailsModalProps,
 } from '@/features/classrooms/types';
 import { useTheme } from '@/providers/ThemeProvider';
-
-type ClassroomDetailsModalProps = {
-  classroom: ClassroomListItem | null;
-  onClose: () => void;
-  onToast: (message: string, tone?: 'success' | 'error' | 'info') => void;
-  onChanged: () => void;
-};
 
 export function ClassroomDetailsModal({
   classroom,
@@ -28,25 +21,25 @@ export function ClassroomDetailsModal({
   const { darkMode } = useTheme();
   const [details, setDetails] = useState<ClassroomDetails | null>(null);
   const [isPending, startTransition] = useTransition();
+  const classroomId = classroom?.id;
 
   const loadDetails = useCallback(() => {
-    if (!classroom) return;
+    if (!classroomId) return;
 
     startTransition(async () => {
-      const response = await fetch(`/api/classrooms/${classroom.id}`, {
+      const response = await fetch(`/api/classrooms/${classroomId}`, {
         cache: 'no-store',
       });
       const result = await response.json();
 
       if (!response.ok) {
         onToast(result.error ?? 'Something went wrong', 'error');
-        onClose();
         return;
       }
 
       setDetails(result);
     });
-  }, [classroom, onClose, onToast]);
+  }, [classroomId, onToast]);
 
   useEffect(() => {
     if (!classroom) {
@@ -55,7 +48,7 @@ export function ClassroomDetailsModal({
     }
 
     loadDetails();
-  }, [classroom, loadDetails]);
+  }, [classroomId, classroom, loadDetails]);
 
   if (!classroom) return null;
 
@@ -64,10 +57,15 @@ export function ClassroomDetailsModal({
   const canManage = Boolean(activeDetails?.canManage);
   const isStudent = activeDetails?.viewerRole === 'student';
 
-  const handleChildChanged = () => {
+  const handleChildChanged = useCallback(() => {
     loadDetails();
     onChanged();
-  };
+  }, [loadDetails, onChanged]);
+
+  const handleUpcomingError = useCallback(
+    (message: string) => onToast(message, 'error'),
+    [onToast],
+  );
 
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 px-3 py-6 backdrop-blur-sm edusync-enter-fast">
@@ -125,7 +123,7 @@ export function ClassroomDetailsModal({
                 <UpcomingPanel
                   classroomId={activeDetails.classroom.id}
                   viewerRole={activeDetails.viewerRole}
-                  onError={message => onToast(message, 'error')}
+                  onError={handleUpcomingError}
                 />
               </div>
               <ClassroomStudentsManager

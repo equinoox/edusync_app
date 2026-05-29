@@ -21,3 +21,11 @@ export type DocumentUploadResult = {
   pageCount: number;
   createdAt: string | Date;
 };
+
+export type DocumentUploadButtonProps = {
+  className?: string;
+  disabled?: boolean;
+  onUploaded?: (documents: DocumentUploadResult[]) => void;
+  onUploadError?: (message: string) => void;
+  size?: 'default' | 'compact';
+};

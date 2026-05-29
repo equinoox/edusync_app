@@ -14,21 +14,11 @@ import {
   deleteClassroomMaterialAction,
 } from '@/features/classrooms/actions/classroom-materials.action';
 import { CopyClassroomMaterialButton } from '@/features/classrooms/components/CopyClassroomMaterialButton';
-import type { ClassroomMaterial } from '@/features/classrooms/types';
+import type {
+  ClassroomMaterialPendingAction,
+  ClassroomMaterialsManagerProps,
+} from '@/features/classrooms/types';
 import { useTheme } from '@/providers/ThemeProvider';
-
-type ClassroomMaterialsManagerProps = {
-  classroomId: string;
-  canManage: boolean;
-  isStudent: boolean;
-  materials: ClassroomMaterial[];
-  onChanged: () => void;
-  onToast: (message: string, tone?: 'success' | 'error' | 'info') => void;
-};
-
-type PendingAction =
-  | { type: 'add'; file: File }
-  | { type: 'delete'; material: ClassroomMaterial };
 
 const materialFileNamePattern = /^\d+_[A-Za-z0-9-]+_[A-Za-z0-9-]+\.pdf$/i;
 
@@ -50,7 +40,7 @@ export function ClassroomMaterialsManager({
 }: ClassroomMaterialsManagerProps) {
   const { darkMode } = useTheme();
   const inputRef = useRef<HTMLInputElement>(null);
-  const [pendingAction, setPendingAction] = useState<PendingAction | null>(null);
+  const [pendingAction, setPendingAction] = useState<ClassroomMaterialPendingAction | null>(null);
   const [loadingAction, setLoadingAction] = useState<string | null>(null);
 
   const validateFile = (file: File) => {

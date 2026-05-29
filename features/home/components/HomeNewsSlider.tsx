@@ -4,7 +4,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import ArticleModal from "./ArticleModal";
-import { homeNewsArticles, type HomeNewsArticle } from "@/features/home/data/home-news";
+import { homeNewsArticles } from "@/features/home/data/home-news";
+import type { HomeNewsArticle } from "@/features/home/types";
 
 const GAP_WIDTH = 16;
 

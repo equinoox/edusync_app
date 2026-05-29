@@ -1,4 +1,3 @@
-import type { ComponentType, SVGProps } from 'react';
 import {
   AcademicCapIcon,
   BeakerIcon,
@@ -12,8 +11,7 @@ import type {
   ClassroomColor,
   ClassroomIcon,
 } from '@/features/classrooms/options';
-
-export type ClassroomIconComponent = ComponentType<SVGProps<SVGSVGElement>>;
+import type { ClassroomIconComponent } from '@/features/classrooms/types';
 
 export const classroomColorOptions = [
   {

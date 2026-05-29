@@ -3,13 +3,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { EllipsisVerticalIcon, TrashIcon } from '@heroicons/react/24/outline';
 
+import type { ClassroomActionsMenuProps } from '@/features/classrooms/types';
 import { useTheme } from '@/providers/ThemeProvider';
-
-type ClassroomActionsMenuProps = {
-  canDelete: boolean;
-  classroomTitle: string;
-  onDelete: () => void;
-};
 
 export function ClassroomActionsMenu({
   canDelete,

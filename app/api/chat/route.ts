@@ -2,6 +2,10 @@ import type { UIMessage } from 'ai';
 import { auth } from '@clerk/nextjs/server';
 
 import { createChatResponse } from '@/features/chat/server/chat.service';
+import {
+  getTextFromMessage,
+  saveChatMessage,
+} from '@/features/chat/server/chat-history.service';
 import { 
   checkAndIncrementTokenUsage, 
   validateMessageLength 
@@ -34,17 +38,7 @@ export async function POST(req: Request) {
       );
     }
 
-    let messageText = '';
-    
-    // Handle messages that have parts array (from useChat hook)
-    if (Array.isArray((lastMessage as any).parts)) {
-      const textParts = (lastMessage as any).parts.filter((part: any) => part.type === 'text');
-      messageText = textParts.map((part: any) => part.text).join('');
-    } 
-    // Handle messages with content property
-    else if (typeof (lastMessage as any).content === 'string') {
-      messageText = (lastMessage as any).content;
-    }
+    const messageText = getTextFromMessage(lastMessage);
 
     if (!messageText || typeof messageText !== 'string') {
       return new Response(
@@ -71,7 +65,23 @@ export async function POST(req: Request) {
       );
     }
 
-    const result = await createChatResponse(messages, documentId ?? undefined);
+    await saveChatMessage({
+      userId,
+      role: 'user',
+      content: messageText,
+    });
+
+    const result = await createChatResponse(
+      messages,
+      documentId ?? undefined,
+      async text => {
+        await saveChatMessage({
+          userId,
+          role: 'assistant',
+          content: text,
+        });
+      },
+    );
 
     return result.toUIMessageStreamResponse();
   } catch (error) {

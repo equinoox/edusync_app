@@ -3,13 +3,7 @@
 import { useState } from 'react';
 
 import { useTheme } from '@/providers/ThemeProvider';
-import type { UserRole } from '@/features/auth/types';
-
-type RoleSelectionModalProps = {
-  isSubmitting: boolean;
-  error: string | null;
-  onSelectRole: (role: UserRole, professorKey?: string) => Promise<void>;
-};
+import type { RoleSelectionModalProps, UserRole } from '@/features/auth/types';
 
 export function RoleSelectionModal({
   isSubmitting,

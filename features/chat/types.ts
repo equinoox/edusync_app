@@ -34,3 +34,17 @@ export type SubmitButtonProps = {
   isLoading?: boolean;
 };
 
+export type SavedChatMessage = {
+  id: string;
+  role: 'user' | 'assistant';
+  content: string;
+};
+
+export type PersistedChatRole = 'user' | 'assistant';
+
+export type PersistedChatMessage = {
+  id: string;
+  role: PersistedChatRole;
+  content: string;
+  createdAt: Date;
+};

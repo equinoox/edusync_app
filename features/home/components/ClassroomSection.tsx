@@ -9,28 +9,14 @@ import {
   CalculatorIcon,
   CodeBracketIcon,
 } from "@heroicons/react/24/outline";
+import type {
+  HomeClassroom,
+  HomeClassroomIcon,
+  StickyColor,
+  StickyStyle,
+} from "@/features/home/types";
 
-type StickyColor = "yellow" | "blue" | "green" | "pink";
-type ClassroomIcon = "function" | "flask" | "monitor" | "book";
-
-interface Classroom {
-  id: string;
-  name: string;
-  sub: string;
-  quizzes: number;
-  progress: number;
-  icon: ClassroomIcon;
-  color: StickyColor;
-}
-
-type StickyStyle = {
-  bg: string;
-  text: string;
-  muted: string;
-  rotate: string;
-};
-
-const SAMPLE_CLASSROOMS: Classroom[] = [
+const SAMPLE_CLASSROOMS: HomeClassroom[] = [
   {
     id: "1",
     name: "Mathematics",
@@ -97,7 +83,7 @@ const SAMPLE_STICKY_STYLES: Record<StickyColor, StickyStyle> = {
   },
 };
 
-const CLASSROOM_ICONS: Record<ClassroomIcon, typeof AcademicCapIcon> = {
+const CLASSROOM_ICONS: Record<HomeClassroomIcon, typeof AcademicCapIcon> = {
   function: CalculatorIcon,
   flask: BeakerIcon,
   monitor: CodeBracketIcon,

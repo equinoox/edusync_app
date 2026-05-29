@@ -8,20 +8,11 @@ import {
   addStudentToClassroomAction,
   removeStudentFromClassroomAction,
 } from '@/features/classrooms/actions/classrooms.action';
-import type { ClassroomStudent } from '@/features/classrooms/types';
+import type {
+  ClassroomStudentPendingAction,
+  ClassroomStudentsManagerProps,
+} from '@/features/classrooms/types';
 import { useTheme } from '@/providers/ThemeProvider';
-
-type ClassroomStudentsManagerProps = {
-  classroomId: string;
-  canManage: boolean;
-  students: ClassroomStudent[];
-  onChanged: () => void;
-  onToast: (message: string, tone?: 'success' | 'error' | 'info') => void;
-};
-
-type PendingAction =
-  | { type: 'add'; studentId: string }
-  | { type: 'remove'; studentId: string };
 
 export function ClassroomStudentsManager({
   classroomId,
@@ -32,7 +23,7 @@ export function ClassroomStudentsManager({
 }: ClassroomStudentsManagerProps) {
   const { darkMode } = useTheme();
   const [studentId, setStudentId] = useState('');
-  const [pendingAction, setPendingAction] = useState<PendingAction | null>(null);
+  const [pendingAction, setPendingAction] = useState<ClassroomStudentPendingAction | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   const confirmAction = async () => {
