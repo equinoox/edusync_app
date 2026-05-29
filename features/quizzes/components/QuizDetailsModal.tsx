@@ -82,8 +82,8 @@ export function QuizDetailsModal({
         onCancel={() => setQuestionToDelete(null)}
         onConfirm={handleDeleteQuestion}
       />
-      <div className={`edusync-scale-in flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-xl border shadow-2xl ${darkMode ? 'border-slate-700 bg-slate-900 shadow-black/40' : 'border-slate-500 bg-slate-300 shadow-slate-950/20'}`}>
-        <div className={`flex shrink-0 items-start justify-between gap-4 border-b px-5 py-4 ${darkMode ? 'border-slate-800' : 'border-slate-500'}`}>
+      <div className={`edusync-scale-in flex max-h-[90vh] w-full max-w-3xl flex-col overflow-hidden rounded-xl border shadow-2xl ${darkMode ? 'border-slate-700 bg-slate-900 shadow-black/40' : 'border-slate-200 bg-white shadow-slate-950/20'}`}>
+        <div className={`flex shrink-0 items-start justify-between gap-4 border-b px-5 py-4 ${darkMode ? 'border-slate-800' : 'border-slate-200'}`}>
           <div className="min-w-0">
             <h2 className={`truncate text-xl font-bold ${darkMode ? 'text-white' : 'text-slate-950'}`}>
               {activeQuiz.title}
@@ -95,7 +95,7 @@ export function QuizDetailsModal({
           <button
             type="button"
             onClick={onClose}
-            className={`edusync-button-motion rounded-lg p-2 transition ${darkMode ? 'text-slate-400 hover:bg-slate-800 hover:text-slate-200' : 'text-slate-700 hover:bg-slate-400'}`}
+            className={`edusync-button-motion rounded-lg p-2 transition ${darkMode ? 'text-slate-400 hover:bg-slate-800 hover:text-slate-200' : 'text-slate-700 hover:bg-slate-100'}`}
             aria-label="Close quiz details"
             title="Close"
           >
@@ -104,7 +104,7 @@ export function QuizDetailsModal({
         </div>
 
         <div className="min-h-0 flex-1 overflow-y-auto px-5 py-5">
-          <div className={`mb-4 grid gap-3 rounded-xl border p-3 text-sm ${darkMode ? 'border-slate-700 bg-slate-950 text-slate-300' : 'border-slate-500 bg-slate-400 text-slate-800'} sm:grid-cols-5`}>
+          <div className={`mb-4 grid gap-3 rounded-xl border p-3 text-sm ${darkMode ? 'border-slate-700 bg-slate-950 text-slate-300' : 'border-slate-200 bg-white text-slate-800'} sm:grid-cols-5`}>
             <span>{Number(activeQuiz.totalPoints).toFixed(1)} pts</span>
             <span>Weight {Number(activeQuiz.weight).toFixed(1)}</span>
             <span>{activeQuiz.timeLimitMinutes} min</span>
@@ -125,7 +125,7 @@ export function QuizDetailsModal({
               {details.questions.map((question, index) => (
                 <div
                   key={question.id}
-                  className={`edusync-enter-fast rounded-xl border p-4 ${darkMode ? 'border-slate-700 bg-slate-950' : 'border-slate-500 bg-slate-400'}`}
+                  className={`edusync-enter-fast rounded-xl border p-4 ${darkMode ? 'border-slate-700 bg-slate-950' : 'border-slate-200 bg-white'}`}
                   style={{ animationDelay: `${Math.min(index, 8) * 35}ms` }}
                 >
                   <div className="flex items-start justify-between gap-3">
@@ -149,7 +149,7 @@ export function QuizDetailsModal({
                   </div>
                   <div className="mt-3 grid gap-2 sm:grid-cols-2">
                     {question.options.map(option => (
-                      <div key={option.id} className={`rounded-lg px-3 py-2 text-sm ${option.isCorrect ? (darkMode ? 'bg-green-500/20 text-green-200' : 'bg-green-500/15 text-green-800') : (darkMode ? 'bg-slate-800 text-slate-300' : 'bg-slate-300 text-slate-800')}`}>
+                      <div key={option.id} className={`rounded-lg px-3 py-2 text-sm ${option.isCorrect ? (darkMode ? 'bg-green-500/20 text-green-200' : 'bg-green-500/15 text-green-800') : (darkMode ? 'bg-slate-800 text-slate-300' : 'bg-slate-100 text-slate-900')}`}>
                         <span className="font-bold uppercase">{option.label}.</span> {option.content}
                       </div>
                     ))}
@@ -158,13 +158,13 @@ export function QuizDetailsModal({
               ))}
             </div>
           ) : (
-            <p className={`rounded-xl border border-dashed px-4 py-10 text-center text-sm ${darkMode ? 'border-slate-700 bg-slate-950 text-slate-300' : 'border-slate-500 bg-slate-400 text-slate-700'}`}>
+            <p className={`rounded-xl border border-dashed px-4 py-10 text-center text-sm ${darkMode ? 'border-slate-700 bg-slate-950 text-slate-300' : 'border-slate-200 bg-white text-slate-700'}`}>
               No questions yet. Add the first one to make this quiz usable.
             </p>
           )}
         </div>
 
-        <div className={`flex justify-end border-t px-5 py-4 ${darkMode ? 'border-slate-800' : 'border-slate-500'}`}>
+        <div className={`flex justify-end border-t px-5 py-4 ${darkMode ? 'border-slate-800' : 'border-slate-200'}`}>
           <button
             type="button"
             onClick={() => onAddQuestion(activeQuiz)}

@@ -16,12 +16,12 @@ export function CalendarMonthGrid({
   return (
     <section
       className={`edusync-enter overflow-hidden rounded-xl border shadow-md ${
-        darkMode ? 'border-slate-800 bg-slate-900' : 'border-slate-500 bg-slate-300'
+        darkMode ? 'border-slate-800 bg-slate-900' : 'border-slate-200 bg-white'
       }`}
     >
       <div
         className={`grid grid-cols-7 border-b ${
-          darkMode ? 'border-slate-800' : 'border-slate-500'
+          darkMode ? 'border-slate-800' : 'border-slate-200'
         }`}
       >
         {weekdays.map(day => (

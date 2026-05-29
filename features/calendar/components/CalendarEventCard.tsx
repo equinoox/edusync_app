@@ -23,7 +23,7 @@ export function CalendarEventCard({
         'edusync-enter-fast edusync-card-motion w-full rounded-lg border p-2 text-left transition',
         darkMode
           ? 'border-white/5 bg-slate-800/80 hover:bg-slate-700'
-          : 'border-slate-300 bg-slate-400 hover:bg-slate-300',
+          : 'border-slate-200 bg-white hover:bg-slate-50',
       )}
     >
       <div className="flex items-start gap-2">

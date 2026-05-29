@@ -29,7 +29,7 @@ export default function HomePage() {
   const role = isUserRole(rawRole) ? rawRole : null;
 
   return (
-    <main className={`flex min-h-screen transition-colors duration-300 ${darkMode ? "bg-slate-950" : "bg-slate-200"}`}>
+    <main className={`flex min-h-screen transition-colors duration-300 ${darkMode ? "bg-slate-950" : "bg-slate-50"}`}>
       {/* MOBILE OVERLAY */}
       {sidebarOpen && (
         <div
@@ -58,7 +58,7 @@ export default function HomePage() {
         </div>
 
         <div className="flex flex-1 flex-col gap-3 p-3 sm:p-4">
-          <div className="flex flex-col gap-3 rounded-2xl border border-white/5 bg-slate-900/70 p-3 shadow-2xl shadow-slate-950/20 sm:p-4">
+          <div className={`flex flex-col gap-3 rounded-2xl border p-3 shadow-2xl sm:p-4 ${darkMode ? "border-white/5 bg-slate-900/70 shadow-slate-950/20" : "border-slate-200 bg-white shadow-slate-200/60"}`}>
             <HeroSection firstName={firstName} />
             <HomeNewsSlider />
             <div className="grid gap-3 xl:grid-cols-[minmax(0,1fr)_22rem]">

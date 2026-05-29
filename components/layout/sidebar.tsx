@@ -60,7 +60,7 @@ export default function Sidebar({ sidebarOpen = true }: { sidebarOpen?: boolean 
   const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
 
   return (
-    <aside className={`flex flex-col w-64 min-h-screen sticky top-0 transition-colors duration-300 ${darkMode ? "bg-slate-900" : "bg-slate-200"} py-6 px-5 ${sidebarOpen ? "flex" : "hidden"} lg:flex`}>
+    <aside className={`flex flex-col w-64 min-h-screen sticky top-0 transition-colors duration-300 ${darkMode ? "bg-slate-900" : "bg-slate-50"} py-6 px-5 ${sidebarOpen ? "flex" : "hidden"} lg:flex`}>
       <UpgradePlansModal
         isOpen={isUpgradeModalOpen}
         onClose={() => setIsUpgradeModalOpen(false)}
@@ -110,7 +110,7 @@ export default function Sidebar({ sidebarOpen = true }: { sidebarOpen?: boolean 
         >
           <MoonIcon width="20" height="20" className={darkMode ? "text-violet-400" : "text-slate-500"} />
           <span className="flex-1 text-left">Dark Mode</span>
-          <span className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors duration-200 ${darkMode ? "bg-violet-600" : "bg-slate-200"}`}>
+          <span className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors duration-200 ${darkMode ? "bg-violet-600" : "bg-slate-50"}`}>
             <span
               className="inline-block h-3.5 w-3.5 rounded-full bg-white shadow-sm transition-transform duration-200"
               style={{ transform: darkMode ? "translateX(18px)" : "translateX(2px)" }}

@@ -23,7 +23,7 @@ export default function SmallBar({
   const { darkMode } = useTheme();
 
   return (
-    <div className={`sticky top-0 z-40 flex items-center justify-between border-b p-3 transition-colors duration-300 lg:hidden ${darkMode ? "border-slate-700 bg-slate-900" : "border-gray-200 bg-white"}`}>
+    <div className={`sticky top-0 z-40 flex items-center justify-between border-b p-3 transition-colors duration-300 lg:hidden ${darkMode ? "border-slate-700 bg-slate-900" : "border-slate-200 bg-white"}`}>
       <span className={`text-lg font-bold ${darkMode ? "text-white" : "text-slate-900"}`}>
         Edu<span className={darkMode ? "text-violet-600" : "text-indigo-600"}>Sync</span>
       </span>
@@ -40,7 +40,7 @@ export default function SmallBar({
         <button
           type="button"
           onClick={onToggleSidebar}
-          className={`rounded-lg p-1.5 transition-colors ${darkMode ? "hover:bg-slate-800" : "hover:bg-gray-100"}`}
+          className={`rounded-lg p-1.5 transition-colors ${darkMode ? "hover:bg-slate-800" : "hover:bg-slate-100"}`}
           aria-label={sidebarOpen ? "Close sidebar" : "Open sidebar"}
           title={sidebarOpen ? "Close sidebar" : "Open sidebar"}
         >

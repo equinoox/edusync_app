@@ -155,8 +155,8 @@ export function TakeQuizModal({
         onConfirm={handleSubmit}
       />
 
-      <div className={`edusync-scale-in flex max-h-[92vh] w-full max-w-4xl flex-col overflow-hidden rounded-xl border shadow-2xl ${darkMode ? 'border-slate-700 bg-slate-900 shadow-black/40' : 'border-slate-500 bg-slate-300 shadow-slate-950/20'}`}>
-        <div className={`flex shrink-0 items-start justify-between gap-4 border-b px-5 py-4 ${darkMode ? 'border-slate-800' : 'border-slate-500'}`}>
+      <div className={`edusync-scale-in flex max-h-[92vh] w-full max-w-4xl flex-col overflow-hidden rounded-xl border shadow-2xl ${darkMode ? 'border-slate-700 bg-slate-900 shadow-black/40' : 'border-slate-200 bg-white shadow-slate-950/20'}`}>
+        <div className={`flex shrink-0 items-start justify-between gap-4 border-b px-5 py-4 ${darkMode ? 'border-slate-800' : 'border-slate-200'}`}>
           <div className="min-w-0">
             <h2 className={`truncate text-xl font-bold ${darkMode ? 'text-white' : 'text-slate-950'}`}>
               {quizForTaking?.title ?? quiz.title}
@@ -172,7 +172,7 @@ export function TakeQuizModal({
             <button
               type="button"
               onClick={onClose}
-              className={`edusync-button-motion rounded-lg p-2 transition ${darkMode ? 'text-slate-400 hover:bg-slate-800 hover:text-slate-200' : 'text-slate-700 hover:bg-slate-400'}`}
+              className={`edusync-button-motion rounded-lg p-2 transition ${darkMode ? 'text-slate-400 hover:bg-slate-800 hover:text-slate-200' : 'text-slate-700 hover:bg-slate-100'}`}
               aria-label="Close quiz"
               title="Close"
             >
@@ -191,7 +191,7 @@ export function TakeQuizModal({
               {quizForTaking.questions.map((question, index) => (
                 <section
                   key={question.id}
-                  className={`edusync-enter-fast rounded-xl border p-4 ${darkMode ? 'border-slate-700 bg-slate-950' : 'border-slate-500 bg-slate-400'}`}
+                  className={`edusync-enter-fast rounded-xl border p-4 ${darkMode ? 'border-slate-700 bg-slate-950' : 'border-slate-200 bg-white'}`}
                   style={{ animationDelay: `${Math.min(index, 8) * 35}ms` }}
                 >
                   <div className="flex items-start justify-between gap-3">
@@ -212,7 +212,7 @@ export function TakeQuizModal({
                           key={option.id}
                           type="button"
                           onClick={() => toggleOption(question.id, option.id)}
-                          className={`edusync-button-motion rounded-lg border px-3 py-3 text-left text-sm transition ${isSelected ? 'border-violet-500 bg-violet-600 text-white' : darkMode ? 'border-slate-700 bg-slate-900 text-slate-200 hover:bg-slate-800' : 'border-slate-500 bg-slate-300 text-slate-900 hover:bg-slate-200'}`}
+                          className={`edusync-button-motion rounded-lg border px-3 py-3 text-left text-sm transition ${isSelected ? 'border-violet-500 bg-violet-600 text-white' : darkMode ? 'border-slate-700 bg-slate-900 text-slate-200 hover:bg-slate-800' : 'border-slate-200 bg-white text-slate-900 hover:bg-slate-200'}`}
                         >
                           <span className="font-bold uppercase">{option.label}.</span> {option.content}
                         </button>
@@ -225,7 +225,7 @@ export function TakeQuizModal({
           )}
         </div>
 
-        <div className={`flex justify-end border-t px-5 py-4 ${darkMode ? 'border-slate-800' : 'border-slate-500'}`}>
+        <div className={`flex justify-end border-t px-5 py-4 ${darkMode ? 'border-slate-800' : 'border-slate-200'}`}>
           <button
             type="button"
             onClick={() => setIsConfirmingSubmit(true)}

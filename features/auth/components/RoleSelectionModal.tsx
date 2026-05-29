@@ -59,7 +59,7 @@ export function RoleSelectionModal({
                   : 'border-indigo-500 bg-indigo-50 text-indigo-900'
                 : darkMode
                   ? 'border-slate-700 bg-slate-800 hover:bg-slate-700'
-                  : 'border-gray-200 bg-white hover:bg-gray-50'
+                  : 'border-slate-200 bg-white hover:bg-slate-50'
             }`}
           >
             <span className="block text-sm font-semibold">Student</span>
@@ -79,7 +79,7 @@ export function RoleSelectionModal({
                   : 'border-orange-500 bg-orange-50 text-orange-900'
                 : darkMode
                   ? 'border-slate-700 bg-slate-800 hover:bg-slate-700'
-                  : 'border-gray-200 bg-white hover:bg-gray-50'
+                  : 'border-slate-200 bg-white hover:bg-slate-50'
             }`}
           >
             <span className="block text-sm font-semibold">Professor</span>
@@ -103,7 +103,7 @@ export function RoleSelectionModal({
               className={`w-full rounded-xl border px-4 py-3 text-sm outline-none transition focus:ring-4 disabled:cursor-not-allowed disabled:opacity-60 ${
                 darkMode
                   ? 'border-slate-700 bg-slate-800 text-white focus:border-orange-500 focus:ring-orange-500/20'
-                  : 'border-gray-200 bg-white text-slate-900 focus:border-orange-500 focus:ring-orange-500/20'
+                  : 'border-slate-200 bg-white text-slate-900 focus:border-orange-500 focus:ring-orange-500/20'
               }`}
               autoComplete="off"
             />

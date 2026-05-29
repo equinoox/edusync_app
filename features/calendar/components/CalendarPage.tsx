@@ -241,7 +241,7 @@ export function CalendarPage() {
   };
 
   return (
-    <main className={cn('flex h-screen overflow-hidden transition-colors duration-300', darkMode ? 'bg-slate-950' : 'bg-slate-300')}>
+    <main className={cn('flex h-screen overflow-hidden transition-colors duration-300', darkMode ? 'bg-slate-950' : 'bg-slate-50')}>
       <ToastNotification toast={toast} onDismiss={() => setToast(null)} />
       <CreateCalendarEventModal
         isOpen={isCreateModalOpen || Boolean(eventToEdit)}
@@ -364,7 +364,7 @@ export function CalendarPage() {
             className={`edusync-enter flex h-full min-h-0 flex-col overflow-hidden rounded-2xl border p-3.5 sm:p-4 ${
               darkMode
                 ? 'border-white/5 bg-slate-900'
-                : 'border-slate-500 bg-slate-400'
+                : 'border-slate-200 bg-white'
             }`}
           >
             <CalendarHeader
@@ -378,7 +378,7 @@ export function CalendarPage() {
             <div className="mt-4 grid min-h-0 flex-1 gap-4 xl:grid-cols-[minmax(0,1fr)_19rem]">
               <section className="min-h-0 overflow-y-auto pr-1">
                 {isLoading ? (
-                  <div className={`grid min-h-[30rem] place-items-center rounded-xl border border-dashed ${darkMode ? 'border-slate-700 bg-slate-800' : 'border-slate-500 bg-slate-300'}`}>
+                  <div className={`grid min-h-[30rem] place-items-center rounded-xl border border-dashed ${darkMode ? 'border-slate-700 bg-slate-800' : 'border-slate-200 bg-white'}`}>
                     <span className={`h-9 w-9 animate-spin rounded-full border-2 border-t-transparent ${darkMode ? 'border-violet-300' : 'border-violet-700'}`} />
                   </div>
                 ) : (
@@ -391,7 +391,7 @@ export function CalendarPage() {
               </section>
 
               <aside className="min-h-0 space-y-4 overflow-y-auto pr-1">
-                <section className={`edusync-enter edusync-card-motion rounded-xl border p-4 shadow-md ${darkMode ? 'border-white/5 bg-slate-800' : 'border-slate-500 bg-slate-300'}`}>
+                <section className={`edusync-enter edusync-card-motion rounded-xl border p-4 shadow-md ${darkMode ? 'border-white/5 bg-slate-800' : 'border-slate-200 bg-white'}`}>
                   <div className="mb-4 flex items-center justify-between">
                     <h2 className={`font-bold ${darkMode ? 'text-white' : 'text-slate-950'}`}>
                       Mini Calendar
@@ -423,7 +423,7 @@ export function CalendarPage() {
                               : day.getMonth() === visibleMonth.getMonth()
                                 ? darkMode
                                   ? 'text-white hover:bg-slate-700'
-                                  : 'text-slate-950 hover:bg-slate-400'
+                                  : 'text-slate-950 hover:bg-slate-100'
                                 : darkMode
                                   ? 'text-slate-600'
                                   : 'text-slate-600',
@@ -436,7 +436,7 @@ export function CalendarPage() {
                   </div>
                 </section>
 
-                <section className={`edusync-enter edusync-card-motion rounded-xl border p-4 shadow-md ${darkMode ? 'border-white/5 bg-slate-800' : 'border-slate-500 bg-slate-300'}`}>
+                <section className={`edusync-enter edusync-card-motion rounded-xl border p-4 shadow-md ${darkMode ? 'border-white/5 bg-slate-800' : 'border-slate-200 bg-white'}`}>
                   <div className="mb-4 flex items-center justify-between">
                     <h2 className={`font-bold ${darkMode ? 'text-white' : 'text-slate-950'}`}>
                       Upcoming Events

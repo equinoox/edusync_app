@@ -109,7 +109,7 @@ export function NotificationBell({ compact = false }: NotificationBellProps) {
         className={cn(
           'relative flex-shrink-0 rounded-lg p-2 transition-colors',
           compact ? 'h-9 w-9' : '',
-          darkMode ? 'hover:bg-slate-800' : 'hover:bg-slate-400',
+          darkMode ? 'hover:bg-slate-800' : 'hover:bg-slate-100',
         )}
         aria-label="Notifications"
         title="Notifications"

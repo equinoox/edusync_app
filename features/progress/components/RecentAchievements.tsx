@@ -16,6 +16,7 @@ import type {
   ProgressActivity,
   RecentAchievementsProps,
 } from '@/features/progress/types';
+import { useTheme } from '@/providers/ThemeProvider';
 
 const formatDate = (value: string) =>
   new Intl.DateTimeFormat('en', {
@@ -35,6 +36,7 @@ export function RecentAchievements({
   activities,
   onViewAll,
 }: RecentAchievementsProps) {
+  const { darkMode } = useTheme();
   const visibleActivities = activities.slice(0, 4);
 
   return (
@@ -45,7 +47,7 @@ export function RecentAchievements({
           <button
             type="button"
             onClick={onViewAll}
-            className="text-sm font-medium text-violet-400"
+            className={darkMode ? 'text-sm font-medium text-violet-400' : 'text-sm font-medium text-indigo-600'}
           >
             View all
           </button>
@@ -53,8 +55,8 @@ export function RecentAchievements({
       />
 
       {visibleActivities.length === 0 ? (
-        <div className="grid min-h-48 place-items-center rounded-xl border border-dashed border-slate-700 text-center">
-          <p className="px-6 text-sm text-slate-400">
+        <div className={`grid min-h-48 place-items-center rounded-xl border border-dashed text-center ${darkMode ? 'border-slate-700' : 'border-slate-200'}`}>
+          <p className={`px-6 text-sm ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>
             Recent quiz milestones will appear here.
           </p>
         </div>
@@ -66,21 +68,21 @@ export function RecentAchievements({
           return (
             <div
               key={activity.id}
-              className="edusync-enter-fast grid grid-cols-[2.25rem_minmax(0,1fr)_auto] items-center gap-2.5 border-b border-white/[0.06] py-2.5 last:border-b-0"
+              className={`edusync-enter-fast grid grid-cols-[2.25rem_minmax(0,1fr)_auto] items-center gap-2.5 border-b py-2.5 last:border-b-0 ${darkMode ? 'border-white/[0.06]' : 'border-slate-200'}`}
               style={{ animationDelay: `${index * 45}ms` }}
             >
-              <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-500/20 text-violet-300">
+              <span className={`flex h-8 w-8 items-center justify-center rounded-xl ${darkMode ? 'bg-violet-500/20 text-violet-300' : 'bg-violet-50 text-violet-700'}`}>
                 <Icon className="h-4 w-4" />
               </span>
               <div className="min-w-0">
-                <p className="truncate text-sm font-semibold text-white">
+                <p className={`truncate text-sm font-semibold ${darkMode ? 'text-white' : 'text-slate-900'}`}>
                   {activity.title}
                 </p>
-                <p className="truncate text-xs text-slate-400">
+                <p className={`truncate text-xs ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>
                   {activity.description}
                 </p>
               </div>
-              <time className="whitespace-nowrap text-xs text-slate-400">
+              <time className={`whitespace-nowrap text-xs ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>
                 {formatDate(activity.occurredAt)}
               </time>
             </div>

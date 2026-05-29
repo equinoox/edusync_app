@@ -124,7 +124,7 @@ export function NotificationItem({
             ? 'border-white/5 bg-slate-900 hover:bg-slate-800'
             : 'border-violet-500/30 bg-violet-950/40 hover:bg-violet-950/60'
           : notification.read
-            ? 'border-slate-500 bg-slate-300 hover:bg-slate-400'
+            ? 'border-slate-200 bg-white hover:bg-slate-100'
             : 'border-indigo-300 bg-indigo-100 hover:bg-indigo-200',
       )}
     >
@@ -140,7 +140,7 @@ export function NotificationItem({
           'mt-0.5 shrink-0 rounded-lg p-1.5 transition',
           darkMode
             ? 'text-slate-500 hover:bg-slate-800 hover:text-red-300'
-            : 'text-slate-600 hover:bg-slate-400 hover:text-red-700',
+            : 'text-slate-600 hover:bg-slate-100 hover:text-red-700',
         )}
         aria-label="Delete notification"
         title="Delete"

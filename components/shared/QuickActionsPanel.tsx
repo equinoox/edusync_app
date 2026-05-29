@@ -36,7 +36,7 @@ export function QuickActionsPanel({
   };
 
   return (
-    <aside className={`edusync-enter edusync-card-motion rounded-xl border p-4 shadow-md ${darkMode ? 'border-white/5 bg-slate-800' : 'border-slate-500 bg-slate-400'}`}>
+    <aside className={`edusync-enter edusync-card-motion rounded-xl border p-4 shadow-md ${darkMode ? 'border-white/5 bg-slate-800' : 'border-slate-200 bg-white'}`}>
       <div className="mb-4 flex items-center gap-2">
         <BoltIcon className={`h-5 w-5 ${darkMode ? 'text-violet-300' : 'text-violet-700'}`} />
         <h2 className={`font-bold ${darkMode ? 'text-white' : 'text-slate-950'}`}>
@@ -60,7 +60,7 @@ export function QuickActionsPanel({
               <Link
                 key={item.id}
                 href={item.href}
-                className={`edusync-button-motion flex w-full items-center justify-between gap-3 rounded-lg transition ${darkMode ? 'hover:bg-slate-700' : 'hover:bg-slate-300'}`}
+                className={`edusync-button-motion flex w-full items-center justify-between gap-3 rounded-lg transition ${darkMode ? 'hover:bg-slate-700' : 'hover:bg-slate-100'}`}
               >
                 {content}
               </Link>
@@ -72,7 +72,7 @@ export function QuickActionsPanel({
               key={item.id}
               type="button"
               onClick={item.onClick}
-              className={`edusync-button-motion flex w-full items-center justify-between gap-3 rounded-lg text-left transition ${darkMode ? 'hover:bg-slate-700' : 'hover:bg-slate-300'}`}
+              className={`edusync-button-motion flex w-full items-center justify-between gap-3 rounded-lg text-left transition ${darkMode ? 'hover:bg-slate-700' : 'hover:bg-slate-100'}`}
             >
               {content}
             </button>

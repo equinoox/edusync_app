@@ -5,8 +5,10 @@ import { createPortal } from "react-dom";
 import Image from "next/image";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import type { ArticleModalProps } from "@/features/home/types";
+import { useTheme } from "@/providers/ThemeProvider";
 
 export default function ArticleModal({ article, onClose }: ArticleModalProps) {
+  const { darkMode } = useTheme();
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -37,14 +39,14 @@ export default function ArticleModal({ article, onClose }: ArticleModalProps) {
         role="dialog"
         aria-modal="true"
         aria-labelledby="article-modal-title"
-        className="relative max-h-[90vh] w-full max-w-3xl overflow-hidden rounded-2xl border border-violet-400/20 bg-slate-950 shadow-2xl shadow-violet-950/50 edusync-scale-in"
+        className={`relative max-h-[90vh] w-full max-w-3xl overflow-hidden rounded-2xl border shadow-2xl edusync-scale-in ${darkMode ? 'border-violet-400/20 bg-slate-950 shadow-violet-950/50' : 'border-slate-200 bg-white shadow-slate-950/20'}`}
         onClick={(event) => event.stopPropagation()}
       >
         <button
           type="button"
           onClick={onClose}
           aria-label="Close article"
-          className="edusync-button-motion absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-slate-950/80 text-slate-200 backdrop-blur transition hover:border-violet-300/60 hover:text-white"
+          className={`edusync-button-motion absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full border backdrop-blur transition hover:border-violet-300/60 ${darkMode ? 'border-white/10 bg-slate-950/80 text-slate-200 hover:text-white' : 'border-slate-200 bg-white/90 text-slate-700 hover:text-indigo-600'}`}
         >
           <XMarkIcon className="h-5 w-5" />
         </button>
@@ -58,14 +60,14 @@ export default function ArticleModal({ article, onClose }: ArticleModalProps) {
               sizes="(max-width: 768px) 100vw, 768px"
               className="object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
+            <div className={`absolute inset-0 bg-gradient-to-t ${darkMode ? 'from-slate-950 via-slate-950/20' : 'from-white via-white/10'} to-transparent`} />
           </div>
 
           <div className="space-y-4 p-6 sm:p-8">
-            <h2 id="article-modal-title" className="text-2xl font-bold leading-tight text-white sm:text-3xl">
+            <h2 id="article-modal-title" className={`text-2xl font-bold leading-tight sm:text-3xl ${darkMode ? 'text-white' : 'text-slate-900'}`}>
               {article.title}
             </h2>
-            <p className="text-base leading-7 text-slate-300">
+            <p className={`text-base leading-7 ${darkMode ? 'text-slate-300' : 'text-slate-600'}`}>
               {article.body}
             </p>
           </div>

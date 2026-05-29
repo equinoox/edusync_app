@@ -3,20 +3,23 @@
 import { SparklesIcon } from '@heroicons/react/24/outline';
 
 import type { AiStudyInsightComponentProps } from '@/features/progress/types';
+import { useTheme } from '@/providers/ThemeProvider';
 
 export function AiStudyInsight({
   weakestTopic,
   onUpgradeClick,
 }: AiStudyInsightComponentProps) {
+  const { darkMode } = useTheme();
+
   return (
-    <section className="flex flex-col gap-3.5 rounded-2xl border border-violet-500/20 bg-violet-950/70 p-3.5 shadow-[0_18px_45px_rgba(76,29,149,0.24)] sm:flex-row sm:items-center sm:justify-between">
+    <section className={`flex flex-col gap-3.5 rounded-2xl border p-3.5 shadow-[0_18px_45px_rgba(76,29,149,0.24)] sm:flex-row sm:items-center sm:justify-between ${darkMode ? 'border-violet-500/20 bg-violet-950/70' : 'border-indigo-200 bg-indigo-50'}`}>
       <div className="flex min-w-0 items-center gap-3.5">
-        <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-violet-500/35 text-violet-100">
+        <span className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${darkMode ? 'bg-violet-500/35 text-violet-100' : 'bg-indigo-100 text-indigo-700'}`}>
           <SparklesIcon className="h-6 w-6" />
         </span>
         <div className="min-w-0">
-          <h2 className="text-base font-semibold text-white">AI Study Insight</h2>
-          <p className="mt-1 text-sm text-slate-300">
+          <h2 className={`text-base font-semibold ${darkMode ? 'text-white' : 'text-slate-900'}`}>AI Study Insight</h2>
+          <p className={`mt-1 text-sm ${darkMode ? 'text-slate-300' : 'text-slate-600'}`}>
             You&apos;re making great progress! Keep focusing on{' '}
             {weakestTopic ?? 'your recent quizzes'} to improve your understanding
             of key concepts.

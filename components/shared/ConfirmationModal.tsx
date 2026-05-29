@@ -31,7 +31,7 @@ export function ConfirmationModal({
         className={`w-full max-w-sm rounded-lg border p-5 shadow-xl edusync-scale-in ${
           darkMode
             ? "border-slate-700 bg-slate-900 text-white"
-            : "border-gray-200 bg-white text-slate-900"
+            : "border-slate-200 bg-white text-slate-900"
         }`}
         role="dialog"
         aria-modal="true"
@@ -46,7 +46,7 @@ export function ConfirmationModal({
             className={`edusync-button-motion inline-flex h-9 items-center rounded-md px-4 text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-60 ${
               darkMode
                 ? "bg-slate-800 text-slate-100 hover:bg-slate-700"
-                : "bg-gray-100 text-slate-800 hover:bg-gray-200"
+                : "bg-slate-100 text-slate-800 hover:bg-slate-200"
             }`}
           >
             No

@@ -263,7 +263,7 @@ export function ChatPage() {
         <div className="flex flex-1 overflow-hidden">
           {/* Main Chat Area */}
           <div className="flex flex-1 overflow-hidden px-3 py-4 sm:px-5 w-full">
-            <div className={`edusync-enter flex flex-col flex-1 max-w-5xl w-full mx-auto rounded-2xl sm:rounded-3xl border shadow-sm overflow-hidden transition-colors duration-300 ${darkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-gray-200'}`}>
+            <div className={`edusync-enter flex flex-col flex-1 max-w-5xl w-full mx-auto rounded-2xl sm:rounded-3xl border shadow-sm overflow-hidden transition-colors duration-300 ${darkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200'}`}>
 
             <div className="relative flex flex-1 flex-col px-4 py-4 sm:px-5 w-full min-h-0">
               <div
@@ -323,7 +323,7 @@ export function ChatPage() {
               )}
             </div>
 
-            <div className={`edusync-enter-fast shrink-0 mx-3 mb-3 rounded-3xl border transition-colors duration-300 ${darkMode ? 'bg-violet-950 border-slate-700' : 'bg-indigo-800 border-gray-400'} px-4 sm:px-5 py-3.5 w-[calc(100%-1.5rem)] shadow-lg`}>
+            <div className={`edusync-enter-fast shrink-0 mx-3 mb-3 rounded-3xl border transition-colors duration-300 ${darkMode ? 'bg-violet-950 border-slate-700' : 'bg-white border-slate-200'} px-4 sm:px-5 py-3.5 w-[calc(100%-1.5rem)] shadow-lg`}>
               <ChatInput
                 value={input}
                 onChange={setInput}

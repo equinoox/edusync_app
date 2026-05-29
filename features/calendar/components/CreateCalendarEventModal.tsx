@@ -61,12 +61,12 @@ export function CreateCalendarEventModal({
         className={`edusync-scale-in w-full max-w-lg overflow-hidden rounded-xl border shadow-2xl ${
           darkMode
             ? 'border-slate-700 bg-slate-900 shadow-black/40'
-            : 'border-slate-500 bg-slate-300 shadow-slate-950/20'
+            : 'border-slate-200 bg-white shadow-slate-950/20'
         }`}
       >
         <div
           className={`flex items-center justify-between border-b px-5 py-4 ${
-            darkMode ? 'border-slate-800' : 'border-slate-500'
+            darkMode ? 'border-slate-800' : 'border-slate-200'
           }`}
         >
           <div>
@@ -83,7 +83,7 @@ export function CreateCalendarEventModal({
             className={`edusync-button-motion rounded-lg p-2 transition ${
               darkMode
                 ? 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'
-                : 'text-slate-700 hover:bg-slate-400'
+                : 'text-slate-700 hover:bg-slate-100'
             }`}
             aria-label="Close event modal"
             title="Close"
@@ -103,7 +103,7 @@ export function CreateCalendarEventModal({
               className={`h-11 w-full rounded-lg border px-3 text-sm outline-none focus:ring-2 focus:ring-violet-500 ${
                 darkMode
                   ? 'border-slate-700 bg-slate-950 text-white placeholder:text-slate-500'
-                  : 'border-slate-500 bg-slate-400 text-slate-950 placeholder:text-slate-600'
+                  : 'border-slate-200 bg-white text-slate-950 placeholder:text-slate-600'
               }`}
               placeholder="Study group"
               maxLength={255}
@@ -121,7 +121,7 @@ export function CreateCalendarEventModal({
               className={`min-h-24 w-full resize-none rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-violet-500 ${
                 darkMode
                   ? 'border-slate-700 bg-slate-950 text-white placeholder:text-slate-500'
-                  : 'border-slate-500 bg-slate-400 text-slate-950 placeholder:text-slate-600'
+                  : 'border-slate-200 bg-white text-slate-950 placeholder:text-slate-600'
               }`}
               placeholder="What should you remember?"
               maxLength={2000}
@@ -139,7 +139,7 @@ export function CreateCalendarEventModal({
               className={`h-11 w-full rounded-lg border px-3 text-sm outline-none focus:ring-2 focus:ring-violet-500 ${
                 darkMode
                   ? 'border-slate-700 bg-slate-950 text-white'
-                  : 'border-slate-500 bg-slate-400 text-slate-950'
+                  : 'border-slate-200 bg-white text-slate-950'
               }`}
               required
             />
@@ -148,7 +148,7 @@ export function CreateCalendarEventModal({
 
         <div
           className={`flex justify-end gap-2 border-t px-5 py-4 ${
-            darkMode ? 'border-slate-800' : 'border-slate-500'
+            darkMode ? 'border-slate-800' : 'border-slate-200'
           }`}
         >
           <button
@@ -158,7 +158,7 @@ export function CreateCalendarEventModal({
             className={`edusync-button-motion h-10 rounded-lg px-4 text-sm font-bold transition disabled:opacity-60 ${
               darkMode
                 ? 'bg-slate-800 text-slate-200 hover:bg-slate-700'
-                : 'bg-slate-400 text-slate-950 hover:bg-slate-500'
+                : 'bg-white text-slate-900 hover:bg-slate-200'
             }`}
           >
             Cancel

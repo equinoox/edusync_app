@@ -36,7 +36,7 @@ export function QuizActionsMenu({
         className={`rounded-lg p-1.5 text-slate-400 transition ${
           darkMode
             ? 'bg-slate-700 hover:bg-slate-600 hover:text-slate-200'
-            : 'bg-slate-200/80 hover:bg-slate-300 hover:text-slate-800'
+            : 'bg-slate-200/80 hover:bg-slate-100 hover:text-slate-800'
         }`}
         aria-label={`${quizTitle} options`}
         title={`${quizTitle} options`}
@@ -49,7 +49,7 @@ export function QuizActionsMenu({
           className={`absolute right-0 top-10 z-20 w-44 rounded-lg border p-1 shadow-lg ${
             darkMode
               ? 'border-slate-700 bg-slate-900'
-              : 'border-slate-500 bg-slate-300'
+              : 'border-slate-200 bg-white'
           }`}
         >
           <button

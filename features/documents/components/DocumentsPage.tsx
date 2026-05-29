@@ -123,7 +123,7 @@ export function DocumentsPage() {
   }, [documents, search]);
 
   return (
-    <main className={`flex min-h-screen flex-col lg:flex-row ${darkMode ? 'bg-slate-950' : 'bg-slate-300'}`}>
+    <main className={`flex min-h-screen flex-col lg:flex-row ${darkMode ? 'bg-slate-950' : 'bg-slate-50'}`}>
       <ToastNotification toast={toast} onDismiss={dismissToast} />
       <ConfirmationModal
         isOpen={Boolean(documentToDelete)}
@@ -168,7 +168,7 @@ export function DocumentsPage() {
               className={`edusync-card-motion flex flex-col gap-3 rounded-xl border p-3.5 shadow-md sm:flex-row sm:items-center sm:justify-between ${
                 darkMode
                   ? 'border-slate-700 bg-slate-800'
-                  : 'border-slate-500 bg-slate-400'
+                  : 'border-slate-200 bg-white'
               }`}
             >
               <div>
@@ -193,7 +193,7 @@ export function DocumentsPage() {
                   className={`h-10 w-full rounded-xl border py-2 pl-10 pr-3 text-sm outline-none transition focus:ring-2 ${
                     darkMode
                       ? 'border-slate-700 bg-slate-900 text-white placeholder:text-slate-500 focus:border-violet-400 focus:ring-violet-400/30'
-                      : 'border-slate-500 bg-slate-300 text-slate-950 placeholder:text-slate-600 focus:border-indigo-600 focus:ring-indigo-600/30'
+                      : 'border-slate-200 bg-white text-slate-950 placeholder:text-slate-600 focus:border-indigo-600 focus:ring-indigo-600/30'
                   }`}
                 />
               </label>
@@ -206,7 +206,7 @@ export function DocumentsPage() {
                 </p>
               </div>
             ) : documents.length === 0 ? (
-              <Card className={darkMode ? 'border-slate-700 bg-slate-800 text-white' : 'border-indigo-400 bg-indigo-500 text-white'}>
+              <Card className={darkMode ? 'border-slate-700 bg-slate-800 text-white' : 'border-indigo-200 bg-indigo-600 text-white'}>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-lg">
                     <DocumentTextIcon className="h-5 w-5" />
@@ -220,7 +220,7 @@ export function DocumentsPage() {
                 </CardContent>
               </Card>
             ) : filteredDocuments.length === 0 ? (
-              <Card className={darkMode ? 'border-slate-700 bg-slate-800 text-white' : 'border-slate-500 bg-slate-400 text-slate-950'}>
+              <Card className={darkMode ? 'border-slate-700 bg-slate-800 text-white' : 'border-slate-200 bg-white text-slate-950'}>
                 <CardContent className="p-5 text-center">
                   <DocumentTextIcon className={`mx-auto h-9 w-9 ${darkMode ? 'text-violet-300' : 'text-indigo-700'}`} />
                   <p className="mt-3 text-sm font-semibold">No documents match your search.</p>
@@ -231,7 +231,7 @@ export function DocumentsPage() {
                 {filteredDocuments.map((document, index) => (
                   <Card
                     key={document.id}
-                    className={`${darkMode ? 'border-slate-700 bg-slate-800 text-white' : 'border-indigo-500 bg-slate-100 text-black'} edusync-enter-fast`}
+                    className={`${darkMode ? 'border-slate-700 bg-slate-800 text-white' : 'border-slate-200 bg-white text-slate-900'} edusync-enter-fast`}
                     style={{ animationDelay: `${Math.min(index, 10) * 35}ms` }}
                   >
                     <CardContent className="flex flex-col gap-3 p-3.5 sm:flex-row sm:items-center sm:justify-between">
@@ -259,7 +259,7 @@ export function DocumentsPage() {
                           className={
                             darkMode
                               ? 'edusync-button-motion inline-flex h-8 w-fit items-center rounded-md bg-violet-950 px-3 text-sm text-white transition-colors hover:bg-violet-800'
-                              : 'edusync-button-motion inline-flex h-8 w-fit items-center rounded-md bg-gray-200 px-3 text-sm text-slate-900 transition-colors hover:bg-gray-300'
+                              : 'edusync-button-motion inline-flex h-8 w-fit items-center rounded-md bg-slate-200 px-3 text-sm text-slate-900 transition-colors hover:bg-slate-300'
                           }
                         >
                           Open PDF

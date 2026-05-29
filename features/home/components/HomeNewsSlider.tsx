@@ -6,10 +6,12 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import ArticleModal from "./ArticleModal";
 import { homeNewsArticles } from "@/features/home/data/home-news";
 import type { HomeNewsArticle } from "@/features/home/types";
+import { useTheme } from "@/providers/ThemeProvider";
 
 const GAP_WIDTH = 16;
 
 export default function HomeNewsSlider() {
+  const { darkMode } = useTheme();
   const [activeIndex, setActiveIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(true);
   const [stepWidth, setStepWidth] = useState(0);
@@ -72,8 +74,8 @@ export default function HomeNewsSlider() {
   };
 
   return (
-    <section className="edusync-enter relative overflow-hidden rounded-2xl border border-white/10 bg-slate-900/75 p-3.5 shadow-2xl shadow-slate-950/30 sm:p-4">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_8%,rgba(124,58,237,0.18),transparent_28%),radial-gradient(circle_at_78%_18%,rgba(249,115,22,0.1),transparent_24%)]" />
+    <section className={`edusync-enter relative overflow-hidden rounded-2xl border p-3.5 shadow-2xl sm:p-4 ${darkMode ? 'border-white/10 bg-slate-900/75 shadow-slate-950/30' : 'border-slate-200 bg-white shadow-slate-200/70'}`}>
+      <div className={`pointer-events-none absolute inset-0 ${darkMode ? 'bg-[radial-gradient(circle_at_18%_8%,rgba(124,58,237,0.18),transparent_28%),radial-gradient(circle_at_78%_18%,rgba(249,115,22,0.1),transparent_24%)]' : 'bg-[radial-gradient(circle_at_18%_8%,rgba(79,70,229,0.08),transparent_28%),radial-gradient(circle_at_78%_18%,rgba(249,115,22,0.06),transparent_24%)]'}`} />
 
       <div className="relative overflow-hidden px-7 sm:px-9">
         <div
@@ -87,7 +89,7 @@ export default function HomeNewsSlider() {
               ref={index === 0 ? firstCardRef : null}
               type="button"
               onClick={() => setSelectedArticle(article)}
-              className="edusync-card-motion group min-h-[16.5rem] shrink-0 basis-full overflow-hidden border border-white/10 bg-slate-950/70 text-left shadow-xl shadow-slate-950/25 transition duration-300 hover:border-violet-400/50 hover:brightness-110 sm:basis-[calc((100%-1rem)/2)] lg:basis-[calc((100%-2rem)/3)] xl:basis-[calc((100%-4rem)/5)]"
+              className={`edusync-card-motion group min-h-[16.5rem] shrink-0 basis-full overflow-hidden border text-left shadow-xl transition duration-300 hover:border-violet-400/50 hover:brightness-110 sm:basis-[calc((100%-1rem)/2)] lg:basis-[calc((100%-2rem)/3)] xl:basis-[calc((100%-4rem)/5)] ${darkMode ? 'border-white/10 bg-slate-950/70 shadow-slate-950/25' : 'border-slate-200 bg-white shadow-slate-200/70'}`}
             >
               <div className="relative h-28 overflow-hidden">
                 <Image
@@ -100,10 +102,10 @@ export default function HomeNewsSlider() {
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 to-transparent" />
               </div>
               <div className="space-y-2.5 p-3.5">
-                <h3 className="line-clamp-2 text-[15px] font-bold leading-snug text-white">
+                <h3 className={`line-clamp-2 text-[15px] font-bold leading-snug ${darkMode ? 'text-white' : 'text-slate-900'}`}>
                   {article.title}
                 </h3>
-                <p className="line-clamp-3 text-sm leading-5 text-slate-300">
+                <p className={`line-clamp-3 text-sm leading-5 ${darkMode ? 'text-slate-300' : 'text-slate-600'}`}>
                   {article.description}
                 </p>
               </div>
@@ -116,7 +118,7 @@ export default function HomeNewsSlider() {
         type="button"
         onClick={goToPrevious}
         aria-label="Previous article"
-        className="absolute left-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-slate-950/80 text-slate-200 shadow-lg shadow-slate-950/40 backdrop-blur transition hover:border-violet-300/70 hover:text-white active:scale-95"
+        className={`absolute left-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border shadow-lg backdrop-blur transition hover:border-violet-300/70 active:scale-95 ${darkMode ? 'border-white/10 bg-slate-950/80 text-slate-200 shadow-slate-950/40 hover:text-white' : 'border-slate-200 bg-white/90 text-slate-700 shadow-slate-200/80 hover:text-indigo-600'}`}
       >
         <ChevronLeftIcon className="h-5 w-5" />
       </button>
@@ -124,7 +126,7 @@ export default function HomeNewsSlider() {
         type="button"
         onClick={goToNext}
         aria-label="Next article"
-        className="absolute right-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-slate-950/80 text-slate-200 shadow-lg shadow-slate-950/40 backdrop-blur transition hover:border-violet-300/70 hover:text-white active:scale-95"
+        className={`absolute right-3 top-1/2 z-10 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-full border shadow-lg backdrop-blur transition hover:border-violet-300/70 active:scale-95 ${darkMode ? 'border-white/10 bg-slate-950/80 text-slate-200 shadow-slate-950/40 hover:text-white' : 'border-slate-200 bg-white/90 text-slate-700 shadow-slate-200/80 hover:text-indigo-600'}`}
       >
         <ChevronRightIcon className="h-5 w-5" />
       </button>

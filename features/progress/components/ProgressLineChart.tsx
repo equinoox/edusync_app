@@ -6,6 +6,7 @@ import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import { ProgressPanel, ProgressSectionTitle } from '@/features/progress/components/progress-ui';
 import type { ProgressLineChartPoint } from '@/features/progress/types';
 import type { ProgressLineChartProps } from '@/features/progress/types';
+import { useTheme } from '@/providers/ThemeProvider';
 
 const chartWidth = 760;
 const chartHeight = 230;
@@ -40,6 +41,7 @@ const buildPath = (
     .join(' ');
 
 export function ProgressLineChart({ points }: ProgressLineChartProps) {
+  const { darkMode } = useTheme();
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const chartPoints = points;
   const activePoint =
@@ -56,15 +58,15 @@ export function ProgressLineChart({ points }: ProgressLineChartProps) {
         action={
           <button
             type="button"
-            className="flex h-8 items-center gap-2.5 rounded-xl bg-slate-800/80 px-3 text-sm text-slate-200"
+            className={`flex h-8 items-center gap-2.5 rounded-xl px-3 text-sm ${darkMode ? 'bg-slate-800/80 text-slate-200' : 'bg-slate-100 text-slate-700'}`}
           >
             Weekly
-            <ChevronDownIcon className="h-4 w-4 text-slate-400" />
+            <ChevronDownIcon className={`h-4 w-4 ${darkMode ? 'text-slate-400' : 'text-slate-500'}`} />
           </button>
         }
       />
 
-      <div className="mb-3 flex flex-wrap gap-5 text-xs text-slate-300">
+      <div className={`mb-3 flex flex-wrap gap-5 text-xs ${darkMode ? 'text-slate-300' : 'text-slate-600'}`}>
         <span className="flex items-center gap-2">
           <span className="h-2 w-2 rounded-full bg-violet-500" />
           Overall Progress
@@ -104,7 +106,7 @@ export function ProgressLineChart({ points }: ProgressLineChartProps) {
                   x={padding.left - 12}
                   y={y + 4}
                   textAnchor="end"
-                  className="fill-slate-300 text-[12px]"
+                  className={`${darkMode ? 'fill-slate-300' : 'fill-slate-500'} text-[12px]`}
                 >
                   {value}%
                 </text>
@@ -125,7 +127,7 @@ export function ProgressLineChart({ points }: ProgressLineChartProps) {
                 x={x}
                 y={chartHeight - 7}
                 textAnchor="middle"
-                className="fill-slate-300 text-[12px]"
+                className={`${darkMode ? 'fill-slate-300' : 'fill-slate-500'} text-[12px]`}
               >
                 {point.label}
               </text>
@@ -153,7 +155,7 @@ export function ProgressLineChart({ points }: ProgressLineChartProps) {
                   cy={y}
                   r={index === activeIndex ? 6 : 3.5}
                   fill={color}
-                  stroke="rgba(15,23,42,0.9)"
+                  stroke={darkMode ? 'rgba(15,23,42,0.9)' : 'rgba(255,255,255,0.95)'}
                   strokeWidth="2"
                   onMouseEnter={() => setActiveIndex(index)}
                   className="transition-all duration-200 ease-out"
@@ -205,34 +207,34 @@ export function ProgressLineChart({ points }: ProgressLineChartProps) {
 
         {activePoint && activeCoordinates && (
           <div
-            className="edusync-scale-in absolute hidden w-48 rounded-xl border border-white/[0.04] bg-slate-950/80 p-4 text-xs shadow-2xl backdrop-blur md:block"
+            className={`edusync-scale-in absolute hidden w-48 rounded-xl border p-4 text-xs shadow-2xl backdrop-blur md:block ${darkMode ? 'border-white/[0.04] bg-slate-950/80' : 'border-slate-200 bg-white/95'}`}
             style={{
               left: `min(calc(100% - 12rem), max(0px, calc(${(activeCoordinates.x / chartWidth) * 100}% - 6rem)))`,
               top: '42%',
             }}
           >
-            <p className="mb-3 text-sm text-slate-300">{activePoint.label}</p>
-            <div className="space-y-2 text-slate-300">
+            <p className={`mb-3 text-sm ${darkMode ? 'text-slate-300' : 'text-slate-600'}`}>{activePoint.label}</p>
+            <div className={`space-y-2 ${darkMode ? 'text-slate-300' : 'text-slate-600'}`}>
               <p className="flex justify-between">
                 <span className="flex items-center gap-2">
                   <span className="h-2 w-2 rounded-full bg-violet-500" />
                   Overall Progress
                 </span>
-                <b className="text-white">{Math.round(activePoint.overallProgress)}%</b>
+                <b className={darkMode ? 'text-white' : 'text-slate-900'}>{Math.round(activePoint.overallProgress)}%</b>
               </p>
               <p className="flex justify-between">
                 <span className="flex items-center gap-2">
                   <span className="h-2 w-2 rounded-full bg-emerald-400" />
                   Quiz Average
                 </span>
-                <b className="text-white">{Math.round(activePoint.quizAverage)}%</b>
+                <b className={darkMode ? 'text-white' : 'text-slate-900'}>{Math.round(activePoint.quizAverage)}%</b>
               </p>
               <p className="flex justify-between">
                 <span className="flex items-center gap-2">
                   <span className="h-2 w-2 rounded-full bg-orange-400" />
                   Study Points
                 </span>
-                <b className="text-white">{activePoint.studyTimeLabel}</b>
+                <b className={darkMode ? 'text-white' : 'text-slate-900'}>{activePoint.studyTimeLabel}</b>
               </p>
             </div>
           </div>

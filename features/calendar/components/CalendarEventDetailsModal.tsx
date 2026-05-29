@@ -33,12 +33,12 @@ export function CalendarEventDetailsModal({
         className={`edusync-scale-in w-full max-w-lg overflow-hidden rounded-xl border shadow-2xl ${
           darkMode
             ? 'border-slate-700 bg-slate-900 shadow-black/40'
-            : 'border-slate-500 bg-slate-300 shadow-slate-950/20'
+            : 'border-slate-200 bg-white shadow-slate-950/20'
         }`}
       >
         <div
           className={`flex items-start justify-between border-b px-5 py-4 ${
-            darkMode ? 'border-slate-800' : 'border-slate-500'
+            darkMode ? 'border-slate-800' : 'border-slate-200'
           }`}
         >
           <div className="flex min-w-0 items-center gap-3">
@@ -60,7 +60,7 @@ export function CalendarEventDetailsModal({
             className={`edusync-button-motion rounded-lg p-2 transition ${
               darkMode
                 ? 'text-slate-400 hover:bg-slate-800 hover:text-slate-200'
-                : 'text-slate-700 hover:bg-slate-400'
+                : 'text-slate-700 hover:bg-slate-100'
             }`}
             aria-label="Close event details"
             title="Close"
@@ -73,7 +73,7 @@ export function CalendarEventDetailsModal({
           <p className={`rounded-xl border p-4 text-sm ${
             darkMode
               ? 'border-slate-700 bg-slate-950 text-slate-300'
-              : 'border-slate-500 bg-slate-400 text-slate-800'
+              : 'border-slate-200 bg-white text-slate-800'
           }`}>
             {event.description || (isQuiz ? 'Quiz calendar event.' : 'No description provided.')}
           </p>
@@ -82,7 +82,7 @@ export function CalendarEventDetailsModal({
             <div className={`rounded-xl border p-4 text-sm ${
               darkMode
                 ? 'border-slate-700 bg-slate-950 text-slate-300'
-                : 'border-slate-500 bg-slate-400 text-slate-800'
+                : 'border-slate-200 bg-white text-slate-800'
             }`}>
               <p className="font-semibold">
                 {event.classroomTitle ?? 'General quiz'}
@@ -96,7 +96,7 @@ export function CalendarEventDetailsModal({
 
         <div
           className={`flex flex-wrap justify-end gap-2 border-t px-5 py-4 ${
-            darkMode ? 'border-slate-800' : 'border-slate-500'
+            darkMode ? 'border-slate-800' : 'border-slate-200'
           }`}
         >
           {event.canManage && (

@@ -15,6 +15,7 @@ import {
 } from '@/features/classrooms/actions/classroom-materials.action';
 import { CopyClassroomMaterialButton } from '@/features/classrooms/components/CopyClassroomMaterialButton';
 import type {
+  ClassroomMaterial,
   ClassroomMaterialPendingAction,
   ClassroomMaterialsManagerProps,
 } from '@/features/classrooms/types';

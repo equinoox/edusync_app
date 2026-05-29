@@ -54,7 +54,7 @@ export function ClassroomsDashboardHeader({
             className={`h-9 w-full rounded-lg border px-3.5 pr-9 text-sm outline-none transition shadow-sm focus:ring-2 focus:ring-violet-500 ${
               darkMode
                 ? "border-white/5 bg-slate-800 text-white placeholder:text-slate-500"
-                : "border-slate-200 bg-slate-400 text-slate-950 placeholder:text-slate-600"
+                : "border-slate-200 bg-white text-slate-900 placeholder:text-slate-600"
             }`}
           />
         </label>
@@ -68,7 +68,7 @@ export function ClassroomsDashboardHeader({
             className={`h-9 appearance-none rounded-lg border px-9 text-sm font-bold outline-none transition shadow-sm focus:ring-2 focus:ring-violet-500 ${
               darkMode
                 ? "border-white/5 bg-slate-800 text-slate-100"
-                : "border-slate-200 bg-slate-400 text-slate-700"
+                : "border-slate-200 bg-slate-100 text-slate-700"
             }`}
           >
             <option value="desc">Created DSC</option>

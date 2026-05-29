@@ -19,14 +19,14 @@ export function CalendarDayCell({
     <div
       className={cn(
         'edusync-enter-fast min-h-[7.25rem] border-r border-t p-2.5 last:border-r-0 transition-colors duration-200',
-        darkMode ? 'border-slate-800' : 'border-slate-500',
+        darkMode ? 'border-slate-800' : 'border-slate-200',
         day.isCurrentMonth
           ? darkMode
             ? 'bg-slate-950/20'
-            : 'bg-slate-300'
+            : 'bg-slate-50'
           : darkMode
             ? 'bg-slate-950/40 text-slate-600'
-            : 'bg-slate-400/60 text-slate-600',
+            : 'bg-slate-100 text-slate-600',
       )}
       style={{ animationDelay: `${animationDelayMs}ms` }}
     >

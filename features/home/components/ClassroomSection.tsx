@@ -109,13 +109,13 @@ export default function ClassroomSection() {
       <div className="text-center">
         <h2
           className={`mb-2 text-2xl font-bold ${
-            darkMode ? "text-white" : "text-gray-900"
+            darkMode ? "text-white" : "text-slate-900"
           }`}
         >
           Your Classrooms
         </h2>
 
-        <p className={`text-sm ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
+        <p className={`text-sm ${darkMode ? "text-gray-400" : "text-slate-600"}`}>
           Access and manage your enrolled courses
         </p>
       </div>

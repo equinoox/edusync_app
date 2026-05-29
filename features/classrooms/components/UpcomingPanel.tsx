@@ -78,7 +78,7 @@ export function UpcomingPanel({
   const isClassroomMode = Boolean(classroomId);
 
   return (
-    <aside className={`rounded-xl border p-5 shadow-md ${darkMode ? "border-white/5 bg-slate-800" : "border-slate-200/70 bg-slate-400"}`}>
+    <aside className={`rounded-xl border p-5 shadow-md ${darkMode ? "border-white/5 bg-slate-800" : "border-slate-200 bg-white"}`}>
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-center gap-2">
           <CalendarDaysIcon className={`h-5 w-5 ${darkMode ? "text-violet-300" : "text-violet-500"}`} />

@@ -253,7 +253,7 @@ export function ProgressPage() {
       }
 
       setData(progressData as ProgressApiResponse);
-      setDocuments(documentsData as DocumentListItem[]);
+      setDocuments(documentsData as ProgressDocumentListItem[]);
     } catch (loadError) {
       setError(
         loadError instanceof Error ? loadError.message : 'Unable to load progress',
@@ -295,7 +295,7 @@ export function ProgressPage() {
   const weeklyStudyGoalSeconds = 10 * 3600;
 
   return (
-    <main className={cn('flex h-screen overflow-hidden text-white', darkMode ? 'bg-slate-950' : 'bg-slate-300')}>
+    <main className={cn('flex h-screen overflow-hidden', darkMode ? 'bg-slate-950 text-white' : 'bg-slate-50 text-slate-900')}>
       <UpgradePlansModal
         isOpen={isUpgradeModalOpen}
         onClose={() => setIsUpgradeModalOpen(false)}
@@ -328,14 +328,14 @@ export function ProgressPage() {
               renderItem={item => (
                 <div
                   key={item.id}
-                  className="grid grid-cols-[2.5rem_minmax(0,1fr)_3rem] items-center gap-3 rounded-xl border border-white/[0.06] bg-slate-800 p-4"
+                  className={`grid grid-cols-[2.5rem_minmax(0,1fr)_3rem] items-center gap-3 rounded-xl border p-4 ${darkMode ? 'border-white/[0.06] bg-slate-800' : 'border-slate-200 bg-white'}`}
                 >
-                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-violet-500/20 text-violet-300">
+                  <span className={`flex h-10 w-10 items-center justify-center rounded-full ${darkMode ? 'bg-violet-500/20 text-violet-300' : 'bg-violet-50 text-violet-700'}`}>
                     <item.Icon className="h-5 w-5" />
                   </span>
                   <div className="min-w-0">
                     <p className="truncate text-sm font-semibold">{item.name}</p>
-                    <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-slate-700">
+                    <div className={`mt-2 h-1.5 overflow-hidden rounded-full ${darkMode ? 'bg-slate-700' : 'bg-slate-100'}`}>
                       <div
                         className="h-full rounded-full bg-violet-500"
                         style={{ width: `${item.percent}%` }}
@@ -355,25 +355,25 @@ export function ProgressPage() {
               renderItem={item => (
                 <div
                   key={item.quizId}
-                  className="grid gap-3 rounded-xl border border-white/[0.06] bg-slate-800 p-4 sm:grid-cols-[minmax(0,1fr)_5rem_5rem_5rem]"
+                  className={`grid gap-3 rounded-xl border p-4 sm:grid-cols-[minmax(0,1fr)_5rem_5rem_5rem] ${darkMode ? 'border-white/[0.06] bg-slate-800' : 'border-slate-200 bg-white'}`}
                 >
                   <div className="min-w-0">
                     <p className="truncate text-sm font-semibold">{item.quizTitle}</p>
-                    <p className="mt-1 text-xs text-slate-400">
+                    <p className={`mt-1 text-xs ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>
                       {item.classroomTitle ?? 'General quiz'} -{' '}
                       {new Date(item.submittedAt).toLocaleDateString()}
                     </p>
                   </div>
                   <p className="text-sm">
-                    <span className="block text-xs text-slate-400">Score</span>
+                    <span className={`block text-xs ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>Score</span>
                     <b>{Math.round(item.scorePercent)}%</b>
                   </p>
                   <p className="text-sm">
-                    <span className="block text-xs text-slate-400">Accuracy</span>
+                    <span className={`block text-xs ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>Accuracy</span>
                     <b>{Math.round(item.accuracyPercent)}%</b>
                   </p>
                   <p className="text-sm">
-                    <span className="block text-xs text-slate-400">Weighted</span>
+                    <span className={`block text-xs ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>Weighted</span>
                     <b>{Math.round(item.weightedScore)}</b>
                   </p>
                 </div>
@@ -388,14 +388,14 @@ export function ProgressPage() {
               renderItem={item => (
                 <div
                   key={item.label}
-                  className="grid grid-cols-[1rem_minmax(0,1fr)_5rem_4rem] items-center gap-3 rounded-xl border border-white/[0.06] bg-slate-800 p-4"
+                  className={`grid grid-cols-[1rem_minmax(0,1fr)_5rem_4rem] items-center gap-3 rounded-xl border p-4 ${darkMode ? 'border-white/[0.06] bg-slate-800' : 'border-slate-200 bg-white'}`}
                 >
                   <span
                     className="h-3 w-3 rounded-full"
                     style={{ backgroundColor: item.color }}
                   />
                   <p className="truncate text-sm font-semibold">{item.label}</p>
-                  <p className="text-right text-sm text-slate-300">{item.detail}</p>
+                  <p className={`text-right text-sm ${darkMode ? 'text-slate-300' : 'text-slate-600'}`}>{item.detail}</p>
                   <p className="text-right text-sm font-bold">{item.value}%</p>
                 </div>
               )}
@@ -409,16 +409,16 @@ export function ProgressPage() {
               renderItem={item => (
                 <div
                   key={item.id}
-                  className="rounded-xl border border-white/[0.06] bg-slate-800 p-4"
+                  className={`rounded-xl border p-4 ${darkMode ? 'border-white/[0.06] bg-slate-800' : 'border-slate-200 bg-white'}`}
                 >
                   <div className="flex items-start justify-between gap-4">
                     <div className="min-w-0">
                       <p className="truncate text-sm font-semibold">{item.title}</p>
-                      <p className="mt-1 line-clamp-2 text-xs text-slate-400">
+                      <p className={`mt-1 line-clamp-2 text-xs ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>
                         {item.description}
                       </p>
                     </div>
-                    <time className="shrink-0 text-xs text-slate-500">
+                    <time className={`shrink-0 text-xs ${darkMode ? 'text-slate-500' : 'text-slate-500'}`}>
                       {new Date(item.occurredAt).toLocaleDateString()}
                     </time>
                   </div>
@@ -438,23 +438,23 @@ export function ProgressPage() {
         </div>
 
         <div className="min-h-0 flex-1 overflow-y-auto px-3 py-4 sm:px-4">
-          <div className="mx-auto max-w-[1400px] rounded-xl border border-white/[0.04] bg-slate-950/70 p-3 shadow-lg sm:p-4">
+          <div className={`mx-auto max-w-[1400px] rounded-xl border p-3 shadow-lg sm:p-4 ${darkMode ? 'border-white/[0.04] bg-slate-950/70' : 'border-slate-200 bg-slate-100'}`}>
             <ProgressHeader
               classroomLabel="All Classrooms"
               periodLabel="This Semester"
             />
 
             {isLoading ? (
-              <div className="mt-6 grid min-h-[500px] place-items-center rounded-2xl bg-slate-900/60">
+              <div className={`mt-6 grid min-h-[500px] place-items-center rounded-2xl ${darkMode ? 'bg-slate-900/60' : 'bg-white'}`}>
                 <span className="h-10 w-10 animate-spin rounded-full border-2 border-violet-400 border-t-transparent" />
               </div>
             ) : error ? (
-              <div className="mt-6 rounded-2xl border border-violet-500/20 bg-slate-900/70 p-8 text-center">
-                <ChartBarIcon className="mx-auto h-12 w-12 text-violet-300" />
-                <h2 className="mt-4 text-xl font-semibold text-white">
+              <div className={`mt-6 rounded-2xl border p-8 text-center ${darkMode ? 'border-violet-500/20 bg-slate-900/70' : 'border-violet-200 bg-white'}`}>
+                <ChartBarIcon className={`mx-auto h-12 w-12 ${darkMode ? 'text-violet-300' : 'text-violet-600'}`} />
+                <h2 className={`mt-4 text-xl font-semibold ${darkMode ? 'text-white' : 'text-slate-900'}`}>
                   Progress unavailable
                 </h2>
-                <p className="mx-auto mt-2 max-w-md text-sm text-slate-300">
+                <p className={`mx-auto mt-2 max-w-md text-sm ${darkMode ? 'text-slate-300' : 'text-slate-600'}`}>
                   {error}
                 </p>
               </div>

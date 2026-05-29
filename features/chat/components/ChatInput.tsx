@@ -68,7 +68,7 @@ export function ChatInput({
     <div className="space-y-3">
       <div
         className={`flex flex-wrap gap-4 px-1 text-xs font-medium ${
-          darkMode ? "text-white" : "text-white"
+          darkMode ? "text-white" : "text-slate-600"
         }`}
       >
         <div className="flex items-center gap-2">
@@ -119,7 +119,7 @@ export function ChatInput({
           className={`min-w-0 flex-1 rounded-2xl border-2 px-4 py-3 text-sm font-medium shadow-sm placeholder-slate-400 transition-all duration-200 focus:outline-none focus:ring-4 ${
             darkMode
               ? "border-slate-600 bg-slate-700 text-white focus:border-violet-500 focus:ring-violet-500/20 disabled:bg-slate-600 disabled:text-slate-400"
-              : "border-indigo-100 bg-white/80 text-slate-800 backdrop-blur-sm focus:border-indigo-400 focus:ring-indigo-500/10 disabled:bg-slate-50 disabled:text-slate-400"
+              : "border-slate-300 bg-white text-slate-900 placeholder:text-slate-400 backdrop-blur-sm focus:border-indigo-500 focus:ring-indigo-500/10 disabled:bg-slate-100 disabled:text-slate-400"
           } ${
             isCharLimitExceeded
               ? darkMode

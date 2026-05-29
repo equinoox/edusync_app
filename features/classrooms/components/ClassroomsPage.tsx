@@ -220,7 +220,7 @@ export function ClassroomsPage() {
   }, [loadClassrooms]);
 
   return (
-    <main className={cn('flex h-screen overflow-hidden transition-colors duration-300', darkMode ? 'bg-slate-950' : 'bg-slate-200')}>
+    <main className={cn('flex h-screen overflow-hidden transition-colors duration-300', darkMode ? 'bg-slate-950' : 'bg-slate-50')}>
       <ToastNotification toast={toast} onDismiss={() => setToast(null)} />
       <CreateClassroomModal
         isOpen={isCreateModalOpen}
@@ -337,7 +337,7 @@ export function ClassroomsPage() {
         </div>
 
         <div className="min-h-0 flex-1 p-3 sm:p-4">
-          <div className={`flex h-full min-h-0 flex-col overflow-hidden rounded-2xl border p-3.5 sm:p-4 ${darkMode ? "border-white/5 bg-slate-900" : "border-slate-300/70 bg-slate-100/85"}`}>
+          <div className={`flex h-full min-h-0 flex-col overflow-hidden rounded-2xl border p-3.5 sm:p-4 ${darkMode ? "border-white/5 bg-slate-900" : "border-slate-200 bg-white"}`}>
             <ClassroomsDashboardHeader
               isProfessor={isProfessor}
               search={search}
@@ -389,7 +389,7 @@ export function ClassroomsPage() {
                 </div>
 
                 {isLoading && classrooms.length === 0 ? (
-                  <div className={`grid min-h-48 place-items-center rounded-xl border border-dashed ${darkMode ? "border-slate-700 bg-slate-800" : "border-slate-500 bg-slate-400"}`}>
+                  <div className={`grid min-h-48 place-items-center rounded-xl border border-dashed ${darkMode ? "border-slate-700 bg-slate-800" : "border-slate-200 bg-white"}`}>
                     <span className={`h-8 w-8 animate-spin rounded-full border-2 border-t-transparent ${darkMode ? "border-violet-300" : "border-violet-700"}`} />
                   </div>
                 ) : filteredClassrooms.length > 0 ? (
@@ -411,7 +411,7 @@ export function ClassroomsPage() {
                     ))}
                   </div>
                 ) : (
-                  <div className={`rounded-xl border border-dashed px-4 py-10 text-center ${darkMode ? "border-slate-700 bg-slate-800" : "border-slate-300 bg-slate-400"}`}>
+                  <div className={`rounded-xl border border-dashed px-4 py-10 text-center ${darkMode ? "border-slate-700 bg-slate-800" : "border-slate-300 bg-white"}`}>
                     <BookOpenIcon className={`mx-auto h-10 w-10 ${darkMode ? "text-violet-300" : "text-violet-500"}`} />
                     <h3 className={`mt-3 font-semibold ${darkMode ? "text-white" : "text-slate-950"}`}>
                       No classrooms found
@@ -428,7 +428,7 @@ export function ClassroomsPage() {
                   <button
                     type="button"
                     onClick={() => setIsCreateModalOpen(true)}
-                    className={`mt-4 flex h-14 w-full shrink-0 items-center justify-center gap-3 rounded-xl border border-dashed text-sm font-bold transition ${darkMode ? "border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-700" : "border-slate-300 bg-slate-400 text-slate-700 hover:bg-slate-300"}`}
+                    className={`mt-4 flex h-14 w-full shrink-0 items-center justify-center gap-3 rounded-xl border border-dashed text-sm font-bold transition ${darkMode ? "border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-700" : "border-slate-300 bg-slate-100 text-slate-700 hover:bg-slate-100"}`}
                   >
                     <PlusIcon className="h-6 w-6" />
                     Create New Classroom

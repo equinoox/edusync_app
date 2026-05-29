@@ -86,9 +86,9 @@ export function CreateQuizModal({
     <div className="fixed inset-0 z-[70] flex items-center justify-center bg-slate-950/70 px-4 py-6 backdrop-blur-sm edusync-enter-fast">
       <form
         onSubmit={handleSubmit}
-        className={`edusync-scale-in w-full max-w-xl overflow-hidden rounded-xl border shadow-2xl ${darkMode ? 'border-slate-700 bg-slate-900 shadow-black/40' : 'border-slate-500 bg-slate-300 shadow-slate-950/20'}`}
+        className={`edusync-scale-in w-full max-w-xl overflow-hidden rounded-xl border shadow-2xl ${darkMode ? 'border-slate-700 bg-slate-900 shadow-black/40' : 'border-slate-200 bg-white shadow-slate-950/20'}`}
       >
-        <div className={`flex items-center justify-between border-b px-5 py-4 ${darkMode ? 'border-slate-800' : 'border-slate-500'}`}>
+        <div className={`flex items-center justify-between border-b px-5 py-4 ${darkMode ? 'border-slate-800' : 'border-slate-200'}`}>
           <div>
             <h2 className={`text-lg font-semibold ${darkMode ? 'text-white' : 'text-slate-950'}`}>
               Create Quiz
@@ -100,7 +100,7 @@ export function CreateQuizModal({
           <button
             type="button"
             onClick={onClose}
-            className={`edusync-button-motion rounded-lg p-2 transition ${darkMode ? 'text-slate-400 hover:bg-slate-800 hover:text-slate-200' : 'text-slate-700 hover:bg-slate-400'}`}
+            className={`edusync-button-motion rounded-lg p-2 transition ${darkMode ? 'text-slate-400 hover:bg-slate-800 hover:text-slate-200' : 'text-slate-700 hover:bg-slate-100'}`}
             aria-label="Close create quiz modal"
             title="Close"
           >
@@ -116,7 +116,7 @@ export function CreateQuizModal({
             <input
               value={formState.title}
               onChange={event => setFormState(previous => ({ ...previous, title: event.target.value }))}
-              className={`h-11 w-full rounded-lg border px-3 text-sm outline-none focus:ring-2 focus:ring-violet-500 ${darkMode ? 'border-slate-700 bg-slate-950 text-white placeholder:text-slate-500' : 'border-slate-500 bg-slate-400 text-slate-950 placeholder:text-slate-600'}`}
+              className={`h-11 w-full rounded-lg border px-3 text-sm outline-none focus:ring-2 focus:ring-violet-500 ${darkMode ? 'border-slate-700 bg-slate-950 text-white placeholder:text-slate-500' : 'border-slate-200 bg-white text-slate-950 placeholder:text-slate-600'}`}
               placeholder="Math Quiz"
               maxLength={255}
               required
@@ -130,7 +130,7 @@ export function CreateQuizModal({
             <textarea
               value={formState.description}
               onChange={event => setFormState(previous => ({ ...previous, description: event.target.value }))}
-              className={`min-h-24 w-full resize-none rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-violet-500 ${darkMode ? 'border-slate-700 bg-slate-950 text-white placeholder:text-slate-500' : 'border-slate-500 bg-slate-400 text-slate-950 placeholder:text-slate-600'}`}
+              className={`min-h-24 w-full resize-none rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-violet-500 ${darkMode ? 'border-slate-700 bg-slate-950 text-white placeholder:text-slate-500' : 'border-slate-200 bg-white text-slate-950 placeholder:text-slate-600'}`}
               placeholder="Algebra and equations"
               maxLength={2000}
             />
@@ -147,7 +147,7 @@ export function CreateQuizModal({
                 step="0.1"
                 value={formState.weight}
                 onChange={event => setFormState(previous => ({ ...previous, weight: Number(event.target.value) }))}
-                className={`h-11 w-full rounded-lg border px-3 text-sm outline-none focus:ring-2 focus:ring-violet-500 ${darkMode ? 'border-slate-700 bg-slate-950 text-white' : 'border-slate-500 bg-slate-400 text-slate-950'}`}
+                className={`h-11 w-full rounded-lg border px-3 text-sm outline-none focus:ring-2 focus:ring-violet-500 ${darkMode ? 'border-slate-700 bg-slate-950 text-white' : 'border-slate-200 bg-white text-slate-950'}`}
                 required
               />
             </label>
@@ -160,7 +160,7 @@ export function CreateQuizModal({
                 min="1"
                 value={formState.timeLimitMinutes}
                 onChange={event => setFormState(previous => ({ ...previous, timeLimitMinutes: Number(event.target.value) }))}
-                className={`h-11 w-full rounded-lg border px-3 text-sm outline-none focus:ring-2 focus:ring-violet-500 ${darkMode ? 'border-slate-700 bg-slate-950 text-white' : 'border-slate-500 bg-slate-400 text-slate-950'}`}
+                className={`h-11 w-full rounded-lg border px-3 text-sm outline-none focus:ring-2 focus:ring-violet-500 ${darkMode ? 'border-slate-700 bg-slate-950 text-white' : 'border-slate-200 bg-white text-slate-950'}`}
                 required
               />
             </label>
@@ -175,7 +175,7 @@ export function CreateQuizModal({
               value={formState.quizDate ?? ''}
               onChange={event => setFormState(previous => ({ ...previous, quizDate: event.target.value || null }))}
               style={{ color: darkMode ? 'dark' : 'light' }}
-              className={`h-11 w-full rounded-lg border px-3 text-sm outline-none focus:ring-2 focus:ring-violet-500 ${darkMode ? 'border-slate-700 bg-slate-950 text-white [&::-webkit-calendar-picker-indicator]:invert' : 'border-slate-500 bg-slate-400 text-slate-950'}`}
+              className={`h-11 w-full rounded-lg border px-3 text-sm outline-none focus:ring-2 focus:ring-violet-500 ${darkMode ? 'border-slate-700 bg-slate-950 text-white [&::-webkit-calendar-picker-indicator]:invert' : 'border-slate-200 bg-white text-slate-950'}`}
             />
             <span className={`mt-1 block text-xs ${darkMode ? 'text-slate-400' : 'text-slate-700'}`}>
               Students can take scheduled quizzes only on this date.
@@ -188,7 +188,7 @@ export function CreateQuizModal({
                 key={scope}
                 type="button"
                 onClick={() => setQuizScope(scope)}
-                className={`edusync-button-motion h-10 rounded-lg border text-sm font-bold capitalize transition ${quizScope === scope ? 'border-violet-500 bg-violet-600 text-white' : darkMode ? 'border-slate-700 bg-slate-950 text-slate-200 hover:bg-slate-800' : 'border-slate-500 bg-slate-400 text-slate-800 hover:bg-slate-500'}`}
+                className={`edusync-button-motion h-10 rounded-lg border text-sm font-bold capitalize transition ${quizScope === scope ? 'border-violet-500 bg-violet-600 text-white' : darkMode ? 'border-slate-700 bg-slate-950 text-slate-200 hover:bg-slate-800' : 'border-slate-200 bg-white text-slate-800 hover:bg-slate-200'}`}
               >
                 {scope}
               </button>
@@ -203,7 +203,7 @@ export function CreateQuizModal({
               <select
                 value={formState.classroomId ?? ''}
                 onChange={event => setFormState(previous => ({ ...previous, classroomId: event.target.value || null }))}
-                className={`h-11 w-full rounded-lg border px-3 text-sm outline-none focus:ring-2 focus:ring-violet-500 ${darkMode ? 'border-slate-700 bg-slate-950 text-white' : 'border-slate-500 bg-slate-400 text-slate-950'}`}
+                className={`h-11 w-full rounded-lg border px-3 text-sm outline-none focus:ring-2 focus:ring-violet-500 ${darkMode ? 'border-slate-700 bg-slate-950 text-white' : 'border-slate-200 bg-white text-slate-950'}`}
                 required
               >
                 <option value="">Choose classroom</option>
@@ -223,12 +223,12 @@ export function CreateQuizModal({
           )}
         </div>
 
-        <div className={`flex flex-col-reverse gap-2 border-t px-5 py-4 sm:flex-row sm:justify-end ${darkMode ? 'border-slate-800' : 'border-slate-500'}`}>
+        <div className={`flex flex-col-reverse gap-2 border-t px-5 py-4 sm:flex-row sm:justify-end ${darkMode ? 'border-slate-800' : 'border-slate-200'}`}>
           <button
             type="button"
             onClick={onClose}
             disabled={isSaving}
-            className={`edusync-button-motion h-10 rounded-lg px-4 text-sm font-bold transition disabled:opacity-60 ${darkMode ? 'bg-slate-800 text-slate-200 hover:bg-slate-700' : 'bg-slate-400 text-slate-950 hover:bg-slate-500'}`}
+            className={`edusync-button-motion h-10 rounded-lg px-4 text-sm font-bold transition disabled:opacity-60 ${darkMode ? 'bg-slate-800 text-slate-200 hover:bg-slate-700' : 'bg-white text-slate-900 hover:bg-slate-200'}`}
           >
             Cancel
           </button>

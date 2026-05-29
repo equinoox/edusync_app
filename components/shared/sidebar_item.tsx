@@ -25,8 +25,8 @@ export default function NavItem({ href, label, icon }: NavItemProps) {
           isActive
             ? "bg-violet-100 text-violet-700"
             : darkMode
-            ? "text-white hover:bg-slate-300 hover:text-gray-800"
-            : "text-gray-600 hover:bg-slate-400 hover:text-gray-800"
+            ? "text-white hover:bg-slate-100 hover:text-gray-800"
+            : "text-slate-600 hover:bg-slate-100 hover:text-slate-800"
         }
       `}
     >

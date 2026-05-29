@@ -31,7 +31,7 @@ export function ClassroomCard({
 
   return (
     <article
-      className={`edusync-enter edusync-card-motion group relative overflow-hidden rounded-xl border p-4 shadow-md transition hover:shadow-lg h-72 flex flex-col ${darkMode ? "border-white/5 bg-slate-800" : "border-slate-200/70 bg-slate-400"}`}
+      className={`edusync-enter edusync-card-motion group relative overflow-hidden rounded-xl border p-4 shadow-md transition hover:shadow-lg h-72 flex flex-col ${darkMode ? "border-white/5 bg-slate-800" : "border-slate-200 bg-white"}`}
       style={{ animationDelay: `${animationDelayMs}ms` }}
     >
       <div className={cn('absolute inset-x-0 top-0 h-24 bg-gradient-to-b to-transparent opacity-80', color.glowClass)} />

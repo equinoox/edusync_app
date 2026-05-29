@@ -56,7 +56,7 @@ export function ToastNotification({
         ? "border-emerald-500 bg-emerald-600 text-white"
         : darkMode
           ? "border-slate-700 bg-slate-900 text-white"
-          : "border-gray-200 bg-white text-slate-900";
+          : "border-slate-200 bg-white text-slate-900";
 
 const animationClassName = isExiting
   ? "opacity-0 translate-y-4 scale-95"

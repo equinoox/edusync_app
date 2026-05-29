@@ -10,11 +10,14 @@ import {
   TrophyIcon,
 } from "@heroicons/react/24/outline";
 import type { HeroSectionProps } from "@/features/home/types";
+import { useTheme } from "@/providers/ThemeProvider";
 
 export default function HeroSection({ firstName }: HeroSectionProps) {
+  const { darkMode } = useTheme();
+
   return (
-    <section className="relative overflow-hidden rounded-2xl border border-violet-400/20 bg-slate-950 p-5 shadow-2xl shadow-slate-950/40 animate-hero-section animate-stagger-1 md:p-6 lg:p-8">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_22%_20%,rgba(124,58,237,0.24),transparent_30%),radial-gradient(circle_at_56%_16%,rgba(249,115,22,0.1),transparent_26%),linear-gradient(135deg,rgba(76,29,149,0.45),rgba(2,6,23,0.72)_42%,rgba(15,23,42,0.92))]" />
+    <section className={`relative overflow-hidden rounded-2xl border p-5 shadow-2xl animate-hero-section animate-stagger-1 md:p-6 lg:p-8 ${darkMode ? 'border-violet-400/20 bg-slate-950 shadow-slate-950/40' : 'border-indigo-200 bg-white shadow-slate-200/70'}`}>
+      <div className={`pointer-events-none absolute inset-0 ${darkMode ? 'bg-[radial-gradient(circle_at_22%_20%,rgba(124,58,237,0.24),transparent_30%),radial-gradient(circle_at_56%_16%,rgba(249,115,22,0.1),transparent_26%),linear-gradient(135deg,rgba(76,29,149,0.45),rgba(2,6,23,0.72)_42%,rgba(15,23,42,0.92))]' : 'bg-[radial-gradient(circle_at_22%_20%,rgba(79,70,229,0.12),transparent_30%),radial-gradient(circle_at_56%_16%,rgba(249,115,22,0.08),transparent_26%),linear-gradient(135deg,rgba(238,242,255,0.92),rgba(255,255,255,0.9)_42%,rgba(248,250,252,0.96))]'}`} />
       <div
         className="pointer-events-none absolute inset-0 hidden opacity-[0.08] md:block"
         style={{
@@ -26,12 +29,12 @@ export default function HeroSection({ firstName }: HeroSectionProps) {
 
       <div className="relative z-10 grid items-center gap-6 xl:grid-cols-[1.05fr_minmax(17rem,0.9fr)_20rem]">
         <div className="min-w-0">
-          <h1 className="text-3xl font-extrabold leading-tight tracking-tight text-white sm:text-4xl">
+          <h1 className={`text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl ${darkMode ? 'text-white' : 'text-slate-900'}`}>
             Master any subject
             <br />
             with <span className="text-violet-500">EduSync</span>
           </h1>
-          <p className="mt-3 max-w-md text-sm leading-6 text-slate-300 sm:text-[15px]">
+          <p className={`mt-3 max-w-md text-sm leading-6 sm:text-[15px] ${darkMode ? 'text-slate-300' : 'text-slate-600'}`}>
             Upload your study materials and chat with our AI assistant to understand, practice, and excel.
           </p>
           <div className="mt-5 flex flex-wrap gap-3">
@@ -51,7 +54,7 @@ export default function HeroSection({ firstName }: HeroSectionProps) {
             </Link>
           </div>
 
-          <div className="mt-6 grid max-w-xl grid-cols-3 divide-x divide-white/10 rounded-2xl border border-white/5 bg-slate-950/35 p-3">
+          <div className={`mt-6 grid max-w-xl grid-cols-3 divide-x rounded-2xl border p-3 ${darkMode ? 'divide-white/10 border-white/5 bg-slate-950/35' : 'divide-slate-200 border-slate-200 bg-white/70'}`}>
             {[
               {
                 label: "Different Sources",
@@ -77,8 +80,8 @@ export default function HeroSection({ firstName }: HeroSectionProps) {
                   <Icon className="h-4 w-4" />
                 </span>
                 <div>
-                  <p className="text-base font-extrabold leading-tight text-white">{value}</p>
-                  <p className="text-xs text-slate-400">{label}</p>
+                  <p className={`text-base font-extrabold leading-tight ${darkMode ? 'text-white' : 'text-slate-900'}`}>{value}</p>
+                  <p className={`text-xs ${darkMode ? 'text-slate-400' : 'text-slate-500'}`}>{label}</p>
                 </div>
               </div>
             ))}
@@ -88,7 +91,7 @@ export default function HeroSection({ firstName }: HeroSectionProps) {
         <div className="relative mx-auto flex w-full max-w-md justify-center xl:max-w-none">
           <div className="absolute inset-x-6 bottom-0 h-20 rounded-full bg-violet-600/20 blur-3xl" />
           <Image
-            src="/home_hero_img.png"
+            src={darkMode ? "/home_hero_img.png" : "/home_hero_img_light.png"}
             alt=""
             width={560}
             height={372}
@@ -97,20 +100,20 @@ export default function HeroSection({ firstName }: HeroSectionProps) {
           />
         </div>
 
-        <div className="w-full rounded-2xl border border-white/10 bg-slate-900/75 p-4 shadow-2xl shadow-slate-950/30 backdrop-blur">
+        <div className={`w-full rounded-2xl border p-4 shadow-2xl backdrop-blur ${darkMode ? 'border-white/10 bg-slate-900/75 shadow-slate-950/30' : 'border-slate-200 bg-white/85 shadow-slate-200/70'}`}>
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-full bg-violet-600 text-sm font-bold text-white">
               AI
             </div>
             <div>
-              <p className="text-sm font-bold text-white">EduSync AI</p>
+              <p className={`text-sm font-bold ${darkMode ? 'text-white' : 'text-slate-900'}`}>EduSync AI</p>
               <p className="flex items-center gap-1 text-xs font-medium text-emerald-400">
                 <span className="inline-block h-1.5 w-1.5 rounded-full bg-emerald-400" />
                 Online
               </p>
             </div>
           </div>
-          <p className="mt-5 text-sm leading-6 text-slate-300">
+          <p className={`mt-5 text-sm leading-6 ${darkMode ? 'text-slate-300' : 'text-slate-600'}`}>
             Hi {firstName}! Upload your notes or a PDF and I will help you understand the topic step by step.
           </p>
           <div className="mt-4 ml-auto max-w-[90%] rounded-2xl rounded-tr-sm bg-violet-600 p-3.5 shadow-lg shadow-violet-950/40">

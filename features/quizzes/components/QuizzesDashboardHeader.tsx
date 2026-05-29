@@ -44,7 +44,7 @@ export function QuizzesDashboardHeader({
             value={search}
             onChange={event => onSearchChange(event.target.value)}
             placeholder="Search quizzes..."
-            className={`h-9 w-full rounded-lg border px-3.5 pr-9 text-sm outline-none transition shadow-sm focus:ring-2 focus:ring-violet-500 ${darkMode ? 'border-white/5 bg-slate-800 text-white placeholder:text-slate-500' : 'border-slate-500 bg-slate-400 text-slate-950 placeholder:text-slate-700'}`}
+            className={`h-9 w-full rounded-lg border px-3.5 pr-9 text-sm outline-none transition shadow-sm focus:ring-2 focus:ring-violet-500 ${darkMode ? 'border-white/5 bg-slate-800 text-white placeholder:text-slate-500' : 'border-slate-200 bg-white text-slate-950 placeholder:text-slate-700'}`}
           />
         </label>
 
@@ -54,7 +54,7 @@ export function QuizzesDashboardHeader({
           <select
             value={sortOrder}
             onChange={event => onSortOrderChange(event.target.value as QuizSortOrder)}
-            className={`h-9 appearance-none rounded-lg border px-9 text-sm font-bold outline-none transition shadow-sm focus:ring-2 focus:ring-violet-500 ${darkMode ? 'border-white/5 bg-slate-800 text-slate-100' : 'border-slate-500 bg-slate-400 text-slate-800'}`}
+            className={`h-9 appearance-none rounded-lg border px-9 text-sm font-bold outline-none transition shadow-sm focus:ring-2 focus:ring-violet-500 ${darkMode ? 'border-white/5 bg-slate-800 text-slate-100' : 'border-slate-200 bg-white text-slate-800'}`}
           >
             <option value="desc">Created DSC</option>
             <option value="asc">Created ASC</option>

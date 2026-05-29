@@ -52,7 +52,7 @@ export function RecentActivityPanel({
   const visibleItems = previewLimit ? items.slice(0, previewLimit) : items;
 
   return (
-    <aside className={`edusync-enter edusync-card-motion rounded-xl border p-4 shadow-md ${darkMode ? 'border-white/5 bg-slate-800' : 'border-slate-500 bg-slate-400'}`}>
+    <aside className={`edusync-enter edusync-card-motion rounded-xl border p-4 shadow-md ${darkMode ? 'border-white/5 bg-slate-800' : 'border-slate-200 bg-white'}`}>
       <div className="flex items-center gap-2">
         <SparklesIcon className={`h-5 w-5 ${darkMode ? 'text-violet-300' : 'text-violet-600'}`} />
         <h2 className={`font-bold ${darkMode ? 'text-white' : 'text-slate-950'}`}>
@@ -60,7 +60,7 @@ export function RecentActivityPanel({
         </h2>
       </div>
 
-      <div className={`mt-4 divide-y ${darkMode ? 'divide-white/5' : 'divide-slate-500'}`}>
+      <div className={`mt-4 divide-y ${darkMode ? 'divide-white/5' : 'divide-slate-200'}`}>
         {visibleItems.length === 0 ? (
           <p className={`py-4 text-sm ${darkMode ? 'text-slate-300' : 'text-slate-700'}`}>
             {emptyMessage}

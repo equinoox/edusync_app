@@ -40,7 +40,7 @@ export function QuizCard({
       className={`edusync-enter-fast grid min-w-[760px] grid-cols-[minmax(200px,1.7fr)_minmax(160px,1.15fr)_90px_110px_105px_95px_40px] items-center gap-3 border-b px-4 py-3 transition last:border-b-0 ${
         darkMode
           ? 'border-white/5 hover:bg-slate-800/80'
-          : 'border-slate-500 hover:bg-slate-300'
+          : 'border-slate-200 hover:bg-slate-50'
       }`}
       style={{ animationDelay: `${animationDelayMs}ms` }}
     >

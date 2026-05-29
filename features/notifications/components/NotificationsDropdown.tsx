@@ -22,12 +22,12 @@ export function NotificationsDropdown({
       className={`absolute right-0 top-12 z-[80] flex max-h-[30rem] w-80 flex-col overflow-hidden rounded-2xl border shadow-lg sm:w-96 ${
         darkMode
           ? 'border-slate-700 bg-slate-900'
-          : 'border-slate-500 bg-slate-300'
+          : 'border-slate-200 bg-white'
       }`}
     >
       <header
         className={`flex items-center justify-between gap-3 border-b px-4 py-3 ${
-          darkMode ? 'border-slate-800' : 'border-slate-500'
+          darkMode ? 'border-slate-800' : 'border-slate-200'
         }`}
       >
         <div>
@@ -52,7 +52,7 @@ export function NotificationsDropdown({
             type="button"
             onClick={onClose}
             className={`rounded-lg text-white p-2 ${
-              darkMode ? 'hover:bg-slate-800' : 'hover:bg-slate-400'
+              darkMode ? 'hover:bg-slate-800' : 'hover:bg-slate-100'
             }`}
             aria-label="Close notifications"
             title="Close"
@@ -72,7 +72,7 @@ export function NotificationsDropdown({
             className={`rounded-xl border border-dashed px-4 py-10 text-center text-sm ${
               darkMode
                 ? 'border-slate-700 text-slate-400'
-                : 'border-slate-500 text-slate-700'
+                : 'border-slate-200 text-slate-700'
             }`}
           >
             No notifications yet.

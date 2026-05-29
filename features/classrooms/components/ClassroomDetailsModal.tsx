@@ -41,6 +41,16 @@ export function ClassroomDetailsModal({
     });
   }, [classroomId, onToast]);
 
+  const handleChildChanged = useCallback(() => {
+    loadDetails();
+    onChanged();
+  }, [loadDetails, onChanged]);
+
+  const handleUpcomingError = useCallback(
+    (message: string) => onToast(message, 'error'),
+    [onToast],
+  );
+
   useEffect(() => {
     if (!classroom) {
       setDetails(null);
@@ -56,16 +66,6 @@ export function ClassroomDetailsModal({
   const classroomInfo = activeDetails?.classroom ?? classroom;
   const canManage = Boolean(activeDetails?.canManage);
   const isStudent = activeDetails?.viewerRole === 'student';
-
-  const handleChildChanged = useCallback(() => {
-    loadDetails();
-    onChanged();
-  }, [loadDetails, onChanged]);
-
-  const handleUpcomingError = useCallback(
-    (message: string) => onToast(message, 'error'),
-    [onToast],
-  );
 
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 px-3 py-6 backdrop-blur-sm edusync-enter-fast">

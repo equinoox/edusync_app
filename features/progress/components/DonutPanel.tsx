@@ -12,6 +12,7 @@ import {
   ProgressSectionTitle,
 } from '@/features/progress/components/progress-ui';
 import type { DonutPanelProps } from '@/features/progress/types';
+import { useTheme } from '@/providers/ThemeProvider';
 
 const radius = 48;
 const circumference = 2 * Math.PI * radius;
@@ -24,6 +25,7 @@ export function DonutPanel({
   footerLabel,
   onViewAll,
 }: DonutPanelProps) {
+  const { darkMode } = useTheme();
   let offset = 0;
   const animatedCenterValue = parseAnimatedNumber(centerValue);
 
@@ -39,7 +41,7 @@ export function DonutPanel({
               cy="60"
               r={radius}
               fill="none"
-              stroke="rgba(51,65,85,0.92)"
+              stroke={darkMode ? 'rgba(51,65,85,0.92)' : 'rgba(226,232,240,0.98)'}
               strokeWidth="16"
             />
             {segments.map(segment => {
@@ -65,7 +67,7 @@ export function DonutPanel({
             })}
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-            <p className="text-xl font-bold leading-none text-white">
+            <p className={`text-xl font-bold leading-none ${darkMode ? 'text-white' : 'text-slate-950'}`}>
               {animatedCenterValue ? (
                 <AnimatedNumber
                   value={animatedCenterValue.numericValue}
@@ -77,7 +79,7 @@ export function DonutPanel({
                 centerValue
               )}
             </p>
-            <p className="mt-1 text-xs text-slate-300">{centerLabel}</p>
+            <p className={`mt-1 text-xs ${darkMode ? 'text-slate-300' : 'text-slate-500'}`}>{centerLabel}</p>
           </div>
         </div>
 
@@ -92,9 +94,9 @@ export function DonutPanel({
                 className="h-2.5 w-2.5 rounded-full"
                 style={{ backgroundColor: segment.color }}
               />
-              <span className="truncate font-medium text-white">{segment.label}</span>
-              <span className="text-xs text-slate-500">{segment.detail}</span>
-              <span className="font-semibold text-white">
+              <span className={`truncate font-medium ${darkMode ? 'text-white' : 'text-slate-900'}`}>{segment.label}</span>
+              <span className={`text-xs ${darkMode ? 'text-slate-500' : 'text-slate-500'}`}>{segment.detail}</span>
+              <span className={`font-semibold ${darkMode ? 'text-white' : 'text-slate-900'}`}>
                 <AnimatedNumber value={segment.value} suffix="%" />
               </span>
             </div>
@@ -102,7 +104,7 @@ export function DonutPanel({
         </div>
       </div>
 
-      <div className="mt-4 border-t border-white/[0.06] pt-3 text-center">
+      <div className={`mt-4 border-t pt-3 text-center ${darkMode ? 'border-white/[0.06]' : 'border-slate-200'}`}>
         <ProgressLinkButton onClick={onViewAll}>
           {footerLabel}
           <ArrowRightIcon className="h-4 w-4" />
