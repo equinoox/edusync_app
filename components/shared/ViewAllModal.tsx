@@ -36,7 +36,7 @@ export function ViewAllModal<T>({
         }`}
       >
         <header
-          className={`flex shrink-0 items-center justify-between gap-4 border-b px-5 py-4 ${
+          className={`flex shrink-0 items-center justify-between gap-4 border-b px-4 py-3.5 ${
             darkMode ? 'border-white/10' : 'border-slate-300'
           }`}
         >
@@ -59,7 +59,7 @@ export function ViewAllModal<T>({
           </button>
         </header>
 
-        <div className="min-h-0 flex-1 overflow-y-auto p-5">
+        <div className="min-h-0 flex-1 overflow-y-auto p-4">
           {items.length === 0 ? (
             <div
               className={`rounded-xl border border-dashed px-5 py-10 text-center text-sm ${

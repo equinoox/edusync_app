@@ -64,7 +64,7 @@ export function Picker({
         disabled={isDisabled}
         onClick={() => setIsOpen(current => !current)}
         aria-label={ariaLabel}
-        className={`edusync-button-motion flex h-[52px] w-full items-center justify-between gap-3 rounded-2xl border-2 px-4 text-sm font-semibold shadow-sm transition-all duration-300 focus:outline-none focus:ring-4 disabled:cursor-not-allowed disabled:opacity-60 ${
+        className={`edusync-button-motion flex h-12 w-full items-center justify-between gap-3 rounded-2xl border-2 px-3.5 text-sm font-semibold shadow-sm transition-all duration-300 focus:outline-none focus:ring-4 disabled:cursor-not-allowed disabled:opacity-60 ${
           darkMode
             ? "border-slate-600 bg-slate-700 text-white hover:border-orange-500 focus:border-orange-500 focus:ring-orange-500/20"
             : "border-indigo-100 bg-white/80 text-slate-800 backdrop-blur-sm hover:border-indigo-400 focus:border-indigo-400 focus:ring-indigo-500/10"

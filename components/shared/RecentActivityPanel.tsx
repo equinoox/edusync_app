@@ -52,7 +52,7 @@ export function RecentActivityPanel({
   const visibleItems = previewLimit ? items.slice(0, previewLimit) : items;
 
   return (
-    <aside className={`edusync-enter edusync-card-motion rounded-xl border p-5 shadow-md ${darkMode ? 'border-white/5 bg-slate-800' : 'border-slate-500 bg-slate-400'}`}>
+    <aside className={`edusync-enter edusync-card-motion rounded-xl border p-4 shadow-md ${darkMode ? 'border-white/5 bg-slate-800' : 'border-slate-500 bg-slate-400'}`}>
       <div className="flex items-center gap-2">
         <SparklesIcon className={`h-5 w-5 ${darkMode ? 'text-violet-300' : 'text-violet-600'}`} />
         <h2 className={`font-bold ${darkMode ? 'text-white' : 'text-slate-950'}`}>
@@ -60,7 +60,7 @@ export function RecentActivityPanel({
         </h2>
       </div>
 
-      <div className={`mt-5 divide-y ${darkMode ? 'divide-white/5' : 'divide-slate-500'}`}>
+      <div className={`mt-4 divide-y ${darkMode ? 'divide-white/5' : 'divide-slate-500'}`}>
         {visibleItems.length === 0 ? (
           <p className={`py-4 text-sm ${darkMode ? 'text-slate-300' : 'text-slate-700'}`}>
             {emptyMessage}
@@ -72,7 +72,7 @@ export function RecentActivityPanel({
             return (
               <div
                 key={item.id}
-                className="edusync-enter-fast flex items-center gap-3 py-4 first:pt-0 last:pb-0"
+                className="edusync-enter-fast flex items-center gap-3 py-3.5 first:pt-0 last:pb-0"
                 style={{ animationDelay: `${index * 40}ms` }}
               >
                 <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${darkMode ? item.tone?.dark ?? 'bg-violet-500/20 text-violet-300' : item.tone?.light ?? 'bg-violet-500/15 text-violet-700'}`}>
@@ -103,7 +103,7 @@ export function RecentActivityPanel({
       <button
         type="button"
         onClick={onViewAll}
-        className={`edusync-button-motion mt-5 inline-flex w-full items-center justify-center gap-2 text-sm font-medium transition ${darkMode ? 'text-violet-300 hover:text-violet-200' : 'text-violet-700 hover:text-violet-800'}`}
+        className={`edusync-button-motion mt-4 inline-flex w-full items-center justify-center gap-2 text-sm font-medium transition ${darkMode ? 'text-violet-300 hover:text-violet-200' : 'text-violet-700 hover:text-violet-800'}`}
       >
         {actionLabel}
         <ArrowRightIcon className="h-4 w-4" />

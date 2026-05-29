@@ -172,10 +172,10 @@ export function ChatPage() {
 
         <div className="flex flex-1 overflow-hidden">
           {/* Main Chat Area */}
-          <div className="flex flex-1 overflow-hidden px-4 sm:px-6 py-4 sm:py-6 w-full">
-            <div className={`edusync-enter flex flex-col flex-1 max-w-6xl w-full mx-auto rounded-2xl sm:rounded-3xl border shadow-sm overflow-hidden transition-colors duration-300 ${darkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-gray-200'}`}>
+          <div className="flex flex-1 overflow-hidden px-3 py-4 sm:px-5 w-full">
+            <div className={`edusync-enter flex flex-col flex-1 max-w-5xl w-full mx-auto rounded-2xl sm:rounded-3xl border shadow-sm overflow-hidden transition-colors duration-300 ${darkMode ? 'bg-slate-800 border-slate-700' : 'bg-white border-gray-200'}`}>
 
-            <div className="relative flex flex-1 flex-col px-4 sm:px-6 py-4 sm:py-6 w-full min-h-0">
+            <div className="relative flex flex-1 flex-col px-4 py-4 sm:px-5 w-full min-h-0">
               <div
                 className={`absolute inset-0 pointer-events-none ${darkMode ? 'opacity-[0.1]' : 'opacity-[0.09]'}`}
                 style={{
@@ -185,15 +185,15 @@ export function ChatPage() {
               />
               {messages.length === 0 ? (
                 <div className="flex flex-1 items-center justify-center">
-                  <div className="edusync-scale-in text-center space-y-5 max-w-sm">
-                    <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mx-auto ${darkMode ? 'bg-violet-600 shadow-violet-500/20' : 'bg-indigo-600 shadow-indigo-200/60'}`}>
-                      <SparklesIcon className="w-8 h-8 text-white" />
+                  <div className="edusync-scale-in text-center space-y-4 max-w-sm">
+                    <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mx-auto ${darkMode ? 'bg-violet-600 shadow-violet-500/20' : 'bg-indigo-600 shadow-indigo-200/60'}`}>
+                      <SparklesIcon className="w-7 h-7 text-white" />
                     </div>
                     <div>
-                      <h2 className={`text-3xl font-extrabold mb-2 ${darkMode ? 'text-white' : 'text-slate-900'}`}>
+                      <h2 className={`text-2xl font-extrabold mb-2 ${darkMode ? 'text-white' : 'text-slate-900'}`}>
                         EduSync AI
                       </h2>
-                      <p className={`text-base leading-relaxed ${darkMode ? 'text-gray-400' : 'text-slate-500'}`}>
+                      <p className={`text-sm leading-relaxed ${darkMode ? 'text-gray-400' : 'text-slate-500'}`}>
                         Ask me anything about your study materials. Im here to help you learn smarter.
                       </p>
                     </div>
@@ -213,7 +213,7 @@ export function ChatPage() {
               )}
             </div>
 
-            <div className={`edusync-enter-fast shrink-0 mx-3 mb-3 sm:mx-4 sm:mb-4 rounded-3xl border transition-colors duration-300 ${darkMode ? 'bg-violet-950 border-slate-700' : 'bg-indigo-800 border-gray-400'} px-4 sm:px-6 py-4 w-[calc(100%-1.5rem)] sm:w-[calc(100%-2rem)] shadow-lg`}>
+            <div className={`edusync-enter-fast shrink-0 mx-3 mb-3 rounded-3xl border transition-colors duration-300 ${darkMode ? 'bg-violet-950 border-slate-700' : 'bg-indigo-800 border-gray-400'} px-4 sm:px-5 py-3.5 w-[calc(100%-1.5rem)] shadow-lg`}>
               <ChatInput
                 value={input}
                 onChange={setInput}

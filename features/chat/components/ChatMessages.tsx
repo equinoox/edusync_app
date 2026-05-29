@@ -39,7 +39,7 @@ export function ChatMessages({ messages }: ChatMessagesProps) {
                 )}
 
                 <div
-                  className={`edusync-card-motion max-w-[70%] rounded-2xl px-5 py-3.5 text-base leading-relaxed ${
+                  className={`edusync-card-motion max-w-[76%] rounded-2xl px-4 py-3 text-sm leading-relaxed sm:max-w-[70%] ${
                     message.role === 'user'
                       ? 'bg-indigo-600 text-white  shadow-indigo-200/50'
                       : darkMode

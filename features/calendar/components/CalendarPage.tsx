@@ -359,9 +359,9 @@ export function CalendarPage() {
           />
         </div>
 
-        <div className="min-h-0 flex-1 p-3 sm:p-4 lg:p-5">
+        <div className="min-h-0 flex-1 p-3 sm:p-4">
           <div
-            className={`edusync-enter flex h-full min-h-0 flex-col overflow-hidden rounded-2xl border p-4 sm:p-5 ${
+            className={`edusync-enter flex h-full min-h-0 flex-col overflow-hidden rounded-2xl border p-3.5 sm:p-4 ${
               darkMode
                 ? 'border-white/5 bg-slate-900'
                 : 'border-slate-500 bg-slate-400'
@@ -375,10 +375,10 @@ export function CalendarPage() {
               onCreateEvent={() => setIsCreateModalOpen(true)}
             />
 
-            <div className="mt-5 grid min-h-0 flex-1 gap-6 xl:grid-cols-[minmax(0,1fr)_21rem]">
+            <div className="mt-4 grid min-h-0 flex-1 gap-4 xl:grid-cols-[minmax(0,1fr)_19rem]">
               <section className="min-h-0 overflow-y-auto pr-1">
                 {isLoading ? (
-                  <div className={`grid min-h-[34rem] place-items-center rounded-xl border border-dashed ${darkMode ? 'border-slate-700 bg-slate-800' : 'border-slate-500 bg-slate-300'}`}>
+                  <div className={`grid min-h-[30rem] place-items-center rounded-xl border border-dashed ${darkMode ? 'border-slate-700 bg-slate-800' : 'border-slate-500 bg-slate-300'}`}>
                     <span className={`h-9 w-9 animate-spin rounded-full border-2 border-t-transparent ${darkMode ? 'border-violet-300' : 'border-violet-700'}`} />
                   </div>
                 ) : (
@@ -390,9 +390,9 @@ export function CalendarPage() {
                 )}
               </section>
 
-              <aside className="min-h-0 space-y-5 overflow-y-auto pr-1">
-                <section className={`edusync-enter edusync-card-motion rounded-xl border p-5 shadow-md ${darkMode ? 'border-white/5 bg-slate-800' : 'border-slate-500 bg-slate-300'}`}>
-                  <div className="mb-5 flex items-center justify-between">
+              <aside className="min-h-0 space-y-4 overflow-y-auto pr-1">
+                <section className={`edusync-enter edusync-card-motion rounded-xl border p-4 shadow-md ${darkMode ? 'border-white/5 bg-slate-800' : 'border-slate-500 bg-slate-300'}`}>
+                  <div className="mb-4 flex items-center justify-between">
                     <h2 className={`font-bold ${darkMode ? 'text-white' : 'text-slate-950'}`}>
                       Mini Calendar
                     </h2>
@@ -436,8 +436,8 @@ export function CalendarPage() {
                   </div>
                 </section>
 
-                <section className={`edusync-enter edusync-card-motion rounded-xl border p-5 shadow-md ${darkMode ? 'border-white/5 bg-slate-800' : 'border-slate-500 bg-slate-300'}`}>
-                  <div className="mb-5 flex items-center justify-between">
+                <section className={`edusync-enter edusync-card-motion rounded-xl border p-4 shadow-md ${darkMode ? 'border-white/5 bg-slate-800' : 'border-slate-500 bg-slate-300'}`}>
+                  <div className="mb-4 flex items-center justify-between">
                     <h2 className={`font-bold ${darkMode ? 'text-white' : 'text-slate-950'}`}>
                       Upcoming Events
                     </h2>

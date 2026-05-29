@@ -441,19 +441,19 @@ export function ProgressPage() {
           <TopBar pageName="Progress" />
         </div>
 
-        <div className="min-h-0 flex-1 overflow-y-auto px-3 py-4 sm:px-4 lg:px-5">
-          <div className="mx-auto max-w-[1480px] rounded-xl border border-white/[0.04] bg-slate-950/70 p-3 shadow-lg sm:p-4">
+        <div className="min-h-0 flex-1 overflow-y-auto px-3 py-4 sm:px-4">
+          <div className="mx-auto max-w-[1400px] rounded-xl border border-white/[0.04] bg-slate-950/70 p-3 shadow-lg sm:p-4">
             <ProgressHeader
               classroomLabel="All Classrooms"
               periodLabel="This Semester"
             />
 
             {isLoading ? (
-              <div className="mt-8 grid min-h-[560px] place-items-center rounded-2xl bg-slate-900/60">
+              <div className="mt-6 grid min-h-[500px] place-items-center rounded-2xl bg-slate-900/60">
                 <span className="h-10 w-10 animate-spin rounded-full border-2 border-violet-400 border-t-transparent" />
               </div>
             ) : error ? (
-              <div className="mt-8 rounded-2xl border border-violet-500/20 bg-slate-900/70 p-10 text-center">
+              <div className="mt-6 rounded-2xl border border-violet-500/20 bg-slate-900/70 p-8 text-center">
                 <ChartBarIcon className="mx-auto h-12 w-12 text-violet-300" />
                 <h2 className="mt-4 text-xl font-semibold text-white">
                   Progress unavailable
@@ -464,7 +464,7 @@ export function ProgressPage() {
               </div>
             ) : data ? (
               <>
-                <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-[1fr_1fr_1fr_1.5fr]">
+                <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-[1fr_1fr_1fr_1.4fr]">
                   <ProgressMetricCard
                     Icon={ChartBarIcon}
                     label="Overall Progress"

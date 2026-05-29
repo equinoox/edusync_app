@@ -116,7 +116,7 @@ export function ChatInput({
           onChange={event => onChange(event.currentTarget.value)}
           placeholder="Ask me anything about your study materials..."
           disabled={isLoading || isMessageLimitReached}
-          className={`min-w-0 flex-1 rounded-2xl border-2 px-5 py-3.5 text-sm font-medium shadow-sm placeholder-slate-400 transition-all duration-200 focus:outline-none focus:ring-4 ${
+          className={`min-w-0 flex-1 rounded-2xl border-2 px-4 py-3 text-sm font-medium shadow-sm placeholder-slate-400 transition-all duration-200 focus:outline-none focus:ring-4 ${
             darkMode
               ? "border-slate-600 bg-slate-700 text-white focus:border-violet-500 focus:ring-violet-500/20 disabled:bg-slate-600 disabled:text-slate-400"
               : "border-indigo-100 bg-white/80 text-slate-800 backdrop-blur-sm focus:border-indigo-400 focus:ring-indigo-500/10 disabled:bg-slate-50 disabled:text-slate-400"

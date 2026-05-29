@@ -23,12 +23,12 @@ export default function EduSyncLanding() {
   return (
     <div className="min-h-screen bg-[#F0EEFF] font-sans overflow-hidden">
       {/* ── Navbar ── */}
-      <nav className="flex items-center justify-between px-4 sm:px-10 py-5 anim-fade-up delay-0">
+      <nav className="flex items-center justify-between px-4 py-4 sm:px-8 anim-fade-up delay-0">
         <Link href="/" className="flex items-center gap-3 sm:gap-4">
-          <div className="w-12 sm:w-16 h-12 sm:h-16 bg-indigo-600 rounded-xl flex items-center justify-center shadow-md">
-            <AcademicCapIcon className="w-6 sm:w-8 h-6 sm:h-8 text-white" />
+          <div className="w-11 sm:w-14 h-11 sm:h-14 bg-indigo-600 rounded-xl flex items-center justify-center shadow-md">
+            <AcademicCapIcon className="w-6 sm:w-7 h-6 sm:h-7 text-white" />
           </div>
-          <span className="text-3xl sm:text-4xl font-bold text-slate-800">
+          <span className="text-2xl sm:text-3xl font-bold text-slate-800">
             Edu<span className="text-indigo-600">Sync</span>
           </span>
         </Link>
@@ -43,8 +43,8 @@ export default function EduSyncLanding() {
       </nav>
 
       {/* ── Hero Section ── */}
-      <section className="px-4 sm:px-10 pt-6 sm:pt-10 pb-6 grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-10 items-center max-w-7xl mx-auto">
-        <div className="flex flex-col gap-4 sm:gap-6">
+      <section className="px-4 sm:px-8 pt-5 sm:pt-8 pb-5 grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-8 items-center max-w-6xl mx-auto">
+        <div className="flex flex-col gap-4 sm:gap-5">
 
           <div className="anim-fade-up delay-1">
             <div className="badge-pill">
@@ -54,20 +54,20 @@ export default function EduSyncLanding() {
           </div>
 
           <div className="anim-fade-up delay-2">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 leading-tight">
+            <h1 className="text-3xl sm:text-4xl lg:text-[2.75rem] font-extrabold text-slate-900 leading-tight">
               Welcome to
             </h1>
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-indigo-600 leading-tight">
+            <h1 className="text-3xl sm:text-4xl lg:text-[2.75rem] font-extrabold text-indigo-600 leading-tight">
               EduSync
             </h1>
           </div>
 
-          <p className="text-slate-500 text-base sm:text-lg leading-relaxed max-w-md anim-fade-up delay-3">
+          <p className="text-slate-500 text-base leading-relaxed max-w-md anim-fade-up delay-3">
             Your AI learning partner that helps you understand any subject, ace
             quizzes, and achieve more.
           </p>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-3.5">
             {[
               {
                 icon: <ChatBubbleLeftRightIcon className="w-5 h-5 text-indigo-500" />,
@@ -100,10 +100,10 @@ export default function EduSyncLanding() {
             ].map((item) => (
               <div
                 key={item.title}
-                className={`flex items-start gap-4 anim-fade-up ${item.delay}`}
+                className={`flex items-start gap-3.5 anim-fade-up ${item.delay}`}
               >
                 <div
-                  className={`w-10 h-10 rounded-xl ${item.bg} flex items-center justify-center shrink-0`}
+                  className={`w-9 h-9 rounded-xl ${item.bg} flex items-center justify-center shrink-0`}
                 >
                   {item.icon}
                 </div>
@@ -117,7 +117,7 @@ export default function EduSyncLanding() {
 
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 mt-2 anim-fade-up delay-8">
             <SignInButton mode="modal" forceRedirectUrl="/home">
-              <button className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-10 sm:px-12 py-2.5 sm:py-3.5 rounded-2xl transition-all duration-200 shadow-lg shadow-indigo-200 hover:shadow-indigo-300 hover:-translate-y-0.5 text-sm sm:text-base">
+              <button className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-8 sm:px-9 py-2.5 sm:py-3 rounded-2xl transition-all duration-200 shadow-lg shadow-indigo-200 hover:shadow-indigo-300 hover:-translate-y-0.5 text-sm sm:text-base">
                 Get Started
               </button>
             </SignInButton>
@@ -125,7 +125,7 @@ export default function EduSyncLanding() {
           </div>
         </div>
 
-        <div className="relative flex items-center justify-center h-[300px] sm:h-[400px] lg:h-[520px] anim-fade-in delay-panel">
+        <div className="relative flex items-center justify-center h-[280px] sm:h-[360px] lg:h-[460px] anim-fade-in delay-panel">
           <div className="hero-glow" />
 
           <div className="absolute top-2 sm:top-10 left-0 sm:left-4 bg-white rounded-lg sm:rounded-2xl shadow-lg px-2 sm:px-4 py-2 sm:py-3 flex items-center gap-2 sm:gap-3 z-10 text-xs sm:text-sm"
@@ -186,7 +186,7 @@ export default function EduSyncLanding() {
         </div>
       </section>
 
-      <section className="max-w-7xl mx-auto px-4 sm:px-10 pb-12 anim-fade-up delay-9">
+      <section className="max-w-6xl mx-auto px-4 sm:px-8 pb-10 anim-fade-up delay-9">
         <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-white/60 grid grid-cols-2 sm:grid-cols-4 divide-x divide-slate-100">
           {[
             {
@@ -214,8 +214,8 @@ export default function EduSyncLanding() {
               bg: "bg-blue-50",
             },
           ].map((stat) => (
-            <div key={stat.label} className="flex flex-col sm:flex-row items-center sm:items-center gap-2 sm:gap-4 px-4 sm:px-8 py-4 sm:py-6 justify-center sm:justify-start">
-              <div className={`w-10 sm:w-12 h-10 sm:h-12 ${stat.bg} rounded-2xl flex items-center justify-center shrink-0`}>
+            <div key={stat.label} className="flex flex-col sm:flex-row items-center sm:items-center gap-2 sm:gap-3 px-4 sm:px-6 py-4 sm:py-5 justify-center sm:justify-start">
+              <div className={`w-10 sm:w-11 h-10 sm:h-11 ${stat.bg} rounded-2xl flex items-center justify-center shrink-0`}>
                 {stat.icon}
               </div>
               <div className="text-center sm:text-left">

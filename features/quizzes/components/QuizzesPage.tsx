@@ -67,13 +67,13 @@ function QuizStatCard({
   }[tone];
 
   return (
-    <article className={`edusync-enter edusync-card-motion rounded-xl border p-4 shadow-md ${darkMode ? 'border-white/5 bg-slate-800' : 'border-slate-500 bg-slate-400'}`}>
-      <div className="flex items-center gap-3">
-        <span className={`flex h-11 w-11 items-center justify-center rounded-xl ${toneClass}`}>
-          <Icon className="h-6 w-6" />
+    <article className={`edusync-enter edusync-card-motion rounded-xl border p-3.5 shadow-md ${darkMode ? 'border-white/5 bg-slate-800' : 'border-slate-500 bg-slate-400'}`}>
+      <div className="flex items-center gap-2.5">
+        <span className={`flex h-10 w-10 items-center justify-center rounded-xl ${toneClass}`}>
+          <Icon className="h-5 w-5" />
         </span>
         <div>
-          <p className={`text-2xl font-bold leading-tight ${darkMode ? 'text-white' : 'text-slate-950'}`}>
+          <p className={`text-xl font-bold leading-tight ${darkMode ? 'text-white' : 'text-slate-950'}`}>
             {value}
           </p>
           <p className={`text-xs ${darkMode ? 'text-slate-300' : 'text-slate-700'}`}>
@@ -511,8 +511,8 @@ export function QuizzesPage() {
           <TopBar pageName="Quizzes" />
         </div>
 
-        <div className="min-h-0 flex-1 p-3 sm:p-4 lg:p-5">
-          <div className={`flex h-full min-h-0 flex-col overflow-hidden rounded-2xl border p-4 sm:p-5 ${darkMode ? 'border-white/5 bg-slate-900' : 'border-slate-500 bg-slate-300'}`}>
+        <div className="min-h-0 flex-1 p-3 sm:p-4">
+          <div className={`flex h-full min-h-0 flex-col overflow-hidden rounded-2xl border p-3.5 sm:p-4 ${darkMode ? 'border-white/5 bg-slate-900' : 'border-slate-500 bg-slate-300'}`}>
             <QuizzesDashboardHeader
               isProfessor={isProfessor}
               search={search}
@@ -522,14 +522,14 @@ export function QuizzesPage() {
               onCreateQuiz={() => setIsCreateModalOpen(true)}
             />
 
-            <div className="mt-6 grid shrink-0 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            <div className="mt-5 grid shrink-0 gap-3 sm:grid-cols-2 xl:grid-cols-4">
               <QuizStatCard Icon={ClipboardDocumentListIcon} label="Total Quizzes" value={quizzes.length} tone="violet" />
               <QuizStatCard Icon={DocumentCheckIcon} label="Classroom Quizzes" value={quizzes.filter(quiz => quiz.classroomId).length} tone="blue" />
               <QuizStatCard Icon={BookOpenIcon} label="General Quizzes" value={quizzes.filter(quiz => !quiz.classroomId).length} tone="orange" />
               <QuizStatCard Icon={CheckCircleIcon} label={isProfessor ? 'Questions Added' : 'Average Score'} value={isProfessor ? quizzes.reduce((total, quiz) => total + quiz.questionCount, 0) : `${averageScore}%`} tone="green" />
             </div>
 
-            <div className="mt-5 grid min-h-0 flex-1 gap-6 xl:grid-cols-[minmax(0,1fr)_19rem]">
+            <div className="mt-4 grid min-h-0 flex-1 gap-4 xl:grid-cols-[minmax(0,1fr)_18rem]">
               <section className="flex min-h-0 min-w-0 flex-col">
 
                 {isLoading && quizzes.length === 0 ? (
@@ -538,7 +538,7 @@ export function QuizzesPage() {
                   </div>
                 ) : (
                   <div className={`flex min-h-0 flex-1 flex-col overflow-hidden rounded-xl border shadow-md ${darkMode ? 'border-white/5 bg-slate-800/60' : 'border-slate-500 bg-slate-400'}`}>
-                    <div className={`flex shrink-0 gap-8 border-b px-5 pt-4 ${darkMode ? 'border-white/5' : 'border-slate-500'}`}>
+                    <div className={`flex shrink-0 gap-6 overflow-x-auto border-b px-4 pt-3 ${darkMode ? 'border-white/5' : 'border-slate-500'}`}>
                       {(['all', 'classroom', 'general', 'completed'] as const).map(mode => (
                         <button
                           key={mode}
@@ -560,8 +560,8 @@ export function QuizzesPage() {
                     </div>
 
                     <div className="min-h-0 flex-1 overflow-x-auto">
-                      <div className="flex min-h-full min-w-[820px] flex-col">
-                        <div className={`grid grid-cols-[minmax(220px,1.7fr)_minmax(180px,1.15fr)_110px_130px_120px_110px_44px] gap-4 border-b px-5 py-4 text-xs font-semibold ${darkMode ? 'border-white/5 text-slate-400' : 'border-slate-500 text-slate-700'}`}>
+                      <div className="flex min-h-full min-w-[760px] flex-col">
+                        <div className={`grid grid-cols-[minmax(200px,1.7fr)_minmax(160px,1.15fr)_90px_110px_105px_95px_40px] gap-3 border-b px-4 py-3 text-xs font-semibold ${darkMode ? 'border-white/5 text-slate-400' : 'border-slate-500 text-slate-700'}`}>
                           <span>Quiz</span>
                           <span>Classroom</span>
                           <span className="text-center">Questions</span>
@@ -604,7 +604,7 @@ export function QuizzesPage() {
                 )}
               </section>
 
-              <div className="min-h-0 space-y-5 overflow-y-auto pr-1">
+              <div className="min-h-0 space-y-4 overflow-y-auto pr-1">
                 <RecentActivityPanel
                   title="Recent Activity"
                   emptyMessage="No quiz activity yet."

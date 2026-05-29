@@ -36,15 +36,15 @@ export function QuickActionsPanel({
   };
 
   return (
-    <aside className={`edusync-enter edusync-card-motion rounded-xl border p-5 shadow-md ${darkMode ? 'border-white/5 bg-slate-800' : 'border-slate-500 bg-slate-400'}`}>
-      <div className="mb-5 flex items-center gap-2">
+    <aside className={`edusync-enter edusync-card-motion rounded-xl border p-4 shadow-md ${darkMode ? 'border-white/5 bg-slate-800' : 'border-slate-500 bg-slate-400'}`}>
+      <div className="mb-4 flex items-center gap-2">
         <BoltIcon className={`h-5 w-5 ${darkMode ? 'text-violet-300' : 'text-violet-700'}`} />
         <h2 className={`font-bold ${darkMode ? 'text-white' : 'text-slate-950'}`}>
           {title}
         </h2>
       </div>
 
-      <div className="space-y-3">
+      <div className="space-y-2.5">
         {items.map(item => {
           const content = (
             <>

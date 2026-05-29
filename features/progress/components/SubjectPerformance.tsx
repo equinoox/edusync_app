@@ -29,7 +29,7 @@ export function SubjectPerformance({ items, onViewAll }: SubjectPerformanceProps
   const visibleItems = items.slice(0, 6);
 
   return (
-    <ProgressPanel className="p-5">
+    <ProgressPanel className="p-4">
       <ProgressSectionTitle
         title="Subject Performance"
         action={
@@ -50,15 +50,15 @@ export function SubjectPerformance({ items, onViewAll }: SubjectPerformanceProps
           </p>
         </div>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-3.5">
         {visibleItems.map((item, index) => (
           <div
             key={item.id}
-            className="edusync-enter-fast grid grid-cols-[2.5rem_minmax(0,1fr)_2.75rem_1rem] items-center gap-3"
+            className="edusync-enter-fast grid grid-cols-[2.25rem_minmax(0,1fr)_2.75rem_1rem] items-center gap-2.5"
             style={{ animationDelay: `${index * 45}ms` }}
           >
-            <span className={cn('flex h-9 w-9 items-center justify-center rounded-full', toneClasses[item.tone])}>
-              <item.Icon className="h-5 w-5" />
+            <span className={cn('flex h-8 w-8 items-center justify-center rounded-full', toneClasses[item.tone])}>
+              <item.Icon className="h-4 w-4" />
             </span>
             <div className="min-w-0">
               <p className="truncate text-sm font-medium text-white">{item.name}</p>

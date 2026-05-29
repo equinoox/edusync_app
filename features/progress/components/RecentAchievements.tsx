@@ -38,7 +38,7 @@ export function RecentAchievements({
   const visibleActivities = activities.slice(0, 4);
 
   return (
-    <ProgressPanel className="p-5">
+    <ProgressPanel className="p-4">
       <ProgressSectionTitle
         title="Recent Achievements"
         action={
@@ -66,11 +66,11 @@ export function RecentAchievements({
           return (
             <div
               key={activity.id}
-              className="edusync-enter-fast grid grid-cols-[2.5rem_minmax(0,1fr)_auto] items-center gap-3 border-b border-white/[0.06] py-3 last:border-b-0"
+              className="edusync-enter-fast grid grid-cols-[2.25rem_minmax(0,1fr)_auto] items-center gap-2.5 border-b border-white/[0.06] py-2.5 last:border-b-0"
               style={{ animationDelay: `${index * 45}ms` }}
             >
-              <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-500/20 text-violet-300">
-                <Icon className="h-5 w-5" />
+              <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-violet-500/20 text-violet-300">
+                <Icon className="h-4 w-4" />
               </span>
               <div className="min-w-0">
                 <p className="truncate text-sm font-semibold text-white">
@@ -89,7 +89,7 @@ export function RecentAchievements({
         </div>
       )}
 
-      <div className="pt-4 text-center">
+      <div className="pt-3 text-center">
         <ProgressLinkButton onClick={onViewAll}>
           View all achievements
           <span aria-hidden="true">{'->'}</span>

@@ -37,7 +37,7 @@ export function CalendarEventCard({
           <p
             className={cn(
               'truncate font-semibold',
-              compact ? 'text-xs' : 'text-sm',
+              compact ? 'text-[11px]' : 'text-sm',
               darkMode ? 'text-white' : 'text-slate-950',
             )}
           >

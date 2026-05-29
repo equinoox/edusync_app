@@ -71,10 +71,10 @@ export default function HomeNewsSlider() {
   };
 
   return (
-    <section className="edusync-enter relative overflow-hidden rounded-2xl border border-white/10 bg-slate-900/75 p-4 shadow-2xl shadow-slate-950/30 sm:p-5">
+    <section className="edusync-enter relative overflow-hidden rounded-2xl border border-white/10 bg-slate-900/75 p-3.5 shadow-2xl shadow-slate-950/30 sm:p-4">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_18%_8%,rgba(124,58,237,0.18),transparent_28%),radial-gradient(circle_at_78%_18%,rgba(249,115,22,0.1),transparent_24%)]" />
 
-      <div className="relative overflow-hidden px-8 sm:px-10">
+      <div className="relative overflow-hidden px-7 sm:px-9">
         <div
           onTransitionEnd={handleTransitionEnd}
           className={`flex gap-4 ${isTransitioning ? "transition-transform duration-700 ease-out" : ""}`}
@@ -86,9 +86,9 @@ export default function HomeNewsSlider() {
               ref={index === 0 ? firstCardRef : null}
               type="button"
               onClick={() => setSelectedArticle(article)}
-              className="edusync-card-motion group min-h-[18rem] shrink-0 basis-full overflow-hidden border border-white/10 bg-slate-950/70 text-left shadow-xl shadow-slate-950/25 transition duration-300 hover:border-violet-400/50 hover:brightness-110 sm:basis-[calc((100%-1rem)/2)] lg:basis-[calc((100%-2rem)/3)] xl:basis-[calc((100%-4rem)/5)]"
+              className="edusync-card-motion group min-h-[16.5rem] shrink-0 basis-full overflow-hidden border border-white/10 bg-slate-950/70 text-left shadow-xl shadow-slate-950/25 transition duration-300 hover:border-violet-400/50 hover:brightness-110 sm:basis-[calc((100%-1rem)/2)] lg:basis-[calc((100%-2rem)/3)] xl:basis-[calc((100%-4rem)/5)]"
             >
-              <div className="relative h-32 overflow-hidden">
+              <div className="relative h-28 overflow-hidden">
                 <Image
                   src={article.image}
                   alt=""
@@ -98,11 +98,11 @@ export default function HomeNewsSlider() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 to-transparent" />
               </div>
-              <div className="space-y-3 p-4">
-                <h3 className="line-clamp-2 text-base font-bold leading-snug text-white">
+              <div className="space-y-2.5 p-3.5">
+                <h3 className="line-clamp-2 text-[15px] font-bold leading-snug text-white">
                   {article.title}
                 </h3>
-                <p className="line-clamp-3 text-sm leading-6 text-slate-300">
+                <p className="line-clamp-3 text-sm leading-5 text-slate-300">
                   {article.description}
                 </p>
               </div>

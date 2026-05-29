@@ -100,8 +100,8 @@ return (
           ? "border-orange-300/40 bg-orange-500 text-slate-950 shadow-orange-950/30 hover:bg-orange-400 focus-visible:ring-orange-300 focus-visible:ring-offset-slate-950"
           : "border-indigo-300 bg-indigo-600 text-white shadow-indigo-500/25 hover:bg-indigo-700 focus-visible:ring-indigo-600 focus-visible:ring-offset-slate-300",
         size === 'compact'
-          ? "h-10 w-10 rounded-xl"
-          : "h-[52px] w-[52px] rounded-2xl",
+          ? "h-9 w-9 rounded-xl"
+          : "h-12 w-12 rounded-2xl",
       )}
       aria-label="Upload PDF document"
       title="Upload PDF document"
@@ -110,7 +110,7 @@ return (
       {isUploading ? (
         <span className={cn("animate-spin rounded-full border-2 border-current border-t-transparent", size === 'compact' ? "h-4 w-4" : "h-5 w-5")} />
       ) : (
-        <DocumentArrowUpIcon className={size === 'compact' ? "h-6 w-6" : "h-8 w-8"} />
+        <DocumentArrowUpIcon className={size === 'compact' ? "h-5 w-5" : "h-7 w-7"} />
       )}
     </Button>
   </div>

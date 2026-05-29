@@ -154,7 +154,7 @@ export function DocumentsPage() {
           <TopBar pageName="Documents" />
         </div>
 
-        <div className="absolute right-8 bottom-12 z-20 sm:right-6">
+        <div className="absolute right-6 bottom-8 z-20 sm:right-5">
           <DocumentUploadButton
             onUploaded={handleDocumentsUploaded}
             onUploadError={() => showToast('Something went wrong', 'error')}
@@ -162,10 +162,10 @@ export function DocumentsPage() {
           />
         </div>
 
-        <div className="w-full px-4 py-6 sm:px-6">
-          <div className="mx-auto flex max-w-6xl flex-col gap-4 edusync-enter">
+        <div className="w-full px-3 py-5 sm:px-5">
+          <div className="mx-auto flex max-w-5xl flex-col gap-3.5 edusync-enter">
             <div
-              className={`edusync-card-motion flex flex-col gap-3 rounded-xl border p-4 shadow-md sm:flex-row sm:items-center sm:justify-between ${
+              className={`edusync-card-motion flex flex-col gap-3 rounded-xl border p-3.5 shadow-md sm:flex-row sm:items-center sm:justify-between ${
                 darkMode
                   ? 'border-slate-700 bg-slate-800'
                   : 'border-slate-500 bg-slate-400'
@@ -179,7 +179,7 @@ export function DocumentsPage() {
                   Search uploaded PDFs by file name.
                 </p>
               </div>
-              <label className="relative block w-full sm:max-w-sm">
+              <label className="relative block w-full sm:max-w-xs">
                 <MagnifyingGlassIcon
                   className={`pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 ${
                     darkMode ? 'text-slate-500' : 'text-slate-700'
@@ -190,7 +190,7 @@ export function DocumentsPage() {
                   value={search}
                   onChange={event => setSearch(event.target.value)}
                   placeholder="Search documents"
-                  className={`h-11 w-full rounded-xl border py-2 pl-10 pr-3 text-sm outline-none transition focus:ring-2 ${
+                  className={`h-10 w-full rounded-xl border py-2 pl-10 pr-3 text-sm outline-none transition focus:ring-2 ${
                     darkMode
                       ? 'border-slate-700 bg-slate-900 text-white placeholder:text-slate-500 focus:border-violet-400 focus:ring-violet-400/30'
                       : 'border-slate-500 bg-slate-300 text-slate-950 placeholder:text-slate-600 focus:border-indigo-600 focus:ring-indigo-600/30'
@@ -221,7 +221,7 @@ export function DocumentsPage() {
               </Card>
             ) : filteredDocuments.length === 0 ? (
               <Card className={darkMode ? 'border-slate-700 bg-slate-800 text-white' : 'border-slate-500 bg-slate-400 text-slate-950'}>
-                <CardContent className="p-6 text-center">
+                <CardContent className="p-5 text-center">
                   <DocumentTextIcon className={`mx-auto h-9 w-9 ${darkMode ? 'text-violet-300' : 'text-indigo-700'}`} />
                   <p className="mt-3 text-sm font-semibold">No documents match your search.</p>
                 </CardContent>
@@ -234,7 +234,7 @@ export function DocumentsPage() {
                     className={`${darkMode ? 'border-slate-700 bg-slate-800 text-white' : 'border-indigo-500 bg-slate-100 text-black'} edusync-enter-fast`}
                     style={{ animationDelay: `${Math.min(index, 10) * 35}ms` }}
                   >
-                    <CardContent className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between">
+                    <CardContent className="flex flex-col gap-3 p-3.5 sm:flex-row sm:items-center sm:justify-between">
                       <div className="flex min-w-0 items-center gap-3">
                         <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-md ${darkMode ? 'bg-violet-900 text-violet-200' : 'bg-indigo-800 text-white'}`}>
                           <DocumentTextIcon className="h-5 w-5" />

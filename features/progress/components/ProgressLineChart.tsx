@@ -50,13 +50,13 @@ export function ProgressLineChart({ points }: ProgressLineChartProps) {
       : null;
 
   return (
-    <ProgressPanel className="p-4">
+    <ProgressPanel className="p-3.5">
       <ProgressSectionTitle
         title="Progress Over Time"
         action={
           <button
             type="button"
-            className="flex h-9 items-center gap-3 rounded-xl bg-slate-800/80 px-3 text-sm text-slate-200"
+            className="flex h-8 items-center gap-2.5 rounded-xl bg-slate-800/80 px-3 text-sm text-slate-200"
           >
             Weekly
             <ChevronDownIcon className="h-4 w-4 text-slate-400" />
@@ -64,7 +64,7 @@ export function ProgressLineChart({ points }: ProgressLineChartProps) {
         }
       />
 
-      <div className="mb-3 flex flex-wrap gap-7 text-xs text-slate-300">
+      <div className="mb-3 flex flex-wrap gap-5 text-xs text-slate-300">
         <span className="flex items-center gap-2">
           <span className="h-2 w-2 rounded-full bg-violet-500" />
           Overall Progress
@@ -85,7 +85,7 @@ export function ProgressLineChart({ points }: ProgressLineChartProps) {
       >
         <svg
           viewBox={`0 0 ${chartWidth} ${chartHeight}`}
-          className="h-[245px] w-full"
+          className="h-[225px] w-full"
           role="img"
           aria-label="Progress over time chart"
         >

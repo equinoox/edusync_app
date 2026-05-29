@@ -329,8 +329,8 @@ export function ClassroomsPage() {
           <TopBar pageName="Classrooms" />
         </div>
 
-        <div className="min-h-0 flex-1 p-3 sm:p-4 lg:p-5">
-          <div className={`flex h-full min-h-0 flex-col overflow-hidden rounded-2xl border p-4 sm:p-5 ${darkMode ? "border-white/5 bg-slate-900" : "border-slate-300/70 bg-slate-100/85"}`}>
+        <div className="min-h-0 flex-1 p-3 sm:p-4">
+          <div className={`flex h-full min-h-0 flex-col overflow-hidden rounded-2xl border p-3.5 sm:p-4 ${darkMode ? "border-white/5 bg-slate-900" : "border-slate-300/70 bg-slate-100/85"}`}>
             <ClassroomsDashboardHeader
               isProfessor={isProfessor}
               search={search}
@@ -341,7 +341,7 @@ export function ClassroomsPage() {
               onCreateClassroom={() => setIsCreateModalOpen(true)}
             />
 
-            <div className="mt-7 grid shrink-0 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            <div className="mt-5 grid shrink-0 gap-3 sm:grid-cols-2 xl:grid-cols-4">
               <ClassroomStatCard
                 icon={BuildingLibraryIcon}
                 label="Classrooms"
@@ -368,7 +368,7 @@ export function ClassroomsPage() {
               />
             </div>
 
-            <div className="mt-6 grid min-h-0 flex-1 gap-6 xl:grid-cols-[minmax(0,1fr)_19rem]">
+            <div className="mt-5 grid min-h-0 flex-1 gap-4 xl:grid-cols-[minmax(0,1fr)_18rem]">
               <section className="flex min-h-0 min-w-0 flex-col">
                 <div className="mb-4 flex shrink-0 items-center justify-between gap-3">
                   <h2 className={`font-bold ${darkMode ? "text-white" : "text-slate-950"}`}>
@@ -386,7 +386,7 @@ export function ClassroomsPage() {
                     <span className={`h-8 w-8 animate-spin rounded-full border-2 border-t-transparent ${darkMode ? "border-violet-300" : "border-violet-700"}`} />
                   </div>
                 ) : filteredClassrooms.length > 0 ? (
-                  <div className="grid min-h-0 flex-1 grid-cols-1 gap-4 overflow-y-auto pr-1 md:grid-cols-2 2xl:grid-cols-3">
+                  <div className="grid min-h-0 flex-1 grid-cols-1 gap-3 overflow-y-auto pr-1 md:grid-cols-2 2xl:grid-cols-3">
                     {filteredClassrooms.map((classroom, index) => (
                       <ClassroomCard
                         key={classroom.id}
@@ -404,7 +404,7 @@ export function ClassroomsPage() {
                     ))}
                   </div>
                 ) : (
-                  <div className={`rounded-xl border border-dashed px-5 py-12 text-center ${darkMode ? "border-slate-700 bg-slate-800" : "border-slate-300 bg-slate-400"}`}>
+                  <div className={`rounded-xl border border-dashed px-4 py-10 text-center ${darkMode ? "border-slate-700 bg-slate-800" : "border-slate-300 bg-slate-400"}`}>
                     <BookOpenIcon className={`mx-auto h-10 w-10 ${darkMode ? "text-violet-300" : "text-violet-500"}`} />
                     <h3 className={`mt-3 font-semibold ${darkMode ? "text-white" : "text-slate-950"}`}>
                       No classrooms found
@@ -421,7 +421,7 @@ export function ClassroomsPage() {
                   <button
                     type="button"
                     onClick={() => setIsCreateModalOpen(true)}
-                    className={`mt-5 flex h-16 w-full shrink-0 items-center justify-center gap-3 rounded-xl border border-dashed text-sm font-bold transition ${darkMode ? "border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-700" : "border-slate-300 bg-slate-400 text-slate-700 hover:bg-slate-300"}`}
+                    className={`mt-4 flex h-14 w-full shrink-0 items-center justify-center gap-3 rounded-xl border border-dashed text-sm font-bold transition ${darkMode ? "border-slate-700 bg-slate-800 text-slate-300 hover:bg-slate-700" : "border-slate-300 bg-slate-400 text-slate-700 hover:bg-slate-300"}`}
                   >
                     <PlusIcon className="h-6 w-6" />
                     Create New Classroom
@@ -429,7 +429,7 @@ export function ClassroomsPage() {
                 )}
               </section>
 
-              <div className="min-h-0 space-y-5 overflow-hidden">
+              <div className="min-h-0 space-y-4 overflow-hidden">
                 <UpcomingPanel />
                 <RecentActivityPanel
                   emptyMessage="No classroom activity yet."

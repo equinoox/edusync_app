@@ -41,16 +41,16 @@ export function ClassroomStatCard({
   const { darkMode } = useTheme();
 
   return (
-    <article className={`edusync-enter edusync-card-motion rounded-xl border p-4 backdrop-blur ${darkMode ? "border-white/5 bg-slate-800" : "border-slate-200/70 bg-slate-400"}`}>
-      <div className="flex items-center gap-3">
-        <div className={cn('flex h-11 w-11 items-center justify-center rounded-xl', darkMode ? toneClasses[tone].darkClass : toneClasses[tone].light)}>
-          <Icon className="h-6 w-6" />
+    <article className={`edusync-enter edusync-card-motion rounded-xl border p-3.5 backdrop-blur ${darkMode ? "border-white/5 bg-slate-800" : "border-slate-200/70 bg-slate-400"}`}>
+      <div className="flex items-center gap-2.5">
+        <div className={cn('flex h-10 w-10 items-center justify-center rounded-xl', darkMode ? toneClasses[tone].darkClass : toneClasses[tone].light)}>
+          <Icon className="h-5 w-5" />
         </div>
         <div>
-          <p className={`text-2xl font-bold leading-tight ${darkMode ? "text-white" : "text-slate-950"}`}>
+          <p className={`text-xl font-bold leading-tight ${darkMode ? "text-white" : "text-slate-950"}`}>
             {value}
           </p>
-          <p className={`text-sm ${darkMode ? "text-slate-300" : "text-slate-500"}`}>{label}</p>
+          <p className={`text-xs ${darkMode ? "text-slate-300" : "text-slate-500"}`}>{label}</p>
         </div>
       </div>
     </article>

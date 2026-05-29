@@ -44,19 +44,19 @@ export function ProgressMetricCard({
   const clampedProgress = Math.min(100, Math.max(0, progress));
 
   return (
-    <article className="edusync-enter edusync-card-motion rounded-xl border border-white/[0.04] bg-slate-900/70 p-4 shadow-lg">
-      <div className="flex items-start gap-3">
+    <article className="edusync-enter edusync-card-motion rounded-xl border border-white/[0.04] bg-slate-900/70 p-3.5 shadow-lg">
+      <div className="flex items-start gap-2.5">
         <span
           className={cn(
-            'flex h-10 w-10 shrink-0 items-center justify-center rounded-lg',
+            'flex h-9 w-9 shrink-0 items-center justify-center rounded-lg',
             classes.icon,
           )}
         >
-          <Icon className="h-6 w-6" />
+          <Icon className="h-5 w-5" />
         </span>
         <div className="min-w-0 flex-1">
           <p className="truncate text-xs font-medium text-slate-300">{label}</p>
-          <p className="mt-0.5 text-xl font-bold leading-tight text-white">
+          <p className="mt-0.5 text-lg font-bold leading-tight text-white">
             {animatedValue ? (
               <AnimatedNumber
                 value={animatedValue.numericValue}

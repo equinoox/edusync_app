@@ -27,7 +27,7 @@ export function CalendarMonthGrid({
         {weekdays.map(day => (
           <div
             key={day}
-            className={`px-3 py-4 text-center text-sm font-bold ${
+            className={`px-2 py-3 text-center text-sm font-bold ${
               darkMode ? 'text-slate-200' : 'text-slate-800'
             }`}
           >

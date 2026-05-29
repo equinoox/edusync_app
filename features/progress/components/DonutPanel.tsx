@@ -28,11 +28,11 @@ export function DonutPanel({
   const animatedCenterValue = parseAnimatedNumber(centerValue);
 
   return (
-    <ProgressPanel className="flex min-h-[255px] flex-col p-4">
+    <ProgressPanel className="flex min-h-[235px] flex-col p-3.5">
       <ProgressSectionTitle title={title} />
 
-      <div className="grid flex-1 items-center gap-4 md:grid-cols-[8.5rem_minmax(0,1fr)]">
-        <div className="relative mx-auto h-36 w-36">
+      <div className="grid flex-1 items-center gap-3.5 md:grid-cols-[8rem_minmax(0,1fr)]">
+        <div className="relative mx-auto h-32 w-32">
           <svg viewBox="0 0 120 120" className="h-full w-full -rotate-90">
             <circle
               cx="60"
@@ -81,11 +81,11 @@ export function DonutPanel({
           </div>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-2.5">
           {segments.map((segment, index) => (
             <div
               key={segment.label}
-              className="edusync-enter-fast grid grid-cols-[1rem_minmax(0,1fr)_auto_auto] items-center gap-3 text-sm"
+              className="edusync-enter-fast grid grid-cols-[0.875rem_minmax(0,1fr)_auto_auto] items-center gap-2.5 text-sm"
               style={{ animationDelay: `${index * 45}ms` }}
             >
               <span

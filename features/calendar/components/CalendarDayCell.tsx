@@ -18,7 +18,7 @@ export function CalendarDayCell({
   return (
     <div
       className={cn(
-        'edusync-enter-fast min-h-[8.5rem] border-r border-t p-3 last:border-r-0 transition-colors duration-200',
+        'edusync-enter-fast min-h-[7.25rem] border-r border-t p-2.5 last:border-r-0 transition-colors duration-200',
         darkMode ? 'border-slate-800' : 'border-slate-500',
         day.isCurrentMonth
           ? darkMode
@@ -32,7 +32,7 @@ export function CalendarDayCell({
     >
       <div
         className={cn(
-          'mb-3 flex h-7 w-7 items-center justify-center rounded-full text-sm font-bold transition-all duration-300',
+          'mb-2 flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold transition-all duration-300',
           day.isToday
             ? 'bg-violet-600 text-white edusync-scale-in shadow-lg shadow-violet-950/30'
             : day.isCurrentMonth
@@ -45,7 +45,7 @@ export function CalendarDayCell({
         {day.date.getDate()}
       </div>
 
-      <div className="space-y-2">
+      <div className="space-y-1.5">
         {visibleEvents.map(event => (
           <CalendarEventCard
             key={event.id}

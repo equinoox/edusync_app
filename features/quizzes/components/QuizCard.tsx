@@ -52,7 +52,7 @@ export function QuizCard({
 
   return (
     <div
-      className={`edusync-enter-fast grid min-w-[820px] grid-cols-[minmax(220px,1.7fr)_minmax(180px,1.15fr)_110px_130px_120px_110px_44px] items-center gap-4 border-b px-5 py-4 transition last:border-b-0 ${
+      className={`edusync-enter-fast grid min-w-[760px] grid-cols-[minmax(200px,1.7fr)_minmax(160px,1.15fr)_90px_110px_105px_95px_40px] items-center gap-3 border-b px-4 py-3 transition last:border-b-0 ${
         darkMode
           ? 'border-white/5 hover:bg-slate-800/80'
           : 'border-slate-500 hover:bg-slate-300'
@@ -65,7 +65,7 @@ export function QuizCard({
         disabled={!isProfessor && Boolean(completedAttempt || expiredAttempt)}
         className="edusync-button-motion flex min-w-0 items-center gap-3 text-left disabled:cursor-not-allowed"
       >
-        <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl text-xs font-bold uppercase ${darkMode ? 'bg-violet-500/20 text-violet-300' : 'bg-violet-500/15 text-violet-700'}`}>
+        <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-xs font-bold uppercase ${darkMode ? 'bg-violet-500/20 text-violet-300' : 'bg-violet-500/15 text-violet-700'}`}>
           {quiz.title.slice(0, 4)}
         </div>
 
@@ -86,8 +86,8 @@ export function QuizCard({
       </button>
 
       <div className="flex min-w-0 items-center gap-3">
-        <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${quiz.classroomId ? (darkMode ? 'bg-orange-500/20 text-orange-300' : 'bg-orange-500/15 text-orange-700') : (darkMode ? 'bg-emerald-500/20 text-emerald-300' : 'bg-emerald-500/15 text-emerald-700')}`}>
-          <DocumentCheckIcon className="h-5 w-5" />
+        <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${quiz.classroomId ? (darkMode ? 'bg-orange-500/20 text-orange-300' : 'bg-orange-500/15 text-orange-700') : (darkMode ? 'bg-emerald-500/20 text-emerald-300' : 'bg-emerald-500/15 text-emerald-700')}`}>
+          <DocumentCheckIcon className="h-4 w-4" />
         </span>
         <div className="min-w-0">
           <p className={`truncate text-sm font-semibold ${darkMode ? 'text-white' : 'text-slate-950'}`}>

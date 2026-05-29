@@ -57,11 +57,11 @@ export default function HomePage() {
           <TopBar displayName={displayName} />
         </div>
 
-        <div className="flex flex-1 flex-col gap-4 p-3 sm:p-4 lg:p-5">
-          <div className="flex flex-col gap-4 rounded-2xl border border-white/5 bg-slate-900/70 p-4 shadow-2xl shadow-slate-950/20 sm:p-5">
+        <div className="flex flex-1 flex-col gap-3 p-3 sm:p-4">
+          <div className="flex flex-col gap-3 rounded-2xl border border-white/5 bg-slate-900/70 p-3 shadow-2xl shadow-slate-950/20 sm:p-4">
             <HeroSection firstName={firstName} />
             <HomeNewsSlider />
-            <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_24rem]">
+            <div className="grid gap-3 xl:grid-cols-[minmax(0,1fr)_22rem]">
               <StudyStreakCard />
               <HomeQuickActions role={role} />
             </div>
