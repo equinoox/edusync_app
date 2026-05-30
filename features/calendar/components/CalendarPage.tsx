@@ -114,8 +114,8 @@ export function CalendarPage() {
   const [isDeleting, setIsDeleting] = useState(false);
 
   const showToast = useCallback(
-    (message: string, tone: ToastNotificationState['tone'] = 'info') => {
-      setToast({ id: Date.now(), message, tone });
+    (message: string, tone: ToastNotificationState['tone'] = 'info', statusCode?: ToastNotificationState['statusCode']) => {
+      setToast({ id: Date.now(), message, tone, statusCode });
     },
     [],
   );
@@ -130,7 +130,8 @@ export function CalendarPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error ?? 'Unable to load calendar events');
+        showToast(data.error ?? 'Unable to load calendar events', 'error', response.status);
+        return;
       }
 
       setEvents(data as CalendarEvent[]);

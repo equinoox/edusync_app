@@ -33,6 +33,7 @@ import {
   getAvailableQuizzesForStudent,
   getGeneralQuizzes,
   getOptionsByQuestionIds,
+  getQuestionCountsByQuizIds,
   getQuestionWithQuiz,
   getQuestionsByQuizId,
   getQuizRecordById,
@@ -47,6 +48,7 @@ import {
   updateQuizRecord,
   updateQuizTotalPoints,
 } from '@/features/quizzes/repositories/quizzes.repository';
+import { parseSchemaOrThrow } from '@/lib/validation/zod';
 
 const toQuestionWithOptions = async (quizId: string) => {
   const questions = await getQuestionsByQuizId(quizId);
@@ -79,12 +81,6 @@ const normalizeQuizDate = (value: string | null | undefined) => {
 
   date.setHours(0, 0, 0, 0);
   return date;
-};
-
-const parseOrThrow = <T>(result: { success: true; data: T } | { success: false; error: { issues: Array<{ message: string }> } }) => {
-  if (result.success) return result.data;
-
-  throw new Error(result.error.issues[0]?.message ?? 'Invalid quiz data');
 };
 
 async function recalculateQuizPoints(quizId: string) {
@@ -143,7 +139,7 @@ export async function assertCurrentStudentCanTakeQuiz(quizId: string) {
 
 export async function createQuiz(input: CreateQuizInput) {
   const { userId } = await requireCurrentUserRole('professor');
-  const values = parseOrThrow(createQuizSchema.safeParse(input));
+  const values = parseSchemaOrThrow(createQuizSchema, input);
 
   const classroom = values.classroomId
     ? await assertProfessorOwnsClassroom(values.classroomId, userId)
@@ -184,7 +180,7 @@ export async function createQuiz(input: CreateQuizInput) {
 export async function updateQuiz(quizId: string, input: UpdateQuizInput) {
   const { userId } = await requireCurrentUserRole('professor');
   await assertProfessorOwnsQuiz(quizId, userId);
-  const values = updateQuizSchema.parse(input);
+  const values = parseSchemaOrThrow(updateQuizSchema, input);
 
   if (values.classroomId) {
     await assertProfessorOwnsClassroom(values.classroomId, userId);
@@ -226,7 +222,7 @@ export async function deleteQuiz(quizId: string) {
 
 export async function addQuestionToQuiz(input: AddQuestionToQuizInput) {
   const { userId } = await requireCurrentUserRole('professor');
-  const values = parseOrThrow(addQuestionToQuizSchema.safeParse(input));
+  const values = parseSchemaOrThrow(addQuestionToQuizSchema, input);
   await assertProfessorOwnsQuiz(values.quizId, userId);
 
   const questions = await getQuestionsByQuizId(values.quizId);
@@ -278,7 +274,7 @@ export async function updateQuestion(
     throw new Error('Forbidden');
   }
 
-  const values = updateQuestionSchema.parse(input);
+  const values = parseSchemaOrThrow(updateQuestionSchema, input);
   const { options, ...questionValues } = values;
 
   if (Object.keys(questionValues).length > 0) {
@@ -319,7 +315,7 @@ export async function deleteQuestion(questionId: string) {
 
 export async function reorderQuestions(input: ReorderQuestionsInput) {
   const { userId } = await requireCurrentUserRole('professor');
-  const values = reorderQuestionsSchema.parse(input);
+  const values = parseSchemaOrThrow(reorderQuestionsSchema, input);
   await assertProfessorOwnsQuiz(values.quizId, userId);
 
   const questions = await getQuestionsByQuizId(values.quizId);
@@ -423,11 +419,20 @@ export async function validateQuizForPublishing(quizId: string) {
 export async function getAvailableQuizzes() {
   const currentUser = await getCurrentUserWithRole();
 
-  if (currentUser.role === 'professor') {
-    return getQuizzesByProfessor(currentUser.userId);
-  }
+  const quizzes = currentUser.role === 'professor'
+    ? await getQuizzesByProfessor(currentUser.userId)
+    : await getAvailableQuizzesForStudent(currentUser.userId);
+  const questionCounts = await getQuestionCountsByQuizIds(
+    quizzes.map(quiz => quiz.id),
+  );
+  const questionCountByQuizId = new Map(
+    questionCounts.map(item => [item.quizId, item.questionCount]),
+  );
 
-  return getAvailableQuizzesForStudent(currentUser.userId);
+  return quizzes.map(quiz => ({
+    ...quiz,
+    questionCount: questionCountByQuizId.get(quiz.id) ?? 0,
+  }));
 }
 
 export async function getClassroomQuizzes(classroomId: string) {

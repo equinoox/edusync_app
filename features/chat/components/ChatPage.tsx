@@ -56,7 +56,15 @@ export function ChatPage() {
 
       if (response.ok) {
         setDocuments(await response.json());
+        return;
       }
+
+      setToast({
+        id: Date.now(),
+        message: 'Unable to load documents',
+        tone: 'error',
+        statusCode: response.status,
+      });
     } catch {
       setToast({
         id: Date.now(),
@@ -78,7 +86,15 @@ export function ChatPage() {
         const response = await fetch('/api/chat/history');
 
         if (!response.ok) {
-          throw new Error('Unable to load chat history');
+          if (isMounted) {
+            setToast({
+              id: Date.now(),
+              message: 'Unable to load chat history',
+              tone: 'error',
+              statusCode: response.status,
+            });
+          }
+          return;
         }
 
         const savedMessages = (await response.json()) as SavedChatMessage[];
@@ -178,7 +194,13 @@ export function ChatPage() {
       const response = await fetch('/api/chat/history', { method: 'DELETE' });
 
       if (!response.ok) {
-        throw new Error('Unable to clear chat');
+        setToast({
+          id: Date.now(),
+          message: 'Unable to clear chat',
+          tone: 'error',
+          statusCode: response.status,
+        });
+        return;
       }
 
       setMessages([]);

@@ -19,6 +19,7 @@ import type {
   CreateNotificationsForClassroomStudentsInput,
   NotificationItem,
 } from '@/features/notifications/types';
+import { parseSchemaOrThrow } from '@/lib/validation/zod';
 
 const toDateOnly = (value: Date) => {
   const date = new Date(value);
@@ -56,7 +57,7 @@ async function createTodaysCalendarEventNotifications(userId: string) {
 export async function createNotificationForStudent(
   input: CreateNotificationForStudentInput,
 ) {
-  const values = createNotificationForStudentSchema.parse(input);
+  const values = parseSchemaOrThrow(createNotificationForStudentSchema, input);
 
   return createNotificationRecord({
     userId: values.userId,
@@ -74,7 +75,7 @@ export async function createNotificationForStudent(
 export async function createNotificationsForClassroomStudents(
   input: CreateNotificationsForClassroomStudentsInput,
 ) {
-  const values = createNotificationsForClassroomStudentsSchema.parse(input);
+  const values = parseSchemaOrThrow(createNotificationsForClassroomStudentsSchema, input);
   const studentIds = await getStudentIdsForClassroom(values.classroomId);
 
   return Promise.all(

@@ -102,6 +102,8 @@ export type QuizResult = {
 
 export type QuizSortOrder = 'desc' | 'asc';
 export type QuizFilterMode = 'all' | 'classroom' | 'general' | 'completed';
+export type QuizToastTone = 'success' | 'error' | 'info';
+export type QuizToastStatusCode = number | string;
 
 export type QuizCardItem = QuizListItem & {
   questionCount: number;
@@ -153,7 +155,7 @@ export type CreateQuestionModalProps = {
   isOpen: boolean;
   onClose: () => void;
   onQuestionAdded: () => void;
-  onToast: (message: string, tone?: 'success' | 'error' | 'info') => void;
+  onToast: (message: string, tone?: QuizToastTone, statusCode?: QuizToastStatusCode) => void;
 };
 
 export type QuizDetailsModalProps = {
@@ -162,7 +164,7 @@ export type QuizDetailsModalProps = {
   onClose: () => void;
   onAddQuestion: (quiz: QuizListItem) => void;
   onChanged?: () => void;
-  onToast: (message: string, tone?: 'success' | 'error' | 'info') => void;
+  onToast: (message: string, tone?: QuizToastTone, statusCode?: QuizToastStatusCode) => void;
 };
 
 export type TakeQuizModalProps = {
@@ -170,5 +172,5 @@ export type TakeQuizModalProps = {
   isOpen: boolean;
   onClose: () => void;
   onSubmitted: () => void;
-  onToast: (message: string, tone?: 'success' | 'error' | 'info') => void;
+  onToast: (message: string, tone?: QuizToastTone, statusCode?: QuizToastStatusCode) => void;
 };

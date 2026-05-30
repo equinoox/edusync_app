@@ -31,7 +31,7 @@ export const quizOptionSchema = z.object({
 
 const optionsSchema = z
   .array(quizOptionSchema)
-  .min(2)
+  .min(2, 'Add at least two options')
   .max(5)
   .superRefine((options, context) => {
     const labels = new Set(options.map(option => option.label));
@@ -46,7 +46,7 @@ const optionsSchema = z
     if (!options.some(option => option.isCorrect)) {
       context.addIssue({
         code: 'custom',
-        message: 'At least one option must be correct',
+        message: 'Mark at least one correct answer',
       });
     }
   });
@@ -56,7 +56,7 @@ export const createQuizSchema = z.object({
   title: z.string().trim().min(1, 'Quiz title is required').max(255),
   description: z.string().trim().min(1, 'Quiz description is required').max(2000),
   weight: z.number().positive('Quiz weight must be greater than 0'),
-  timeLimitMinutes: z.number().int().positive(),
+  timeLimitMinutes: z.number().int().positive('Quiz duration must be greater than 0'),
   quizDate: nullableQuizDateSchema,
 });
 

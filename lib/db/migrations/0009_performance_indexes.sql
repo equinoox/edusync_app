@@ -1,0 +1,12 @@
+CREATE INDEX IF NOT EXISTS "document_user_created_at_idx" ON "documents" USING btree ("user_id","created_at");
+CREATE INDEX IF NOT EXISTS "resource_user_document_chunk_idx" ON "resources" USING btree ("user_id","document_id","chunk_index");
+CREATE INDEX IF NOT EXISTS "resource_document_created_at_idx" ON "resources" USING btree ("document_id","created_at");
+CREATE INDEX IF NOT EXISTS "embedding_resource_idx" ON "embeddings" USING btree ("resource_id");
+CREATE INDEX IF NOT EXISTS "classroom_professor_created_at_idx" ON "classrooms" USING btree ("professor_id","created_at");
+CREATE INDEX IF NOT EXISTS "classroom_membership_student_created_at_idx" ON "classroom_memberships" USING btree ("student_id","created_at");
+CREATE INDEX IF NOT EXISTS "classroom_material_classroom_created_at_idx" ON "classroom_materials" USING btree ("classroom_id","created_at");
+CREATE INDEX IF NOT EXISTS "quiz_professor_created_at_idx" ON "quizzes" USING btree ("professor_id","created_at");
+CREATE INDEX IF NOT EXISTS "quiz_classroom_created_at_idx" ON "quizzes" USING btree ("classroom_id","created_at");
+CREATE INDEX IF NOT EXISTS "quiz_date_created_at_idx" ON "quizzes" USING btree ("quiz_date","created_at");
+CREATE INDEX IF NOT EXISTS "quiz_question_quiz_sequence_idx" ON "quiz_questions" USING btree ("quiz_id","sequence_number","created_at");
+CREATE INDEX IF NOT EXISTS "quiz_attempt_student_created_at_idx" ON "quiz_attempts" USING btree ("student_id","created_at");

@@ -20,10 +20,11 @@ import {
 } from '@/features/classrooms/server/classrooms.service';
 import { copyDocumentFromUrlForUser } from '@/features/documents/server/documents.service';
 import { createNotificationsForClassroomStudents } from '@/features/notifications/server/notifications.service';
+import { parseSchemaOrThrow } from '@/lib/validation/zod';
 
 export async function addClassroomMaterial(input: AddClassroomMaterialInput) {
   const { userId } = await requireCurrentUserRole('professor');
-  const values = addClassroomMaterialSchema.parse(input);
+  const values = parseSchemaOrThrow(addClassroomMaterialSchema, input);
 
   const classroom = await assertProfessorOwnsClassroom(values.classroomId, userId);
   const material = await createClassroomMaterialRecord(values);
@@ -75,7 +76,7 @@ export async function copyClassroomMaterialToMyDocuments(
   input: CopyClassroomMaterialInput,
 ) {
   const { userId } = await requireCurrentUserRole('student');
-  const values = copyClassroomMaterialToUserDocumentsSchema.parse(input);
+  const values = parseSchemaOrThrow(copyClassroomMaterialToUserDocumentsSchema, input);
   const materialWithClassroom = await getClassroomMaterialWithClassroom(
     values.materialId,
   );

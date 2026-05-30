@@ -3,7 +3,9 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
+import { createQuizSchema } from '@/features/quizzes/schemas';
 import type { CreateQuizInput, CreateQuizModalProps } from '@/features/quizzes/types';
+import { parseSchemaOrThrow } from '@/lib/validation/zod';
 import { useTheme } from '@/providers/ThemeProvider';
 
 const defaultFormState: CreateQuizInput = {
@@ -46,40 +48,30 @@ export function CreateQuizModal({
     const timeLimitMinutes = Number(formState.timeLimitMinutes);
     const classroomId = quizScope === 'classroom' ? formState.classroomId : null;
 
-    if (!title) {
-      setLocalError('Quiz title is required.');
-      return;
-    }
-
-    if (!description) {
-      setLocalError('Quiz description is required.');
-      return;
-    }
-
-    if (!Number.isFinite(weight) || weight <= 0) {
-      setLocalError('Quiz weight must be greater than 0.');
-      return;
-    }
-
-    if (!Number.isInteger(timeLimitMinutes) || timeLimitMinutes <= 0) {
-      setLocalError('Quiz duration must be greater than 0.');
-      return;
-    }
-
     if (quizScope === 'classroom' && !classroomId) {
       setLocalError('Choose a classroom for this quiz.');
       return;
     }
 
-    setLocalError(null);
-    onSubmit({
-      ...formState,
-      title,
-      description,
-      weight,
-      timeLimitMinutes,
-      classroomId,
-    });
+    try {
+      const values = parseSchemaOrThrow(createQuizSchema, {
+        ...formState,
+        title,
+        description,
+        weight,
+        timeLimitMinutes,
+        classroomId,
+      });
+
+      setLocalError(null);
+      onSubmit(values);
+    } catch (validationError) {
+      setLocalError(
+        validationError instanceof Error
+          ? validationError.message
+          : 'Quiz data is invalid.',
+      );
+    }
   };
 
   return (

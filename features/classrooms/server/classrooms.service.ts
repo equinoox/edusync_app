@@ -31,10 +31,11 @@ import {
 } from '@/features/auth/server/roles.service';
 import { getUsersByIds } from '@/features/auth/server/users.service';
 import { notifyStudentAddedToClassroom } from '@/features/notifications/server/notifications.service';
+import { parseSchemaOrThrow } from '@/lib/validation/zod';
 
 export async function createClassroom(input: CreateClassroomInput) {
   const { userId } = await requireCurrentUserRole('professor');
-  const values = createClassroomSchema.parse(input);
+  const values = parseSchemaOrThrow(createClassroomSchema, input);
 
   const classroom = await createClassroomRecord({
     ...values,
@@ -182,7 +183,7 @@ export async function updateClassroom(
 ) {
   const { userId } = await requireCurrentUserRole('professor');
   await assertProfessorOwnsClassroom(classroomId, userId);
-  const values = updateClassroomSchema.parse(input);
+  const values = parseSchemaOrThrow(updateClassroomSchema, input);
 
   const classroom = await updateClassroomRecord(classroomId, userId, values);
 
@@ -208,7 +209,7 @@ export async function deleteClassroom(classroomId: string) {
 
 export async function addStudentToClassroom(input: AddStudentToClassroomInput) {
   const currentUser = await getCurrentUserWithRole();
-  const values = addStudentToClassroomSchema.parse(input);
+  const values = parseSchemaOrThrow(addStudentToClassroomSchema, input);
 
   const classroom = await getClassroomRecordById(values.classroomId);
   if (!classroom) {
@@ -244,7 +245,7 @@ export async function removeStudentFromClassroom(
   input: RemoveStudentFromClassroomInput,
 ) {
   const currentUser = await getCurrentUserWithRole();
-  const values = removeStudentFromClassroomSchema.parse(input);
+  const values = parseSchemaOrThrow(removeStudentFromClassroomSchema, input);
 
   if (currentUser.role === 'professor') {
     await assertProfessorOwnsClassroom(values.classroomId, currentUser.userId);

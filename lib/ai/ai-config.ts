@@ -1,4 +1,4 @@
-export const CHAT_MODEL = "openai/gpt-4o-mini";
+export const CHAT_MODEL = "openai/gpt-4.1-mini";
 
 export const EMBEDDING_MODEL = "openai/text-embedding-3-small";
 

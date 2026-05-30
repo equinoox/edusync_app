@@ -39,8 +39,6 @@ import type {
   QuizCardItem,
   QuizFilterMode,
   QuizAttempt,
-  QuizForEditing,
-  QuizForTaking,
   QuizListItem,
   QuizSortOrder,
 } from '@/features/quizzes/types';
@@ -85,11 +83,6 @@ function QuizStatCard({
   );
 }
 
-const isQuizDetails = (
-  value: QuizForEditing | QuizForTaking | { error?: string },
-): value is QuizForEditing | QuizForTaking =>
-  'questions' in value && Array.isArray(value.questions);
-
 export function QuizzesPage() {
   const { darkMode } = useTheme();
   const { isLoaded, user } = useUser();
@@ -118,8 +111,8 @@ export function QuizzesPage() {
   const role = user?.publicMetadata?.role;
   const isProfessor = role === 'professor';
 
-  const showToast = useCallback((message: string, tone: ToastNotificationState['tone'] = 'info') => {
-    setToast({ id: Date.now(), message, tone });
+  const showToast = useCallback((message: string, tone: ToastNotificationState['tone'] = 'info', statusCode?: ToastNotificationState['statusCode']) => {
+    setToast({ id: Date.now(), message, tone, statusCode });
   }, []);
 
   const loadQuizzes = useCallback(async (options?: { quiet?: boolean }) => {
@@ -138,10 +131,17 @@ export function QuizzesPage() {
       const classroomData = await classroomResponse.json();
       const attemptData = attemptResponse ? await attemptResponse.json() : [];
 
-      if (!quizResponse.ok) throw new Error(quizData.error ?? 'Something went wrong');
-      if (!classroomResponse.ok) throw new Error(classroomData.error ?? 'Something went wrong');
+      if (!quizResponse.ok) {
+        showToast(quizData.error ?? 'Something went wrong', 'error', quizResponse.status);
+        return;
+      }
+      if (!classroomResponse.ok) {
+        showToast(classroomData.error ?? 'Something went wrong', 'error', classroomResponse.status);
+        return;
+      }
       if (attemptResponse && !attemptResponse.ok) {
-        throw new Error(attemptData.error ?? 'Something went wrong');
+        showToast(attemptData.error ?? 'Something went wrong', 'error', attemptResponse.status);
+        return;
       }
 
       const loadedClassrooms = (classroomData.classrooms ?? []) as ClassroomListItem[];
@@ -153,29 +153,12 @@ export function QuizzesPage() {
         attemptList.map((attempt: QuizAttempt) => [attempt.quizId, attempt]),
       );
 
-      const quizzesWithCounts = await Promise.all(
-        (quizData as QuizListItem[]).map(async quiz => {
-          const detailsResponse = await fetch(`/api/quizzes/${quiz.id}`);
-
-          if (!detailsResponse.ok) {
-            return {
-              ...quiz,
-              questionCount: 0,
-              classroomTitle: quiz.classroomId ? classroomTitleById.get(quiz.classroomId) ?? null : null,
-              attempt: attemptByQuizId.get(quiz.id) ?? null,
-            };
-          }
-
-          const details = await detailsResponse.json();
-
-          return {
-            ...quiz,
-            questionCount: isQuizDetails(details) ? details.questions.length : 0,
-            classroomTitle: quiz.classroomId ? classroomTitleById.get(quiz.classroomId) ?? null : null,
-            attempt: attemptByQuizId.get(quiz.id) ?? null,
-          };
-        }),
-      );
+      const quizzesWithCounts = (quizData as Array<QuizListItem & { questionCount?: number }>).map(quiz => ({
+        ...quiz,
+        questionCount: quiz.questionCount ?? 0,
+        classroomTitle: quiz.classroomId ? classroomTitleById.get(quiz.classroomId) ?? null : null,
+        attempt: attemptByQuizId.get(quiz.id) ?? null,
+      }));
 
       setClassrooms(loadedClassrooms);
       setAttempts(attemptList);
@@ -376,7 +359,7 @@ export function QuizzesPage() {
   };
 
   return (
-    <main className={cn('flex h-screen overflow-hidden transition-colors duration-300', darkMode ? 'bg-slate-950' : 'bg-slate-50')}>
+    <main className={cn('flex min-h-screen overflow-y-auto transition-colors duration-300 lg:h-screen lg:overflow-hidden', darkMode ? 'bg-slate-950' : 'bg-slate-50')}>
       <ToastNotification toast={toast} onDismiss={() => setToast(null)} />
       <CreateQuizModal
         isOpen={isCreateModalOpen}
@@ -489,7 +472,7 @@ export function QuizzesPage() {
         <Sidebar sidebarOpen={sidebarOpen} />
       </div>
 
-      <section className="relative flex min-w-0 flex-1 flex-col overflow-hidden">
+      <section className="relative flex min-w-0 flex-1 flex-col overflow-visible lg:overflow-hidden">
         <SmallBar
           sidebarOpen={sidebarOpen}
           onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
@@ -511,8 +494,8 @@ export function QuizzesPage() {
           <TopBar pageName="Quizzes" />
         </div>
 
-        <div className="min-h-0 flex-1 p-3 sm:p-4">
-          <div className={`flex h-full min-h-0 flex-col overflow-hidden rounded-2xl border p-3.5 sm:p-4 ${darkMode ? 'border-white/5 bg-slate-900' : 'border-slate-200 bg-white'}`}>
+        <div className="min-h-0 flex-1 overflow-y-auto p-3 sm:p-4 lg:overflow-hidden">
+          <div className={`flex min-h-full flex-col overflow-visible rounded-2xl border p-3.5 sm:p-4 lg:h-full lg:min-h-0 lg:overflow-hidden ${darkMode ? 'border-white/5 bg-slate-900' : 'border-slate-200 bg-white'}`}>
             <QuizzesDashboardHeader
               isProfessor={isProfessor}
               search={search}

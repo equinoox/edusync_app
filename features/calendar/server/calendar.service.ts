@@ -20,6 +20,7 @@ import type {
   UpdateCalendarEventInput,
 } from '@/features/calendar/types';
 import { getCurrentUserWithRole } from '@/features/auth/server/roles.service';
+import { parseSchemaOrThrow } from '@/lib/validation/zod';
 
 const parseDate = (value: string | Date) => {
   if (value instanceof Date) return new Date(value);
@@ -69,7 +70,7 @@ const toCalendarEvent = (
 
 export async function createCalendarEvent(input: CreateCalendarEventInput) {
   const currentUser = await getCurrentUserWithRole();
-  const values = createCalendarEventSchema.parse(input);
+  const values = parseSchemaOrThrow(createCalendarEventSchema, input);
 
   const event = await createCalendarEventRecord({
     userId: currentUser.userId,
@@ -100,7 +101,7 @@ export async function updateCalendarEvent(
     throw new Error('Calendar event not found');
   }
 
-  const values = updateCalendarEventSchema.parse(input);
+  const values = parseSchemaOrThrow(updateCalendarEventSchema, input);
   const updatedEvent = await updateCalendarEventRecord(eventId, {
     ...values,
     date: values.date ? toDateOnly(values.date) : undefined,
@@ -138,7 +139,7 @@ export async function getCalendarEventsByMonth(
   input: GetCalendarEventsByMonthInput,
 ): Promise<CalendarEvent[]> {
   const currentUser = await getCurrentUserWithRole();
-  const values = getCalendarEventsByMonthSchema.parse(input);
+  const values = parseSchemaOrThrow(getCalendarEventsByMonthSchema, input);
 
   const records = await getCalendarEventsForUser({
     ...currentUser,
@@ -156,7 +157,7 @@ export async function createQuizCalendarEvent(input: {
   description?: string;
   date: string | Date | null;
 }) {
-  const values = createQuizCalendarEventSchema.parse({
+  const values = parseSchemaOrThrow(createQuizCalendarEventSchema, {
     ...input,
     date: input.date ? new Date(input.date).toISOString() : null,
   });

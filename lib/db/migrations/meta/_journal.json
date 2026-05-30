@@ -57,6 +57,20 @@
       "when": 1779747000000,
       "tag": "0007_chat_messages",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1780092000000,
+      "tag": "0008_resource_chunk_metadata",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1780178400000,
+      "tag": "0009_performance_indexes",
+      "breakpoints": true
     }
   ]
 }

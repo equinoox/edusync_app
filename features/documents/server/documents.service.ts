@@ -1,10 +1,11 @@
 import { auth } from '@clerk/nextjs/server';
 import { generateEmbeddingsForChunks } from '@/lib/ai/embedding-provider';
-import { generateChunks } from '@/lib/ai/chunking';
-import { createResourceRecord } from '@/features/resources/repositories/resources.repository';
-import { createEmbeddingRecords } from '@/features/resources/repositories/embeddings.repository';
+import { createSemanticChunks } from '@/lib/ai/chunking';
+import { db } from '@/lib/db';
+import { documents } from '@/lib/db/schema/documents';
+import { embeddings as embeddingsTable } from '@/lib/db/schema/embeddings';
+import { resources as resourcesTable } from '@/lib/db/schema/resources';
 import {
-  createDocumentRecord,
   deleteUserDocument,
 } from '@/features/documents/repositories/documents.repository';
 import { getDocumentUploadStatus } from './document-upload-limit.service';
@@ -32,40 +33,54 @@ export async function ingestDocumentForUser(
   const status = await getDocumentUploadStatus(userId);
   if (!status.canUpload) throw new Error('You can upload 5 documents every 12 hours');
 
-  const { text, pageCount } = await extractPdfText(file);
+  const { text, pages, pageCount } = await extractPdfText(file);
   if (!text) throw new Error('No readable text found in this PDF');
 
-  const chunks = generateChunks(text);
+  const chunks = createSemanticChunks(pages);
   if (chunks.length === 0) {
     throw new Error('No readable text found in this PDF');
   }
 
-  const document = await createDocumentRecord({
-    userId,
-    fileName: file.name,
-    fileType: file.type,
-    fileSize: file.size,
-    fileUrl: options.fileUrl,
-    storageKey: options.storageKey,
-    pageCount,
+  const chunkContents = chunks.map(chunk => chunk.content);
+  const embeddings = await generateEmbeddingsForChunks(chunkContents);
+
+  const document = await db.transaction(async tx => {
+    const [createdDocument] = await tx
+      .insert(documents)
+      .values({
+        userId,
+        fileName: file.name,
+        fileType: file.type,
+        fileSize: file.size,
+        fileUrl: options.fileUrl,
+        storageKey: options.storageKey,
+        pageCount,
+      })
+      .returning();
+
+    const createdResources = await tx
+      .insert(resourcesTable)
+      .values(
+        chunks.map(chunk => ({
+          content: chunk.content,
+          userId,
+          documentId: createdDocument.id,
+          pageNumber: chunk.pageNumber,
+          chunkIndex: chunk.chunkIndex,
+          contentType: chunk.contentType,
+        })),
+      )
+      .returning();
+
+    await tx.insert(embeddingsTable).values(
+      embeddings.map((embedding, index) => ({
+        resourceId: createdResources[index].id,
+        ...embedding,
+      })),
+    );
+
+    return createdDocument;
   });
-
-  const resources = [];
-  for (const chunk of chunks) {
-    resources.push(await createResourceRecord(chunk, userId, document.id));
-  }
-
-  const embeddings = await generateEmbeddingsForChunks(chunks);
-  const embeddingRecords = [];
-
-  for (const [index, embedding] of embeddings.entries()) {
-    embeddingRecords.push({
-      resourceId: resources[index].id,
-      ...embedding,
-    });
-  }
-
-  await createEmbeddingRecords(embeddingRecords);
 
   return document;
 }

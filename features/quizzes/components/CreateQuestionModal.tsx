@@ -4,11 +4,13 @@ import { useState, type FormEvent } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
 import { addQuestionToQuizAction } from '@/features/quizzes/actions/quizzes.action';
+import { addQuestionToQuizSchema } from '@/features/quizzes/schemas';
 import type {
   CreateQuestionModalProps,
   QuizOptionDraft,
   QuizOptionLabel,
 } from '@/features/quizzes/types';
+import { parseSchemaOrThrow } from '@/lib/validation/zod';
 import { useTheme } from '@/providers/ThemeProvider';
 
 const optionLabels: QuizOptionLabel[] = ['a', 'b', 'c', 'd', 'e'];
@@ -49,39 +51,32 @@ export function CreateQuestionModal({
     const trimmedContent = content.trim();
     const numericPoints = Number(points);
 
-    if (!trimmedContent) {
-      onToast('Question text is required', 'error');
-      return;
-    }
-
-    if (!Number.isFinite(numericPoints) || numericPoints <= 0) {
-      onToast('Question points must be greater than 0', 'error');
-      return;
-    }
-
     if (options.some(option => option.isCorrect && !option.content.trim())) {
       onToast('Correct answers cannot be empty', 'error');
       return;
     }
 
-    if (preparedOptions.length < 2) {
-      onToast('Add at least two options', 'error');
-      return;
-    }
-
-    if (!preparedOptions.some(option => option.isCorrect)) {
-      onToast('Mark at least one correct answer', 'error');
+    let input;
+    try {
+      input = parseSchemaOrThrow(addQuestionToQuizSchema, {
+        quizId: quiz.id,
+        content: trimmedContent,
+        points: numericPoints,
+        hasNegativePoints,
+        options: preparedOptions,
+      });
+    } catch (validationError) {
+      onToast(
+        validationError instanceof Error
+          ? validationError.message
+          : 'Question data is invalid',
+        'error',
+      );
       return;
     }
 
     setIsSaving(true);
-    const result = await addQuestionToQuizAction({
-      quizId: quiz.id,
-      content: trimmedContent,
-      points: numericPoints,
-      hasNegativePoints,
-      options: preparedOptions,
-    });
+    const result = await addQuestionToQuizAction(input);
     setIsSaving(false);
 
     if (typeof result === 'string') {
@@ -106,7 +101,8 @@ export function CreateQuestionModal({
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(result.error ?? 'Quiz is not ready yet');
+        onToast(result.error ?? 'Quiz is not ready yet', 'error', response.status);
+        return;
       }
 
       onClose();

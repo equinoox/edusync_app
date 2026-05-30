@@ -34,15 +34,15 @@ export function DocumentsPage() {
   const [toast, setToast] = useState<ToastNotificationState | null>(null);
   const [search, setSearch] = useState('');
 
-  const showToast = useCallback((message: string, tone: ToastNotificationState['tone'] = 'info') => {
-    setToast({ id: Date.now(), message, tone });
+  const showToast = useCallback((message: string, tone: ToastNotificationState['tone'] = 'info', statusCode?: ToastNotificationState['statusCode']) => {
+    setToast({ id: Date.now(), message, tone, statusCode });
   }, []);
 
   const dismissToast = useCallback(() => {
     setToast(null);
   }, []);
 
-  const fetchDocuments = async () => {
+  const fetchDocuments = useCallback(async () => {
     setIsLoading(true);
 
     try {
@@ -50,15 +50,20 @@ export function DocumentsPage() {
 
       if (response.ok) {
         setDocuments(await response.json());
+        return;
       }
+
+      showToast('Unable to load documents', 'error', response.status);
+    } catch {
+      showToast('Unable to load documents', 'error');
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [showToast]);
 
   useEffect(() => {
-    fetchDocuments();
-  }, []);
+    void fetchDocuments();
+  }, [fetchDocuments]);
 
   const handleDocumentsUploaded = (uploadedDocuments: DocumentUploadResult[]) => {
     setDocuments(previousDocuments => {
@@ -92,7 +97,8 @@ export function DocumentsPage() {
       });
 
       if (!response.ok) {
-        throw new Error('Delete failed');
+        showToast('Something went wrong', 'error', response.status);
+        return;
       }
 
       setDocuments(previousDocuments =>

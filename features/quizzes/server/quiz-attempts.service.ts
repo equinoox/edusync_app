@@ -28,6 +28,7 @@ import type {
   SubmitQuizAttemptInput,
 } from '@/features/quizzes/types';
 import { requireCurrentUserRole } from '@/features/auth/server/roles.service';
+import { parseSchemaOrThrow } from '@/lib/validation/zod';
 
 const getElapsedSeconds = (startedAt: Date | string) =>
   Math.max(0, Math.floor((Date.now() - new Date(startedAt).getTime()) / 1000));
@@ -46,7 +47,7 @@ const sameSelection = (first: string[], second: string[]) => {
 };
 
 export async function startQuizAttempt(input: StartQuizAttemptInput) {
-  const values = startQuizAttemptSchema.parse(input);
+  const values = parseSchemaOrThrow(startQuizAttemptSchema, input);
   const { quiz, studentId } = await assertCurrentStudentCanTakeQuiz(values.quizId);
   const existingAttempt = await getAttemptByQuizAndStudent(quiz.id, studentId);
 
@@ -85,7 +86,7 @@ export async function startQuizAttempt(input: StartQuizAttemptInput) {
 
 export async function submitQuizAttempt(input: SubmitQuizAttemptInput) {
   const { userId } = await requireCurrentUserRole('student');
-  const values = submitQuizAttemptSchema.parse(input);
+  const values = parseSchemaOrThrow(submitQuizAttemptSchema, input);
   const record = await getAttemptWithQuiz(values.attemptId);
 
   if (!record || record.attempt.studentId !== userId) {

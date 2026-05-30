@@ -67,6 +67,7 @@ export type ClassroomDetails = {
 export type ClassroomSortOrder = 'desc' | 'asc';
 export type ClassroomViewerRole = 'student' | 'professor';
 export type ClassroomToastTone = 'success' | 'error' | 'info';
+export type ClassroomToastStatusCode = number | string;
 export type ClassroomIconComponent = ComponentType<SVGProps<SVGSVGElement>>;
 
 export type ClassroomsDashboardHeaderProps = {
@@ -88,7 +89,7 @@ export type UpcomingPanelProps = {
 export type ClassroomDetailsModalProps = {
   classroom: ClassroomListItem | null;
   onClose: () => void;
-  onToast: (message: string, tone?: ClassroomToastTone) => void;
+  onToast: (message: string, tone?: ClassroomToastTone, statusCode?: ClassroomToastStatusCode) => void;
   onChanged: () => void;
 };
 
@@ -97,7 +98,7 @@ export type ClassroomStudentsManagerProps = {
   canManage: boolean;
   students: ClassroomStudent[];
   onChanged: () => void;
-  onToast: (message: string, tone?: ClassroomToastTone) => void;
+  onToast: (message: string, tone?: ClassroomToastTone, statusCode?: ClassroomToastStatusCode) => void;
 };
 
 export type ClassroomStudentPendingAction =
@@ -110,7 +111,7 @@ export type ClassroomMaterialsManagerProps = {
   isStudent: boolean;
   materials: ClassroomMaterial[];
   onChanged: () => void;
-  onToast: (message: string, tone?: ClassroomToastTone) => void;
+  onToast: (message: string, tone?: ClassroomToastTone, statusCode?: ClassroomToastStatusCode) => void;
 };
 
 export type ClassroomMaterialPendingAction =

@@ -33,7 +33,7 @@ export function ClassroomDetailsModal({
       const result = await response.json();
 
       if (!response.ok) {
-        onToast(result.error ?? 'Something went wrong', 'error');
+        onToast(result.error ?? 'Something went wrong', 'error', response.status);
         return;
       }
 

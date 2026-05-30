@@ -7,6 +7,7 @@ import { useTheme } from "@/providers/ThemeProvider";
 export type ToastNotificationState = {
   id: number;
   message: string;
+  statusCode?: number | string;
   tone?: "success" | "error" | "info";
 };
 
@@ -69,7 +70,14 @@ const animationClassName = isExiting
         role="status"
         aria-live="polite"
       >
-        {toast.message}
+        <span className="inline-flex flex-wrap items-center justify-center gap-2">
+          {toast.statusCode ? (
+            <span className="rounded-md border border-current/25 px-1.5 py-0.5 text-[0.68rem] font-bold uppercase tracking-wide opacity-90">
+              {toast.statusCode}
+            </span>
+          ) : null}
+          <span>{toast.message}</span>
+        </span>
       </div>
     </div>
   );

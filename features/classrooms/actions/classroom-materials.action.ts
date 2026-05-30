@@ -9,6 +9,7 @@ import {
 import { put } from '@vercel/blob';
 import { classroomMaterialFileNameSchema } from '@/features/classrooms/schemas';
 import type { CopyClassroomMaterialInput } from '@/features/classrooms/types';
+import { parseSchemaOrThrow } from '@/lib/validation/zod';
 
 const toActionError = (error: unknown) =>
   error instanceof Error && error.message.length > 0
@@ -32,7 +33,7 @@ export async function addClassroomMaterialAction(formData: FormData) {
       throw new Error('Only PDF files are supported');
     }
 
-    classroomMaterialFileNameSchema.parse(file.name);
+    parseSchemaOrThrow(classroomMaterialFileNameSchema, file.name);
 
     const blob = await put(`classrooms/${classroomId}/${file.name}`, file, {
       access: 'public',

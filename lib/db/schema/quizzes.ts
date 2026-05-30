@@ -15,44 +15,71 @@ import {
 import { classrooms } from '@/lib/db/schema/classrooms';
 import { nanoid } from '@/lib/utils';
 
-export const quizzes = pgTable('quizzes', {
-  id: varchar('id', { length: 191 }).primaryKey().$defaultFn(() => nanoid()),
-  professorId: varchar('professor_id', { length: 191 }).notNull(),
-  classroomId: varchar('classroom_id', { length: 191 }).references(
-    () => classrooms.id,
-    { onDelete: 'cascade' },
-  ),
-  title: varchar('title', { length: 255 }).notNull(),
-  description: text('description').notNull().default(''),
-  totalPoints: numeric('total_points', {
-    precision: 10,
-    scale: 2,
-    mode: 'number',
-  })
-    .notNull()
-    .default(0),
-  weight: numeric('weight', { precision: 10, scale: 2, mode: 'number' })
-    .notNull()
-    .default(0),
-  timeLimitMinutes: integer('time_limit_minutes').notNull(),
-  quizDate: timestamp('quiz_date'),
-  createdAt: timestamp('created_at').notNull().default(sql`now()`),
-  updatedAt: timestamp('updated_at').notNull().default(sql`now()`),
-});
+export const quizzes = pgTable(
+  'quizzes',
+  {
+    id: varchar('id', { length: 191 }).primaryKey().$defaultFn(() => nanoid()),
+    professorId: varchar('professor_id', { length: 191 }).notNull(),
+    classroomId: varchar('classroom_id', { length: 191 }).references(
+      () => classrooms.id,
+      { onDelete: 'cascade' },
+    ),
+    title: varchar('title', { length: 255 }).notNull(),
+    description: text('description').notNull().default(''),
+    totalPoints: numeric('total_points', {
+      precision: 10,
+      scale: 2,
+      mode: 'number',
+    })
+      .notNull()
+      .default(0),
+    weight: numeric('weight', { precision: 10, scale: 2, mode: 'number' })
+      .notNull()
+      .default(0),
+    timeLimitMinutes: integer('time_limit_minutes').notNull(),
+    quizDate: timestamp('quiz_date'),
+    createdAt: timestamp('created_at').notNull().default(sql`now()`),
+    updatedAt: timestamp('updated_at').notNull().default(sql`now()`),
+  },
+  table => ({
+    quizProfessorCreatedAtIdx: index('quiz_professor_created_at_idx').on(
+      table.professorId,
+      table.createdAt,
+    ),
+    quizClassroomCreatedAtIdx: index('quiz_classroom_created_at_idx').on(
+      table.classroomId,
+      table.createdAt,
+    ),
+    quizDateCreatedAtIdx: index('quiz_date_created_at_idx').on(
+      table.quizDate,
+      table.createdAt,
+    ),
+  }),
+);
 
-export const quizQuestions = pgTable('quiz_questions', {
-  id: varchar('id', { length: 191 }).primaryKey().$defaultFn(() => nanoid()),
-  quizId: varchar('quiz_id', { length: 191 })
-    .notNull()
-    .references(() => quizzes.id, { onDelete: 'cascade' }),
-  sequenceNumber: integer('sequence_number').notNull(),
-  content: text('content').notNull(),
-  points: numeric('points', { precision: 10, scale: 2, mode: 'number' })
-    .notNull(),
-  hasNegativePoints: boolean('has_negative_points').notNull().default(false),
-  createdAt: timestamp('created_at').notNull().default(sql`now()`),
-  updatedAt: timestamp('updated_at').notNull().default(sql`now()`),
-});
+export const quizQuestions = pgTable(
+  'quiz_questions',
+  {
+    id: varchar('id', { length: 191 }).primaryKey().$defaultFn(() => nanoid()),
+    quizId: varchar('quiz_id', { length: 191 })
+      .notNull()
+      .references(() => quizzes.id, { onDelete: 'cascade' }),
+    sequenceNumber: integer('sequence_number').notNull(),
+    content: text('content').notNull(),
+    points: numeric('points', { precision: 10, scale: 2, mode: 'number' })
+      .notNull(),
+    hasNegativePoints: boolean('has_negative_points').notNull().default(false),
+    createdAt: timestamp('created_at').notNull().default(sql`now()`),
+    updatedAt: timestamp('updated_at').notNull().default(sql`now()`),
+  },
+  table => ({
+    quizQuestionQuizSequenceIdx: index('quiz_question_quiz_sequence_idx').on(
+      table.quizId,
+      table.sequenceNumber,
+      table.createdAt,
+    ),
+  }),
+);
 
 export const quizQuestionOptions = pgTable(
   'quiz_question_options',
@@ -105,6 +132,9 @@ export const quizAttempts = pgTable(
     quizAttemptStudentStatusSubmittedAtIdx: index(
       'quiz_attempt_student_status_submitted_at_idx',
     ).on(table.studentId, table.status, table.submittedAt),
+    quizAttemptStudentCreatedAtIdx: index(
+      'quiz_attempt_student_created_at_idx',
+    ).on(table.studentId, table.createdAt),
     quizStudentAttemptUnique: uniqueIndex('quiz_student_attempt_unique').on(
       table.quizId,
       table.studentId,

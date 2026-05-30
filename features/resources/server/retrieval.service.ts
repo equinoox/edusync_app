@@ -10,6 +10,7 @@ import {
   getUserDocuments,
 } from '@/features/documents/repositories/documents.repository';
 import type { UserDocument } from '@/features/resources/types';
+import type { ChunkContentType } from '@/lib/ai/chunking';
 
 const normalizeDocumentName = (value: string) =>
   value
@@ -22,6 +23,25 @@ const normalizeDocumentName = (value: string) =>
 const mentionsMostRecentDocument = (value: string) =>
   /\b(last|latest|newest|most recent)\s+(document|file|pdf)\b/i.test(value) ||
   /\b(document|file|pdf)\s+(i\s+)?(last|latest|newest|most recently)\s+(sent|uploaded|added)\b/i.test(value);
+
+const getPreferredContentTypes = (value: string): ChunkContentType[] => {
+  const normalized = value.toLowerCase();
+  const preferred: ChunkContentType[] = [];
+
+  if (/\b(table|tables|row|rows|column|columns)\b/.test(normalized)) {
+    preferred.push('table');
+  }
+
+  if (/\b(code|function|class|method|import|export|variable|script)\b/.test(normalized)) {
+    preferred.push('code');
+  }
+
+  if (/\b(formula|equation|math|calculate|calculation)\b/.test(normalized)) {
+    preferred.push('formula');
+  }
+
+  return preferred;
+};
 
 const resolveMentionedDocument = async (
   userId: string,
@@ -111,6 +131,7 @@ export const findRelevantContent = async (
     userQueryEmbedding,
     userId,
     document?.id,
+    getPreferredContentTypes(userQuery),
   );
 
   if (document && results.length === 0) {

@@ -68,8 +68,8 @@ export function ClassroomsPage() {
   const role = currentRole ?? user?.publicMetadata?.role;
   const isProfessor = role === 'professor';
 
-  const showToast = useCallback((message: string, tone: ToastNotificationState['tone'] = 'info') => {
-    setToast({ id: Date.now(), message, tone });
+  const showToast = useCallback((message: string, tone: ToastNotificationState['tone'] = 'info', statusCode?: ToastNotificationState['statusCode']) => {
+    setToast({ id: Date.now(), message, tone, statusCode });
   }, []);
 
   const loadClassrooms = useCallback(async (options?: { quiet?: boolean }) => {
@@ -84,7 +84,8 @@ export function ClassroomsPage() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error ?? 'Something went wrong');
+        showToast(data.error ?? 'Something went wrong', 'error', response.status);
+        return;
       }
 
       setCurrentRole(data.role);
@@ -220,7 +221,7 @@ export function ClassroomsPage() {
   }, [loadClassrooms]);
 
   return (
-    <main className={cn('flex h-screen overflow-hidden transition-colors duration-300', darkMode ? 'bg-slate-950' : 'bg-slate-50')}>
+    <main className={cn('flex min-h-screen overflow-y-auto transition-colors duration-300 lg:h-screen lg:overflow-hidden', darkMode ? 'bg-slate-950' : 'bg-slate-50')}>
       <ToastNotification toast={toast} onDismiss={() => setToast(null)} />
       <CreateClassroomModal
         isOpen={isCreateModalOpen}
@@ -318,7 +319,7 @@ export function ClassroomsPage() {
         <Sidebar sidebarOpen={sidebarOpen} />
       </div>
 
-      <section className="relative flex min-w-0 flex-1 flex-col overflow-hidden">
+      <section className="relative flex min-w-0 flex-1 flex-col overflow-visible lg:overflow-hidden">
         <SmallBar
           sidebarOpen={sidebarOpen}
           onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
@@ -336,8 +337,8 @@ export function ClassroomsPage() {
           <TopBar pageName="Classrooms" />
         </div>
 
-        <div className="min-h-0 flex-1 p-3 sm:p-4">
-          <div className={`flex h-full min-h-0 flex-col overflow-hidden rounded-2xl border p-3.5 sm:p-4 ${darkMode ? "border-white/5 bg-slate-900" : "border-slate-200 bg-white"}`}>
+        <div className="min-h-0 flex-1 overflow-y-auto p-3 sm:p-4 lg:overflow-hidden">
+          <div className={`flex min-h-full flex-col overflow-visible rounded-2xl border p-3.5 sm:p-4 lg:h-full lg:min-h-0 lg:overflow-hidden ${darkMode ? "border-white/5 bg-slate-900" : "border-slate-200 bg-white"}`}>
             <ClassroomsDashboardHeader
               isProfessor={isProfessor}
               search={search}
@@ -436,7 +437,7 @@ export function ClassroomsPage() {
                 )}
               </section>
 
-              <div className="min-h-0 space-y-4 overflow-hidden">
+              <div className="min-h-0 space-y-4 overflow-visible xl:overflow-hidden">
                 <UpcomingPanel />
                 <RecentActivityPanel
                   emptyMessage="No classroom activity yet."

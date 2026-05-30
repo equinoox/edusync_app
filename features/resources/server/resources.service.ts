@@ -5,6 +5,7 @@ import { insertResourceSchema } from '@/features/resources/schemas';
 import type { NewResourceParams } from '@/features/resources/types';
 import { createResourceRecord } from '@/features/resources/repositories/resources.repository';
 import { createEmbeddingRecords } from '@/features/resources/repositories/embeddings.repository';
+import { parseSchemaOrThrow } from '@/lib/validation/zod';
 
 export const createResource = async (input: NewResourceParams) => {
   const { userId } = await auth();
@@ -13,7 +14,7 @@ export const createResource = async (input: NewResourceParams) => {
     throw new Error('User not authenticated');
   }
 
-  const { content } = insertResourceSchema.parse(input);
+  const { content } = parseSchemaOrThrow(insertResourceSchema, input);
 
   const resource = await createResourceRecord(content, userId);
   const embeddings = await generateEmbeddings(content);
