@@ -1,41 +1,87 @@
 # EduSync
 
-EduSync is an AI-powered web application for Micro-learning, designed to help students and professors manage learning materials, classrooms, quizzes, events, and AI-assisted studying in one place.
+## EduSync Link: https://edusyncappv.vercel.app/
 
-The application allows users to upload documents, use an AI chat assistant, organize classrooms, create quizzes, track progress, and receive important learning notifications.
+**EduSync** is an AI-powered micro-learning web application designed for students and professors. It brings learning materials, AI-assisted studying, classrooms, quizzes, progress tracking, calendar events, and notifications into one focused platform.
 
-> ⚠️ This project is still in development. Some features are experimental, incomplete, or subject to change.
+The project is currently released as **Version 1.0.0**.  
+It is a finished early-stage version, meaning the core functionality is implemented and usable, while future improvements, optimizations, and additional features are planned.
+
+---
+
+## Overview
+
+EduSync helps users organize and improve the learning process through a modern educational dashboard.
+
+Students can upload and review learning documents, chat with an AI assistant, take quizzes, follow classroom updates, track their progress, and manage upcoming learning events.
+
+Professors can manage classrooms, add students, assign materials, create quizzes, schedule events, and notify students about important updates.
 
 ---
 
 ## Features
 
-- User authentication with Clerk
-- Student and Professor roles
-- AI-powered chat assistant
-- Document upload and PDF parsing
-- Retrieval-Augmented Generation for answering questions from uploaded materials
-- Classroom management
+### Core Learning Tools
+
+- AI chat assistant
+- PDF document upload and parsing
+- Document-based AI responses
 - Quiz creation and quiz attempts
-- Calendar events
-- Student progress page
+- Student progress tracking
+
+### Classroom Management
+
+- Student and Professor roles
+- Classroom creation and management
+- Classroom documents, quizzes, and events
+- Student enrollment management
+
+### User Experience
+
+- Calendar for learning events
 - Notification system
-- Light and dark mode support
-- Responsive UI built with Tailwind CSS
+- Light and dark mode
+- Responsive dashboard interface
 
 ---
 
 ## Tech Stack
 
+### Frontend
+
 - Next.js 14
-- React
+- React 18
 - TypeScript
 - Tailwind CSS
-- Clerk
-- Drizzle ORM
+- Radix UI
+- Heroicons
+- React Markdown
+- Sonner
+
+### Backend and Database
+
+- Next.js App Router API routes
 - PostgreSQL
-- Vercel Blob
+- Drizzle ORM
+- Drizzle Kit
+- Zod
+- Clerk Authentication
+
+### AI and Storage
+
 - Vercel AI SDK
+- AI SDK React
+- Vercel Blob
+- PDF parsing with `unpdf`
+- Retrieval-based document workflow
+
+### Development Tools
+
+- ESLint
+- TypeScript
+- TSX
+- PostCSS
+- pnpm
 
 ---
 
@@ -43,9 +89,9 @@ The application allows users to upload documents, use an AI chat assistant, orga
 
 EduSync follows a **Feature-Based Architecture**.
 
-The project is organized around application features instead of technical layers only. Each major feature has its own folder and contains the logic, components, actions, services, schemas, and types related to that feature.
+Instead of organizing the application only by technical layers, the codebase is structured around real application features. Each major feature contains its own components, server logic, actions, schemas, services, and types where needed.
 
-This makes the codebase easier to scale, maintain, and understand as the application grows.
+This makes the application easier to understand, scale, and maintain as the project grows.
 
 ---
 
@@ -59,25 +105,25 @@ edusync_app/
 │   ├── chat/               # AI chat page
 │   ├── classrooms/         # Classrooms page
 │   ├── documents/          # Documents page
-│   ├── home/               # Home page
+│   ├── home/               # Home dashboard
 │   ├── progress/           # Progress page
 │   └── quizzes/            # Quizzes page
 │
 ├── components/             # Shared UI and layout components
-│
 ├── features/               # Feature-based application modules
-│   ├── auth/               # Authentication and roles
+│   ├── auth/               # Authentication and role logic
 │   ├── calendar/           # Calendar feature
 │   ├── chat/               # AI chat feature
 │   ├── classrooms/         # Classroom feature
+│   ├── documents/          # Document upload and document management
 │   ├── home/               # Home page feature
-│   ├── notifications/      # Notifications feature
-│   ├── progress/           # Progress feature
-│   ├── quizzes/            # Quizzes feature
-│   ├── resources/          # Learning resources and RAG logic
+│   ├── notifications/      # Notification feature
+│   ├── progress/           # Student progress feature
+│   ├── quizzes/            # Quiz feature
+│   ├── resources/          # Learning resources and retrieval logic
 │   └── tokens/             # Token validation and usage logic
 │
-├── lib/                    # Shared utilities, AI logic and database setup
+├── lib/                    # Shared utilities, AI logic, and database setup
 ├── providers/              # Global React providers
 ├── public/                 # Static assets
 ├── drizzle.config.ts       # Drizzle configuration
