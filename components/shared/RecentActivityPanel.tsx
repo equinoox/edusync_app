@@ -27,6 +27,8 @@ type RecentActivityPanelProps = {
   onViewAll?: () => void;
 };
 
+const MAX_PREVIEW_ITEMS = 2;
+
 const formatRelative = (value: Date | string) => {
   const createdAt = new Date(value).getTime();
   const diffMs = Date.now() - createdAt;
@@ -49,7 +51,13 @@ export function RecentActivityPanel({
   onViewAll,
 }: RecentActivityPanelProps) {
   const { darkMode } = useTheme();
-  const visibleItems = previewLimit ? items.slice(0, previewLimit) : items;
+  const previewCount = Math.min(previewLimit ?? MAX_PREVIEW_ITEMS, MAX_PREVIEW_ITEMS);
+  const visibleItems = [...items]
+    .sort((first, second) => {
+      if (!first.timestamp || !second.timestamp) return 0;
+      return new Date(second.timestamp).getTime() - new Date(first.timestamp).getTime();
+    })
+    .slice(0, previewCount);
 
   return (
     <aside className={`edusync-enter edusync-card-motion rounded-xl border p-4 shadow-md ${darkMode ? 'border-white/5 bg-slate-800' : 'border-slate-200 bg-white'}`}>
@@ -87,7 +95,7 @@ export function RecentActivityPanel({
                     {item.title}
                   </p>
                   {(item.description || item.timestamp) && (
-                    <p className={`text-xs ${darkMode ? 'text-slate-500' : 'text-slate-700'}`}>
+                    <p className={`line-clamp-2 text-xs ${darkMode ? 'text-slate-500' : 'text-slate-700'}`}>
                       {item.description}
                       {item.description && item.timestamp ? ' - ' : ''}
                       {item.timestamp ? formatRelative(item.timestamp) : ''}

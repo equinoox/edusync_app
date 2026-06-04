@@ -37,7 +37,7 @@ const barClasses = {
 
 export function SubjectPerformance({ items, onViewAll }: SubjectPerformanceProps) {
   const { darkMode } = useTheme();
-  const visibleItems = items.slice(0, 6);
+  const visibleItems = items.slice(0, 2);
 
   return (
     <ProgressPanel className="p-4">

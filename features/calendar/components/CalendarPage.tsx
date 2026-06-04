@@ -456,7 +456,7 @@ export function CalendarPage() {
                         No upcoming events.
                       </p>
                     ) : (
-                      upcomingEvents.slice(0, 4).map(event => (
+                      upcomingEvents.slice(0, 2).map(event => (
                         <CalendarEventCard
                           key={event.id}
                           event={event}

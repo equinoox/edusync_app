@@ -37,7 +37,7 @@ export function RecentAchievements({
   onViewAll,
 }: RecentAchievementsProps) {
   const { darkMode } = useTheme();
-  const visibleActivities = activities.slice(0, 4);
+  const visibleActivities = activities.slice(0, 2);
 
   return (
     <ProgressPanel className="p-4">

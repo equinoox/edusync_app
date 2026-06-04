@@ -46,6 +46,18 @@ import type {
 import { useTheme } from '@/providers/ThemeProvider';
 import { cn } from '@/lib/utils';
 
+const ACTIVITY_DESCRIPTION_LIMIT = 80;
+
+const getActivityDescription = (description: string) => {
+  const normalizedDescription = description.replace(/\s+/g, ' ').trim();
+
+  if (normalizedDescription.length <= ACTIVITY_DESCRIPTION_LIMIT) {
+    return normalizedDescription;
+  }
+
+  return `${normalizedDescription.slice(0, ACTIVITY_DESCRIPTION_LIMIT).trim()}...`;
+};
+
 export function ClassroomsPage() {
   const { darkMode } = useTheme();
   const { isLoaded, user } = useUser();
@@ -134,7 +146,7 @@ export function ClassroomsPage() {
       classrooms.map(classroom => ({
         id: classroom.id,
         title: `Classroom created in ${classroom.title}`,
-        description: classroom.description,
+        description: getActivityDescription(classroom.description),
         timestamp: classroom.createdAt,
         Icon: BuildingLibraryIcon,
       })),
@@ -437,12 +449,12 @@ export function ClassroomsPage() {
                 )}
               </section>
 
-              <div className="min-h-0 space-y-4 overflow-visible xl:overflow-hidden">
+              <div className="min-h-0 space-y-4 overflow-visible xl:overflow-y-auto xl:pr-1">
                 <UpcomingPanel />
                 <RecentActivityPanel
                   emptyMessage="No classroom activity yet."
                   items={allRecentActivityItems}
-                  previewLimit={4}
+                  previewLimit={2}
                   onViewAll={() => setIsActivityModalOpen(true)}
                 />
                 <QuickActionsPanel items={quickActions} />

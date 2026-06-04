@@ -592,7 +592,7 @@ export function QuizzesPage() {
                   title="Recent Activity"
                   emptyMessage="No quiz activity yet."
                   items={recentActivity}
-                  previewLimit={5}
+                  previewLimit={2}
                   onViewAll={() => setIsActivityModalOpen(true)}
                 />
                 <QuickActionsPanel items={quickActions} />
