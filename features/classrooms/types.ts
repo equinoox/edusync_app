@@ -26,6 +26,8 @@ export type ClassroomListItem = {
   title: string;
   description: string;
   numberOfStudents: number;
+  materialCount: number;
+  quizCount: number;
   createdAt: Date | string;
   updatedAt: Date | string;
 };

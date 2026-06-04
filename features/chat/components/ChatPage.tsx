@@ -12,6 +12,7 @@ import {
   ToastNotification,
   type ToastNotificationState,
 } from '@/components/shared/ToastNotification';
+import { ConfirmationModal } from '@/components/shared/ConfirmationModal';
 
 import { ChatMessages } from '@/features/chat/components/ChatMessages';
 import { ChatInput } from '@/features/chat/components/ChatInput';
@@ -30,6 +31,7 @@ export function ChatPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isHistoryLoading, setIsHistoryLoading] = useState(true);
   const [isClearingHistory, setIsClearingHistory] = useState(false);
+  const [isClearHistoryConfirmOpen, setIsClearHistoryConfirmOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [documents, setDocuments] = useState<DocumentListItem[]>([]);
   const [selectedDocumentId, setSelectedDocumentId] = useState('');
@@ -181,10 +183,7 @@ export function ChatPage() {
   };
 
   const handleClearChat = async () => {
-    if (
-      isClearingHistory ||
-      !window.confirm('Clear your saved chat messages?')
-    ) {
+    if (isClearingHistory) {
       return;
     }
 
@@ -204,6 +203,7 @@ export function ChatPage() {
       }
 
       setMessages([]);
+      setIsClearHistoryConfirmOpen(false);
       setToast({
         id: Date.now(),
         message: 'Chat cleared',
@@ -250,6 +250,14 @@ export function ChatPage() {
   return (
     <main className={`flex h-screen flex-col lg:flex-row transition-colors duration-300 ${darkMode ? 'bg-slate-950' : 'bg-slate-100'}`}>
       <ToastNotification toast={toast} onDismiss={() => setToast(null)} />
+      <ConfirmationModal
+        isOpen={isClearHistoryConfirmOpen}
+        isLoading={isClearingHistory}
+        message="Clear your saved chat messages?"
+        loadingLabel="Clearing..."
+        onCancel={() => setIsClearHistoryConfirmOpen(false)}
+        onConfirm={handleClearChat}
+      />
 
       {/* Mobile overlay */}
       {sidebarOpen && (
@@ -299,7 +307,7 @@ export function ChatPage() {
                 <div className="relative z-10 mb-3 flex justify-end">
                   <button
                     type="button"
-                    onClick={handleClearChat}
+                    onClick={() => setIsClearHistoryConfirmOpen(true)}
                     disabled={isClearingHistory}
                     className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition-all duration-200 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 ${
                       darkMode

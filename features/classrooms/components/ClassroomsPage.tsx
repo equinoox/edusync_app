@@ -141,6 +141,24 @@ export function ClassroomsPage() {
     [classrooms],
   );
 
+  const totalMaterials = useMemo(
+    () =>
+      classrooms.reduce(
+        (total, classroom) => total + classroom.materialCount,
+        0,
+      ),
+    [classrooms],
+  );
+
+  const totalQuizzes = useMemo(
+    () =>
+      classrooms.reduce(
+        (total, classroom) => total + classroom.quizCount,
+        0,
+      ),
+    [classrooms],
+  );
+
   const allRecentActivityItems = useMemo<RecentActivityItem[]>(
     () =>
       classrooms.map(classroom => ({
@@ -377,13 +395,13 @@ export function ClassroomsPage() {
               <ClassroomStatCard
                 icon={DocumentTextIcon}
                 label="Materials"
-                value={0}
+                value={totalMaterials}
                 tone="green"
               />
               <ClassroomStatCard
                 icon={ClipboardDocumentListIcon}
-                label="Documents"
-                value={0}
+                label="Quizzes"
+                value={totalQuizzes}
                 tone="blue"
               />
             </div>

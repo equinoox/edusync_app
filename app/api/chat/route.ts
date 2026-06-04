@@ -2,6 +2,7 @@ import type { UIMessage } from 'ai';
 import { auth } from '@clerk/nextjs/server';
 
 import { createChatResponse } from '@/features/chat/server/chat.service';
+import { getUserDocumentById } from '@/features/documents/repositories/documents.repository';
 import {
   getTextFromMessage,
   saveChatMessage,
@@ -28,6 +29,16 @@ export async function POST(req: Request) {
       messages,
       documentId,
     }: { messages: UIMessage[]; documentId?: string | null } = await req.json();
+    const selectedDocument = documentId
+      ? await getUserDocumentById(documentId, userId)
+      : undefined;
+
+    if (documentId && !selectedDocument) {
+      return new Response(
+        JSON.stringify({ error: 'Selected document was not found' }),
+        { status: 404 },
+      );
+    }
 
     // Get the user's latest message - extract text from parts or content
     const lastMessage = messages[messages.length - 1];
@@ -73,7 +84,12 @@ export async function POST(req: Request) {
 
     const result = await createChatResponse(
       messages,
-      documentId ?? undefined,
+      selectedDocument
+        ? {
+            id: selectedDocument.id,
+            fileName: selectedDocument.fileName,
+          }
+        : undefined,
       async text => {
         await saveChatMessage({
           userId,

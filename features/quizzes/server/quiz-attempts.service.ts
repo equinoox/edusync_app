@@ -134,7 +134,6 @@ export async function submitQuizAttempt(input: SubmitQuizAttemptInput) {
     const uniqueSelectedOptionIds = new Set(answer.selectedOptionIds);
 
     if (
-      answer.selectedOptionIds.length === 0 ||
       uniqueSelectedOptionIds.size !== answer.selectedOptionIds.length ||
       answer.selectedOptionIds.some(optionId => !validOptionIds.has(optionId))
     ) {

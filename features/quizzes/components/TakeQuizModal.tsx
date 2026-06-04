@@ -1,7 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
-import { XMarkIcon } from '@heroicons/react/24/outline';
+import { useEffect, useState } from 'react';
 
 import { ConfirmationModal } from '@/components/shared/ConfirmationModal';
 import {
@@ -85,13 +84,6 @@ export function TakeQuizModal({
     return () => window.clearInterval(timer);
   }, [attempt, isOpen, quizForTaking]);
 
-  const allQuestionsAnswered = useMemo(() => {
-    if (!quizForTaking) return false;
-    return quizForTaking.questions.every(
-      question => selectedOptions[question.id]?.length > 0,
-    );
-  }, [quizForTaking, selectedOptions]);
-
   if (!isOpen || !quiz) return null;
 
   const toggleOption = (questionId: string, optionId: string) => {
@@ -110,18 +102,6 @@ export function TakeQuizModal({
 
   const handleSubmit = async () => {
     if (!attempt || !quizForTaking) return;
-
-    if (remainingSeconds <= 0) {
-      onToast('Time is up. This quiz can no longer be submitted.', 'error');
-      setIsConfirmingSubmit(false);
-      return;
-    }
-
-    if (!allQuestionsAnswered) {
-      onToast('Answer every question before submitting', 'error');
-      setIsConfirmingSubmit(false);
-      return;
-    }
 
     setIsSubmitting(true);
     const result = await submitQuizAttemptAction({
@@ -165,20 +145,9 @@ export function TakeQuizModal({
               {quizForTaking?.description ?? quiz.description}
             </p>
           </div>
-          <div className="flex items-center gap-3">
-            <span className={`rounded-lg px-3 py-2 text-sm font-bold ${remainingSeconds < 60 ? 'bg-red-500 text-white' : darkMode ? 'bg-violet-500/20 text-violet-300' : 'bg-violet-500/15 text-violet-700'}`}>
-              {formatTime(remainingSeconds)}
-            </span>
-            <button
-              type="button"
-              onClick={onClose}
-              className={`edusync-button-motion rounded-lg p-2 transition ${darkMode ? 'text-slate-400 hover:bg-slate-800 hover:text-slate-200' : 'text-slate-700 hover:bg-slate-100'}`}
-              aria-label="Close quiz"
-              title="Close"
-            >
-              <XMarkIcon className="h-5 w-5" />
-            </button>
-          </div>
+          <span className={`rounded-lg px-3 py-2 text-sm font-bold ${remainingSeconds < 60 ? 'bg-red-500 text-white' : darkMode ? 'bg-violet-500/20 text-violet-300' : 'bg-violet-500/15 text-violet-700'}`}>
+            {formatTime(remainingSeconds)}
+          </span>
         </div>
 
         <div className="min-h-0 flex-1 overflow-y-auto px-5 py-5">
@@ -229,7 +198,7 @@ export function TakeQuizModal({
           <button
             type="button"
             onClick={() => setIsConfirmingSubmit(true)}
-            disabled={isLoading || !quizForTaking || remainingSeconds <= 0}
+            disabled={isLoading || !quizForTaking}
             className="edusync-button-motion h-10 rounded-lg bg-violet-600 px-5 text-sm font-bold text-white transition hover:bg-violet-700 disabled:cursor-not-allowed disabled:opacity-60"
           >
             Finish Quiz

@@ -1,10 +1,12 @@
-import { and, asc, count, desc, eq } from 'drizzle-orm';
+import { and, asc, desc, eq, sql } from 'drizzle-orm';
 
 import { db } from '@/lib/db';
 import {
+  classroomMaterials,
   classroomMemberships,
   classrooms,
 } from '@/lib/db/schema/classrooms';
+import { quizzes } from '@/lib/db/schema/quizzes';
 
 const classroomSelect = {
   id: classrooms.id,
@@ -15,6 +17,12 @@ const classroomSelect = {
   description: classrooms.description,
   createdAt: classrooms.createdAt,
   updatedAt: classrooms.updatedAt,
+};
+
+const classroomStatsSelect = {
+  numberOfStudents: sql<number>`cast(count(distinct ${classroomMemberships.id}) as int)`,
+  materialCount: sql<number>`cast(count(distinct ${classroomMaterials.id}) as int)`,
+  quizCount: sql<number>`cast(count(distinct ${quizzes.id}) as int)`,
 };
 
 export async function createClassroomRecord(input: typeof classrooms.$inferInsert) {
@@ -36,13 +44,18 @@ export async function getClassroomWithStudentCount(classroomId: string) {
   const [classroom] = await db
     .select({
       ...classroomSelect,
-      numberOfStudents: count(classroomMemberships.id),
+      ...classroomStatsSelect,
     })
     .from(classrooms)
     .leftJoin(
       classroomMemberships,
       eq(classroomMemberships.classroomId, classrooms.id),
     )
+    .leftJoin(
+      classroomMaterials,
+      eq(classroomMaterials.classroomId, classrooms.id),
+    )
+    .leftJoin(quizzes, eq(quizzes.classroomId, classrooms.id))
     .where(eq(classrooms.id, classroomId))
     .groupBy(
       classrooms.id,
@@ -63,13 +76,18 @@ export async function getClassroomsByProfessor(professorId: string) {
   return db
     .select({
       ...classroomSelect,
-      numberOfStudents: count(classroomMemberships.id),
+      ...classroomStatsSelect,
     })
     .from(classrooms)
     .leftJoin(
       classroomMemberships,
       eq(classroomMemberships.classroomId, classrooms.id),
     )
+    .leftJoin(
+      classroomMaterials,
+      eq(classroomMaterials.classroomId, classrooms.id),
+    )
+    .leftJoin(quizzes, eq(quizzes.classroomId, classrooms.id))
     .where(eq(classrooms.professorId, professorId))
     .groupBy(
       classrooms.id,
@@ -88,13 +106,18 @@ export async function getClassroomsByStudent(studentId: string) {
   return db
     .select({
       ...classroomSelect,
-      numberOfStudents: count(classroomMemberships.id),
+      ...classroomStatsSelect,
     })
     .from(classrooms)
     .innerJoin(
       classroomMemberships,
       eq(classroomMemberships.classroomId, classrooms.id),
     )
+    .leftJoin(
+      classroomMaterials,
+      eq(classroomMaterials.classroomId, classrooms.id),
+    )
+    .leftJoin(quizzes, eq(quizzes.classroomId, classrooms.id))
     .where(eq(classroomMemberships.studentId, studentId))
     .groupBy(
       classrooms.id,

@@ -33,6 +33,7 @@ import { CreateQuizModal } from '@/features/quizzes/components/CreateQuizModal';
 import { QuizCard } from '@/features/quizzes/components/QuizCard';
 import { QuizDetailsModal } from '@/features/quizzes/components/QuizDetailsModal';
 import { QuizzesDashboardHeader } from '@/features/quizzes/components/QuizzesDashboardHeader';
+import { StudentQuizInfoModal } from '@/features/quizzes/components/StudentQuizInfoModal';
 import { TakeQuizModal } from '@/features/quizzes/components/TakeQuizModal';
 import type {
   CreateQuizInput,
@@ -101,6 +102,7 @@ export function QuizzesPage() {
   const [quizToDelete, setQuizToDelete] = useState<QuizCardItem | null>(null);
   const [quizForQuestions, setQuizForQuestions] = useState<QuizListItem | null>(null);
   const [quizForDetails, setQuizForDetails] = useState<QuizCardItem | null>(null);
+  const [quizForStudentInfo, setQuizForStudentInfo] = useState<QuizCardItem | null>(null);
   const [quizForTaking, setQuizForTaking] = useState<QuizCardItem | null>(null);
   const [activityItems, setActivityItems] = useState<RecentActivityItem[]>([]);
   const [isActivityModalOpen, setIsActivityModalOpen] = useState(false);
@@ -199,7 +201,7 @@ export function QuizzesPage() {
       return;
     }
 
-    setQuizForTaking(queryQuiz);
+    setQuizForStudentInfo(queryQuiz);
   }, [handledQueryQuizId, isProfessor, quizzes]);
 
   const filteredQuizzes = useMemo(() => {
@@ -387,6 +389,15 @@ export function QuizzesPage() {
         }}
         onToast={showToast}
       />
+      <StudentQuizInfoModal
+        quiz={quizForStudentInfo}
+        isOpen={Boolean(quizForStudentInfo)}
+        onClose={() => setQuizForStudentInfo(null)}
+        onStart={quiz => {
+          setQuizForStudentInfo(null);
+          setQuizForTaking(quiz);
+        }}
+      />
       <TakeQuizModal
         quiz={quizForTaking}
         isOpen={Boolean(quizForTaking)}
@@ -563,7 +574,7 @@ export function QuizzesPage() {
                                 isProfessor={isProfessor}
                                 animationDelayMs={Math.min(index, 10) * 35}
                                 onManage={setQuizForDetails}
-                                onTake={setQuizForTaking}
+                                onTake={setQuizForStudentInfo}
                                 onDelete={setQuizToDelete}
                               />
                             ))

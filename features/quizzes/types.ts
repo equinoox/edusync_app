@@ -167,6 +167,13 @@ export type QuizDetailsModalProps = {
   onToast: (message: string, tone?: QuizToastTone, statusCode?: QuizToastStatusCode) => void;
 };
 
+export type StudentQuizInfoModalProps = {
+  quiz: QuizCardItem | null;
+  isOpen: boolean;
+  onClose: () => void;
+  onStart: (quiz: QuizCardItem) => void;
+};
+
 export type TakeQuizModalProps = {
   quiz: QuizListItem | null;
   isOpen: boolean;
