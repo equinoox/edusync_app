@@ -71,6 +71,13 @@
       "when": 1780178400000,
       "tag": "0009_performance_indexes",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1789908760520,
+      "tag": "0010_careful_azazel",
+      "breakpoints": true
     }
   ]
 }

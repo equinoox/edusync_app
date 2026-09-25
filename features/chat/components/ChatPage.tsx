@@ -239,10 +239,10 @@ export function ChatPage() {
     }
   };
 
-  const handleDocumentUploadError = () => {
+  const handleDocumentUploadError = (message: string) => {
     setToast({
       id: Date.now(),
-      message: 'Something went wrong',
+      message: message || 'Something went wrong',
       tone: 'error',
     });
   };

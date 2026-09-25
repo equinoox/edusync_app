@@ -11,7 +11,7 @@ export type ChatInputProps = {
   selectedDocumentId?: string;
   onSelectedDocumentChange?: (documentId: string) => void;
   onDocumentUploaded?: (documents: DocumentUploadResult[]) => void;
-  onDocumentUploadError?: () => void;
+  onDocumentUploadError?: (message: string) => void;
 };
 
 export type ChatMessagesProps = {

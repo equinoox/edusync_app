@@ -1,6 +1,6 @@
-export const CHAT_MODEL = "openai/gpt-4.1-mini";
+export const CHAT_MODEL = "inclusionai/ling-3.0-flash-fin";
 
-export const EMBEDDING_MODEL = "openai/text-embedding-3-small";
+export const EMBEDDING_MODEL = "alibaba/qwen3-embedding-0.6b";
 
 export const MAX_CHAT_STEPS = 10; // Increased for more detailed explanations
 

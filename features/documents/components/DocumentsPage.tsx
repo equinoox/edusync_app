@@ -163,7 +163,7 @@ export function DocumentsPage() {
         <div className="absolute right-6 bottom-8 z-20 sm:right-5">
           <DocumentUploadButton
             onUploaded={handleDocumentsUploaded}
-            onUploadError={() => showToast('Something went wrong', 'error')}
+            onUploadError={(message) => showToast(message || 'Something went wrong', 'error')}
             size="default"
           />
         </div>
