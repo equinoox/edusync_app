@@ -3,6 +3,7 @@ import { z } from 'zod';
 
 import { createResourceAction } from '@/features/resources/actions/resources.actions';
 import { findRelevantContent } from '@/features/resources/server/retrieval.service';
+import { searchWeb } from '@/features/chat/server/web-search.service';
 
 type SelectedDocumentContext = {
   id: string;
@@ -29,8 +30,9 @@ use this tool without asking for confirmation.
 
   getInformation: tool({
     description: `
-Get information from the user's knowledge base to answer questions.
-If the user names a PDF file or says "last/latest document", pass that file reference in fileName so retrieval searches only that uploaded file.
+Search the student's uploaded study materials. This is your primary tool — call it before answering any question about course content, even when the student's reference is vague.
+Pass fileName whenever the student names a file, or when the "Uploaded Materials" list in your system prompt makes it clear which file they mean (for example after "the document I just uploaded").
+The result includes the resolved document, so you can tell the student exactly which file you are reading from. If it returns availableDocuments, the requested file does not exist — ask the student to pick one of those names.
 ${selectedDocument ? `The user selected ${formatDocumentNameForPrompt(selectedDocument.fileName)} in the chat document picker. For vague references like "this", "this material", or "the selected document", call this tool; retrieval is already scoped to that selected document.` : ''}
 This tool searches stored chunks and embeddings; the assistant does not need direct PDF file access when this returns results.
 `,
@@ -43,5 +45,19 @@ This tool searches stored chunks and embeddings; the assistant does not need dir
     }),
     execute: async ({ question, fileName }) =>
       findRelevantContent(question, fileName, selectedDocument?.id),
+  }),
+
+  searchWeb: tool({
+    description: `
+Look up current information on the public internet.
+Call this ONLY when the student explicitly asks you to search online, check the internet, or find sources beyond their uploaded materials.
+Never call it to fill gaps on your own — if the uploaded materials do not cover something, say so and offer to search instead.
+`,
+    inputSchema: z.object({
+      query: z
+        .string()
+        .describe('a focused search query derived from what the student asked'),
+    }),
+    execute: async ({ query }) => searchWeb(query),
   }),
 });

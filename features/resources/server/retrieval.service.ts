@@ -6,7 +6,6 @@ import {
 } from '@/features/resources/repositories/embeddings.repository';
 import {
   getUserDocumentById,
-  getMostRecentUserDocument,
   getUserDocuments,
 } from '@/features/documents/repositories/documents.repository';
 import type { UserDocument } from '@/features/resources/types';
@@ -20,9 +19,21 @@ const normalizeDocumentName = (value: string) =>
     .trim()
     .replace(/\s+/g, ' ');
 
+// Reference to a document without naming it ("the file I just uploaded",
+// "dokument koji sam malopre poslao"). Matched loosely because Serbian is
+// inflected and the student rarely repeats the exact file name.
+const DOCUMENT_NOUN_PATTERN =
+  /(document|file|pdf|attachment|material|dokument|fajl|materijal|gradivo|skript|prezentacij|belesk|bele[sš]k)/i;
+
+const RECENCY_PATTERN =
+  /(last|latest|newest|most recent|just now|earlier|malo\s?pre|malo\s?prije|malo\s?cas|malo\s?čas|nedavno|upravo|maloprije|skoro|poslednj|posljednj|zadnj|najnovij|prethodn)/i;
+
+const UPLOAD_VERB_PATTERN =
+  /(upload|uplod|attach|sent|added|poslao|poslala|posla sam|dodao|dodala|ubacio|ubacila|okacio|okačio|okacila|okačila|kacio|kačio)/i;
+
 const mentionsMostRecentDocument = (value: string) =>
-  /\b(last|latest|newest|most recent)\s+(document|file|pdf)\b/i.test(value) ||
-  /\b(document|file|pdf)\s+(i\s+)?(last|latest|newest|most recently)\s+(sent|uploaded|added)\b/i.test(value);
+  DOCUMENT_NOUN_PATTERN.test(value) &&
+  (RECENCY_PATTERN.test(value) || UPLOAD_VERB_PATTERN.test(value));
 
 const getPreferredContentTypes = (value: string): ChunkContentType[] => {
   const normalized = value.toLowerCase();
@@ -43,6 +54,53 @@ const getPreferredContentTypes = (value: string): ChunkContentType[] => {
   return preferred;
 };
 
+const matchDocumentByName = (
+  documents: UserDocument[],
+  fileName: string | undefined,
+  userQuery: string,
+) => {
+  const requestedName = normalizeDocumentName(fileName ?? '');
+  const queryText = normalizeDocumentName(userQuery);
+  const candidates = documents.map(document => ({
+    document,
+    normalizedFileName: normalizeDocumentName(document.fileName),
+  }));
+
+  const exactMatch = candidates.find(
+    ({ normalizedFileName }) =>
+      normalizedFileName.length > 0 &&
+      (normalizedFileName === requestedName || normalizedFileName === queryText),
+  );
+
+  if (exactMatch) return exactMatch.document;
+
+  // The full file name appears somewhere inside what the student wrote.
+  const mentioned = candidates
+    .filter(({ normalizedFileName }) => {
+      const paddedFileName = ` ${normalizedFileName} `;
+
+      return (
+        ` ${queryText} `.includes(paddedFileName) ||
+        (requestedName.length > 0 && ` ${requestedName} `.includes(paddedFileName))
+      );
+    })
+    .sort((left, right) => right.normalizedFileName.length - left.normalizedFileName.length);
+
+  if (mentioned[0]) return mentioned[0].document;
+
+  // The model passed a partial name ("fizika" for "Fizika-2-kinematika.pdf").
+  // Only trusted for reasonably specific fragments, to avoid random matches.
+  if (requestedName.length >= 4) {
+    const partial = candidates
+      .filter(({ normalizedFileName }) => normalizedFileName.includes(requestedName))
+      .sort((left, right) => left.normalizedFileName.length - right.normalizedFileName.length);
+
+    if (partial[0]) return partial[0].document;
+  }
+
+  return undefined;
+};
+
 const resolveMentionedDocument = async (
   userId: string,
   userQuery: string,
@@ -53,36 +111,19 @@ const resolveMentionedDocument = async (
     return getUserDocumentById(documentId, userId);
   }
 
+  // Ordered newest first, so documents[0] is also the "most recent" answer.
+  const documents = await getUserDocuments(userId);
+  const namedDocument = matchDocumentByName(documents, fileName, userQuery);
+
+  // An explicitly named file always wins over a vague recency reference, since
+  // "the PDF I uploaded about kinematics" contains both signals.
+  if (namedDocument) return namedDocument;
+
   if (mentionsMostRecentDocument(userQuery) || mentionsMostRecentDocument(fileName ?? '')) {
-    return getMostRecentUserDocument(userId);
+    return documents[0];
   }
 
-  const documents = await getUserDocuments(userId);
-  const requestedName = normalizeDocumentName(fileName ?? userQuery);
-
-  if (!requestedName) return undefined;
-
-  const exactMatch = documents.find(document => {
-    const normalizedFileName = normalizeDocumentName(document.fileName);
-    return normalizedFileName === requestedName;
-  });
-
-  if (exactMatch) return exactMatch;
-
-  const mentionedDocuments = documents
-    .map(document => ({
-      document,
-      normalizedFileName: normalizeDocumentName(document.fileName),
-    }))
-    .filter(({ normalizedFileName }) => {
-      const paddedQuery = ` ${requestedName} `;
-      const paddedFileName = ` ${normalizedFileName} `;
-
-      return paddedQuery.includes(paddedFileName);
-    })
-    .sort((left, right) => right.normalizedFileName.length - left.normalizedFileName.length);
-
-  return mentionedDocuments[0]?.document;
+  return undefined;
 };
 
 const toDocumentReference = (document: UserDocument | undefined) => {
@@ -118,10 +159,15 @@ export const findRelevantContent = async (
   }
 
   if (requestedFileName && !document) {
+    // Hand the tutor the real file names so it can ask the student to pick one
+    // instead of guessing or claiming the material does not exist.
+    const availableDocuments = await getUserDocuments(userId);
+
     return {
       document: null,
       results: [],
       message: `No uploaded document named "${requestedFileName}" was found for this user.`,
+      availableDocuments: availableDocuments.map(({ fileName: name }) => name),
     };
   }
 

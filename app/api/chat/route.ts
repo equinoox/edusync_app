@@ -83,6 +83,7 @@ export async function POST(req: Request) {
     });
 
     const result = await createChatResponse(
+      userId,
       messages,
       selectedDocument
         ? {

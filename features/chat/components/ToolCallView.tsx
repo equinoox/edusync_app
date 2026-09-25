@@ -41,6 +41,18 @@ const TOOL_DESCRIPTIONS: Record<string, (input: unknown) => string> = {
     )}"`;
   },
 
+  searchWeb: (input: unknown) => {
+    const params = getParams(input);
+
+    return `Searching the web for: "${String(params.query ?? 'information')}"`;
+  },
+
+  SearchWeb: (input: unknown) => {
+    const params = getParams(input);
+
+    return `Searching the web for: "${String(params.query ?? 'information')}"`;
+  },
+
   addResource: (input: unknown) => {
     const params = getParams(input);
 
